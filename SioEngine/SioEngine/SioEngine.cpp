@@ -5,6 +5,8 @@
 #include "framework.h"
 #include "SioEngine.h"
 
+#include "Core.h"
+
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
