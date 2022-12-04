@@ -1,4 +1,4 @@
-# SioEngine (개발 진행 )
+# SioEngine (개발 진행 중)
 WinAPI 기반의 자체엔진 프로젝트입니다.
 
 ### Using Language
