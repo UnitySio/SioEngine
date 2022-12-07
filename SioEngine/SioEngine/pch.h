@@ -10,3 +10,5 @@
 #include <crtdbg.h>
 #include <d2d1.h>
 #include <dwrite.h>
+
+#define DELTA_TIME TimeManager::GetInstance()->GetDeltaTime()

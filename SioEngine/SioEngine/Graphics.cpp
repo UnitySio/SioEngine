@@ -17,26 +17,6 @@ void Graphics::Initiate()
         HwndRenderTargetProperties(Core::GetInstance()->GetHWND(), SizeU(rc.right, rc.bottom)),
         &render_target_
     );
-
-    DWriteCreateFactory(
-        DWRITE_FACTORY_TYPE_SHARED,
-        __uuidof(IDWriteFactory),
-        reinterpret_cast<IUnknown**>(&write_factory_)
-    );
-
-    write_factory_->CreateTextFormat(
-        L"Arial",
-        NULL,
-        DWRITE_FONT_WEIGHT_NORMAL,
-        DWRITE_FONT_STYLE_NORMAL,
-        DWRITE_FONT_STRETCH_NORMAL,
-        12.f,
-        L"ko-kr",
-        &write_text_format_
-    );
-
-    //write_text_format_->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
-    //write_text_format_->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_CENTER);
 }
 
 void Graphics::BeginDraw()
@@ -51,9 +31,7 @@ void Graphics::EndDraw()
 
 Graphics::Graphics() :
     factory_(),
-    render_target_(),
-    write_factory_(),
-    write_text_format_()
+    render_target_()
 {
 }
 
@@ -63,41 +41,7 @@ Graphics::~Graphics()
     CoUninitialize();
 }
 
-void Graphics::Clear(float r, float g, float b)
+void Graphics::Clear(int r, int g, int b)
 {
-    render_target_->Clear(ColorF(r, g, b));
-}
-
-void Graphics::DrawEllipse(float x, float y, float width, float height)
-{
-    D2D1_ELLIPSE ellipse = {};
-
-    ellipse.point.x = x;
-    ellipse.point.y = y;
-    ellipse.radiusX = width;
-    ellipse.radiusY = height;
-
-    ID2D1SolidColorBrush* brush = NULL;
-
-    render_target_->CreateSolidColorBrush(ColorF(255, 0, 0), &brush);
-    render_target_->FillEllipse(ellipse, brush);
-
-    brush->Release();
-}
-
-void Graphics::DrawTextW(float x, float y, float width, float height, LPCWSTR text)
-{
-    D2D1_RECT_F rect = RectF(x, y, width, height);
-
-    ID2D1SolidColorBrush* brush = NULL;
-
-    render_target_->CreateSolidColorBrush(ColorF(255, 0, 0), &brush);
-
-    render_target_->DrawTextW(
-        text,
-        wcslen(text),
-        write_text_format_,
-        rect,
-        brush
-    );
+    render_target_->Clear({ r / 255.f, g / 255.f, b / 255.f });
 }

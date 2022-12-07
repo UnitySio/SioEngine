@@ -13,11 +13,20 @@ class Core :
 
     RECT window_area_;
 
+    HANDLE handles_[2];
+
+    bool is_logic_loop_;
+    bool is_fixed_loop_;
+
     LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     
+    static DWORD WINAPI LogicThread(LPVOID lpParam);
+    static DWORD WINAPI FixedThread(LPVOID lpParam);
+
     void Update();
     void LateUpdate();
+    void FixedUpdate();
     void Render();
 public:
     Core();

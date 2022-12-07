@@ -1,8 +1,8 @@
 #pragma once
 #include "Singleton.h"
 
-class Time :
-    public Singleton<Time>
+class TimeManager :
+    public Singleton<TimeManager>
 {
     friend class Core;
     
@@ -20,8 +20,12 @@ class Time :
     void Initaite();
     void Update();
 public:
-    Time();
-    ~Time() final = default;
+    TimeManager();
+    ~TimeManager() final = default;
+
+    void SetTimeScale(float time_scale);
+
+    float GetDeltaTime();
 
     UINT GetFPS();
 };
