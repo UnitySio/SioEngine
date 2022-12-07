@@ -1,4 +1,5 @@
 ﻿#pragma comment(lib, "d2d1")
+#pragma comment(lib, "dwrite")
 
 #define _CRTDBG_MAP_ALLOC
 
@@ -8,3 +9,4 @@
 #include <cstdlib>
 #include <crtdbg.h>
 #include <d2d1.h>
+#include <dwrite.h>

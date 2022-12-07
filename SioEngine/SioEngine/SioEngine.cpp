@@ -2,6 +2,7 @@
 #include "framework.h"
 #include "SioEngine.h"
 #include "Core.h"
+#include "Graphics.h"
 
 int APIENTRY wWinMain(
     HINSTANCE hInstance,
@@ -39,6 +40,7 @@ int APIENTRY wWinMain(
         }
         else
         {
+            Core::GetInstance()->Logic();
         }
     }
 

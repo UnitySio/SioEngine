@@ -5,7 +5,6 @@
 template <typename T>
 class Singleton
 {
-private:
     static std::shared_ptr<T> instance_;
     static std::once_flag flag_;
 protected:
