@@ -31,4 +31,13 @@ public:
      * \brief 화면을 지정한 색상으로 초기화합니다.
      */
     void Clear(int r, int g, int b);
+
+    /**
+     * \brief 원을 그립니다.
+     * \param x 원의 X 좌표입니다.
+     * \param y 원의 Y 좌표입니다.
+     * \param width 원의 가로 크기입니다.
+     * \param height 원의 세로 크기입니다.
+     */
+    void FillEllipse(float x, float y, float width, float height);
 };

@@ -43,5 +43,22 @@ Graphics::~Graphics()
 
 void Graphics::Clear(int r, int g, int b)
 {
-    render_target_->Clear({ r / 255.f, g / 255.f, b / 255.f });
+    render_target_->Clear({r / 255.f, g / 255.f, b / 255.f});
+}
+
+void Graphics::FillEllipse(float x, float y, float width, float height)
+{
+    D2D1_ELLIPSE ellipse = {};
+
+    ellipse.point.x = x;
+    ellipse.point.y = y;
+    ellipse.radiusX = width;
+    ellipse.radiusY = height;
+
+    ID2D1SolidColorBrush* brush = NULL;
+
+    render_target_->CreateSolidColorBrush(ColorF(1.f, 1.f, 0.f), &brush);
+    render_target_->FillEllipse(ellipse, brush);
+
+    brush->Release();
 }

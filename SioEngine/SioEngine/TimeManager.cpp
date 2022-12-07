@@ -19,11 +19,6 @@ void TimeManager::Update()
 	if (timer_ >= 1.f)
 	{
 		fps_ = frame_counter_;
-
-		WCHAR word[1024];
-		wsprintf(word, L"FPS: %d\n", fps_);
-		OutputDebugString(word);
-
 		frame_counter_ = 0;
 		timer_ = 0.f;
 	}
