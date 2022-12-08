@@ -12,3 +12,4 @@
 #include <dwrite.h>
 
 #define DELTA_TIME TimeManager::GetInstance()->GetDeltaTime()
+#define FIXED_DELTA_TIME TimeManager::GetInstance()->GetFixedDeltaTime();

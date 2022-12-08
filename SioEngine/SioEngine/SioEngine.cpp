@@ -40,6 +40,7 @@ int APIENTRY wWinMain(
         }
         else
         {
+            Core::GetInstance()->SubLogic();
         }
     }
 

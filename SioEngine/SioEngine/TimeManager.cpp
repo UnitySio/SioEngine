@@ -29,11 +29,17 @@ TimeManager::TimeManager() :
 	previous_count_{},
 	current_count_{},
 	delta_time_(),
+	fixed_time_step_(.02f),
 	time_scale_(1.f),
 	timer_(),
 	fps_(),
 	frame_counter_()
 {
+}
+
+void TimeManager::SetFixedTimeStep(float fixed_time_step)
+{
+	fixed_time_step_ = fixed_time_step;
 }
 
 void TimeManager::SetTimeScale(float time_scale)
@@ -43,7 +49,12 @@ void TimeManager::SetTimeScale(float time_scale)
 
 float TimeManager::GetDeltaTime()
 {
-	return delta_time_;
+	return delta_time_ * time_scale_;
+}
+
+float TimeManager::GetFixedDeltaTime()
+{
+	return fixed_time_step_;
 }
 
 UINT TimeManager::GetFPS()

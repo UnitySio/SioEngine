@@ -52,7 +52,7 @@ DWORD WINAPI Core::LogicThread(LPVOID lpParam)
 {
     while (GetInstance()->is_logic_loop_)
     {
-        GetInstance()->Logic();
+        GetInstance()->MainLogic();
     }
 
     return 0;
@@ -60,16 +60,12 @@ DWORD WINAPI Core::LogicThread(LPVOID lpParam)
 
 void Core::FixedUpdate()
 {
-    OutputDebugString(L"Fixed Update\n");
-    x2_ += 100.f * FIXED_TIME_STEP;
-    x4_ += 100.f;
+    x2_ += 10.f * FIXED_DELTA_TIME;
 }
 
 void Core::Update()
 {
-    OutputDebugString(L"Update\n");
-    x1_ += 100.f * DELTA_TIME;
-    x3_ += 100.f;
+    x1_ += 10.f * DELTA_TIME;
 }
 
 void Core::LateUpdate()
@@ -83,8 +79,6 @@ void Core::Render()
 
     Graphics::GetInstance()->FillEllipse(x1_, y1_, 32.f, 32.f);
     Graphics::GetInstance()->FillEllipse(x2_, y2_, 32.f, 32.f);
-    Graphics::GetInstance()->FillEllipse(x3_, y3_, 32.f, 32.f);
-    Graphics::GetInstance()->FillEllipse(x4_, y4_, 32.f, 32.f);
 
     Graphics::GetInstance()->EndDraw();
 }
@@ -96,16 +90,13 @@ Core::Core() :
     resolution_{},
     window_area_{},
     logic_handle_(),
+    semaphore_(),
     is_logic_loop_(true),
     timer_(),
     x1_(32.f),
     y1_(32.f),
     x2_(32.f),
-    y2_(96.f),
-    x3_(32.f),
-    y3_(160.f),
-    x4_(32.f),
-    y4_(224.f)
+    y2_(96.f)
 {
 }
 
@@ -159,6 +150,8 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
 
     logic_handle_ = CreateThread(NULL, 0, LogicThread, NULL, 0, NULL);
 
+    semaphore_ = CreateSemaphore(NULL, 0, 1, NULL);
+
     return TRUE;
 }
 
@@ -167,18 +160,30 @@ HWND Core::GetHWND()
     return hWnd;
 }
 
-void Core::Logic()
+void Core::MainLogic()
 {
     TimeManager::GetInstance()->Update();
     timer_ += DELTA_TIME;
 
-    while (timer_ >= FIXED_TIME_STEP)
+    while (timer_ >= TimeManager::GetInstance()->fixed_time_step_)
     {
         FixedUpdate();
-        timer_ -= FIXED_TIME_STEP;
+        timer_ -= TimeManager::GetInstance()->fixed_time_step_;
     }
 
     Update();
     LateUpdate();
     Render();
+
+    ReleaseSemaphore(semaphore_, 1, NULL);
+}
+
+void Core::SubLogic()
+{
+    WaitForSingleObject(semaphore_, INFINITE);
+
+    WCHAR word[1024];
+    wsprintf(word, L"%s - FPS: %d", kWindowName, TimeManager::GetInstance()->GetFPS());
+
+    SetWindowTextW(hWnd, word);
 }

@@ -1,8 +1,6 @@
 #pragma once
 #include "Singleton.h"
 
-#define FIXED_TIME_STEP .02f
-
 class Core :
     public Singleton<Core>
 {
@@ -16,6 +14,7 @@ class Core :
     RECT window_area_;
 
     HANDLE logic_handle_;
+    HANDLE semaphore_;
 
     bool is_logic_loop_;
 
@@ -24,10 +23,6 @@ class Core :
     float y1_;
     float x2_;
     float y2_;
-    float x3_;
-    float y3_;
-    float x4_;
-    float y4_;
 
     LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -47,5 +42,6 @@ public:
 
     HWND GetHWND();
 
-    void Logic();
+    void MainLogic();
+    void SubLogic();
 };
