@@ -1,8 +1,8 @@
-﻿#include "pch.h"
+﻿#include "Engine/pch.h"
 #include "framework.h"
 #include "SioEngine.h"
-#include "Core.h"
-#include "Graphics.h"
+#include "Engine/Core.h"
+#include "Engine/Graphics.h"
 
 int APIENTRY wWinMain(
     HINSTANCE hInstance,

@@ -19,10 +19,6 @@ class Core :
     bool is_logic_loop_;
 
     float timer_;
-    float x1_;
-    float y1_;
-    float x2_;
-    float y2_;
 
     LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
