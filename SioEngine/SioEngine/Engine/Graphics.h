@@ -9,27 +9,27 @@ class Graphics :
     ID2D1Factory* factory_;
     ID2D1HwndRenderTarget* render_target_;
 
-    IDWriteFactory* write_factory_;
-    IDWriteTextFormat* write_text_format_;
-
-    ID2D1SolidColorBrush* text_brush_;
-
-    D2D1::ColorF text_color_;
-
     /**
-     * \brief Direct2D를 사용하기 위한 초기화를 합니다.
+     * \brief Direct2D를 사용하기 위한 객체들을 초기화하고 성공 여부를 반환합니다.
+     * \return bool
      */
-    void Initiate();
+    bool Initiate();
 
     /**
-     * \brief 그리기를 시작합니다.
+     * \brief Render Target의 크기를 재조정합니다.
+     */
+    void Resize();
+
+    /**
+     * \brief 화면에 그리기를 시작합니다.
      */
     void BeginDraw();
 
     /**
-     * \brief 그리기를 끝냅니다.
+     * \brief 화면에 그리기를 끝냅니다.
      */
     void EndDraw();
+
 public:
     Graphics();
     ~Graphics() final;
@@ -37,33 +37,72 @@ public:
     /**
      * \brief 화면을 지정한 색상으로 초기화합니다.
      */
-    void Clear(int r, int g, int b);
+    void ClearScreen(Color color);
 
     /**
-     * \brief 화면에 레이블을 표시합니다.
-     * \param position 레이블을 표시할 위치입니다.
-     * \param kText 표시할 텍스트입니다.
+     * \brief 화면에 꽉찬 사각형을 그립니다.
+     * \param position 위치
+     * \param color 색상
      */
-    void Label(FRect position, LPCWSTR kText);
+    void FillRectangle(Rect position, Color color);
 
     /**
-     * \brief 텍스트를 가로 정렬합니다.
-     * \param alignment 가로 정렬 방향
+     * \brief 화면에 사각형을 그립니다.
+     * \param position 위치
+     * \param color 색상
+     * \param stroke 두께
      */
-    void SetTextAlign(DWRITE_TEXT_ALIGNMENT alignment);
+    void DrawRectangle(Rect position, Color color, float stroke = 1.f);
 
     /**
-     * \brief 텍스트를 세로 정렬합니다.
-     * \param alignment 세로 정렬 방향
+     * \brief 화면에 가장자리가 둥근 꽉찬 사각형을 그립니다.
+     * \param position 위치
+     * \param color 색상
+     * \param radius 곡률
      */
-    void SetParAlign(DWRITE_PARAGRAPH_ALIGNMENT alignment);
+    void FillRoundedRectangle(Rect position, Color color, float radius = 0.f);
 
     /**
-     * \brief 텍스트의 색상을 변경합니다.
-     * \param r 현재 색상의 빨간색입니다.
-     * \param g 현재 색상의 초록색입니다.
-     * \param b 현재 색상의 파란색입니다.
-     * \param a 현재 색상의 알파 채널 값입니다.
+     * \brief 화면에 가장자리가 둥근 사각형을 그립니다.
+     * \param position 위치
+     * \param color 색상
+     * \param radius 곡률
+     * \param stroke 두께
      */
-    void SetTextColor(int r, int g, int b, int a = 255);
+    void DrawRoundedRectangle(Rect position, Color color, float radius = 0.f, float stroke = 1.f);
+
+    /**
+     * \brief 화면에 꽉찬 원을 그립니다.
+     * \param position 위치
+     * \param color 색상
+     */
+    void FillEllipse(Rect position, Color color);
+
+    /**
+     * \brief 화면에 원을 그립니다.
+     * \param position 위치
+     * \param color 색상
+     * \param stroke 두께
+     */
+    void DrawEllipse(Rect position, Color color, float stroke = 1.f);
+
+    /**
+     * \brief 화면에 a에서 b까지 선을 그립니다.
+     * \param a 시작 지점
+     * \param b 끝 지점
+     * \param color 색상
+     * \param stroke 두께
+     */
+    void DrawLine(Vector2 a, Vector2 b, Color color, float stroke = 1.f);
+
+    /**
+     * \brief 화면에 텍스트를 표시합니다.
+     * \param position 위치
+     * \param color 색상
+     * \param text 텍스트
+     * \param font_size 폰트 크기
+     * \param h_align 가로 정렬
+     * \param v_align 세로 정렬
+     */
+    void DrawTextW(Rect position, Color color, std::wstring text, float font_size = 12.f, DWRITE_TEXT_ALIGNMENT h_align = DTA_LEFT, DWRITE_PARAGRAPH_ALIGNMENT v_align = DTA_TOP);
 };

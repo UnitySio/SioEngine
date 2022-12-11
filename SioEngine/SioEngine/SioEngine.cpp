@@ -1,8 +1,8 @@
-﻿#include "Engine/pch.h"
+﻿#include "pch.h"
 #include "framework.h"
 #include "SioEngine.h"
-#include "Engine/Core.h"
-#include "Engine/Graphics.h"
+#include "Core.h"
+#include "Graphics.h"
 
 int APIENTRY wWinMain(
     HINSTANCE hInstance,
@@ -14,9 +14,9 @@ int APIENTRY wWinMain(
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(pCmdLine);
 
-    Core::GetInstance()->MyRegisterClass(hInstance);
+    CORE->MyRegisterClass(hInstance);
 
-    if (!Core::GetInstance()->InitInstance(hInstance, nCmdShow))
+    if (!CORE->InitInstance(hInstance, nCmdShow))
     {
         return 0;
     }
@@ -40,7 +40,7 @@ int APIENTRY wWinMain(
         }
         else
         {
-            Core::GetInstance()->SubLogic();
+            CORE->SubLogic();
         }
     }
 

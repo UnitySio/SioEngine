@@ -2,6 +2,7 @@
 #include "Core.h"
 #include "Graphics.h"
 #include "TimeManager.h"
+#include "Scene/SceneManager.h"
 
 LRESULT Core::WndProc(
     HWND hWnd,
@@ -10,25 +11,31 @@ LRESULT Core::WndProc(
     LPARAM lParam
 )
 {
-    if (message == WM_GETMINMAXINFO)
+    if (message == WM_SIZE)
     {
-        ((MINMAXINFO*)lParam)->ptMinTrackSize.x = window_area_.right - window_area_.left;
-        ((MINMAXINFO*)lParam)->ptMinTrackSize.y = window_area_.bottom - window_area_.top;
-        ((MINMAXINFO*)lParam)->ptMaxTrackSize.x = window_area_.right - window_area_.left;
-        ((MINMAXINFO*)lParam)->ptMaxTrackSize.y = window_area_.bottom - window_area_.top;
+        GRAPHICS->Resize();
+    }
+    else if (message == WM_GETMINMAXINFO)
+    {
+        reinterpret_cast<MINMAXINFO*>(lParam)->ptMinTrackSize.x = window_area_.right - window_area_.left;
+        reinterpret_cast<MINMAXINFO*>(lParam)->ptMinTrackSize.y = window_area_.bottom - window_area_.top;
+        reinterpret_cast<MINMAXINFO*>(lParam)->ptMaxTrackSize.x = window_area_.right - window_area_.left;
+        reinterpret_cast<MINMAXINFO*>(lParam)->ptMaxTrackSize.y = window_area_.bottom - window_area_.top;
 
         return 0;
     }
-
-    if (message == WM_DESTROY)
+    else if (message == WM_DESTROY)
     {
         is_logic_loop_ = false;
 
         WaitForSingleObject(logic_handle_, INFINITE);
 
-        GRAPHICS->Release();
+        SCENE->Release();
         TIME->Release();
+        GRAPHICS->Release();
         GetInstance()->Release();
+
+        CoUninitialize();
 
         PostQuitMessage(0);
 
@@ -60,27 +67,25 @@ DWORD WINAPI Core::LogicThread(LPVOID lpParam)
 
 void Core::FixedUpdate()
 {
-    OutputDebugString(L"F\n");
+    SCENE->FixedUpdate();
 }
 
 void Core::Update()
 {
-    OutputDebugString(L"U\n");
+    SCENE->Update();
 }
 
 void Core::LateUpdate()
 {
+    SCENE->LateUpdate();
 }
 
 void Core::Render()
 {
     GRAPHICS->BeginDraw();
-    GRAPHICS->Clear(49, 77, 121);
+    GRAPHICS->ClearScreen({49, 77, 121});
 
-    WCHAR word[1024];
-    wsprintf(word, L"FPS: %d", TIME->GetFPS());
-    
-    GRAPHICS->Label(FRect(10.f, 10.f, 100.f, 20.f), word);
+    SCENE->Render();
 
     GRAPHICS->EndDraw();
 }
@@ -116,9 +121,7 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
     const int screen_height = GetSystemMetrics(SM_CYSCREEN);
 
     resolution_ = {1280, 720};
-
     window_area_ = {0, 0, resolution_.x, resolution_.y};
-
     AdjustWindowRect(&window_area_, WS_OVERLAPPEDWINDOW, FALSE);
 
     hWnd = CreateWindowEx(
@@ -143,7 +146,13 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
 
     ShowWindow(hWnd, nCmdShow);
 
-    GRAPHICS->Initiate();
+    CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+
+    if (!GRAPHICS->Initiate())
+    {
+        return FALSE;
+    }
+
     TIME->Initaite();
 
     logic_handle_ = CreateThread(NULL, 0, LogicThread, NULL, 0, NULL);
