@@ -22,13 +22,14 @@ class Core :
 
     LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-    
+
     static DWORD WINAPI LogicThread(LPVOID lpParam);
 
     void FixedUpdate();
     void Update();
     void LateUpdate();
     void Render();
+
 public:
     Core();
     ~Core() final = default;

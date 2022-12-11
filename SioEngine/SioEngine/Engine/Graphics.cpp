@@ -2,51 +2,42 @@
 #include "Graphics.h"
 #include "Core.h"
 
-using namespace D2D1;
-
-void Graphics::Initiate()
+bool Graphics::Initiate()
 {
-    HRESULT hr;
+    HRESULT result = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &factory_);
 
-    CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
-    
-    hr = D2D1CreateFactory(D2D1_FACTORY_TYPE_SINGLE_THREADED, &factory_);
-
-    RECT rc = {};
-    GetClientRect(Core::GetInstance()->GetHWND(), &rc);
-
-    if (SUCCEEDED(hr))
+    if (FAILED(result))
     {
-        hr = factory_->CreateHwndRenderTarget(
-            RenderTargetProperties(),
-            HwndRenderTargetProperties(Core::GetInstance()->GetHWND(), SizeU(rc.right, rc.bottom)),
-            &render_target_
-        );
+        return false;
     }
 
-    if (SUCCEEDED(hr))
-    {
-        render_target_->CreateSolidColorBrush(text_color_, &text_brush_);
+    RECT rect = {};
+    GetClientRect(Core::GetInstance()->GetHWND(), &rect);
 
-        hr = DWriteCreateFactory(
-            DWRITE_FACTORY_TYPE_SHARED,
-            __uuidof(IDWriteFactory),
-            reinterpret_cast<IUnknown**>(&write_factory_)
-        );
+    result = factory_->CreateHwndRenderTarget(
+        D2D1::RenderTargetProperties(),
+        D2D1::HwndRenderTargetProperties(
+            CORE->GetHWND(),
+            D2D1::SizeU(rect.right - rect.left, rect.bottom - rect.top)),
+        &render_target_
+    );
+
+    if (FAILED(result))
+    {
+        return false;
     }
 
-    if (SUCCEEDED(hr))
+    return true;
+}
+
+void Graphics::Resize()
+{
+    RECT rect = {};
+    GetClientRect(Core::GetInstance()->GetHWND(), &rect);
+
+    if (render_target_ != NULL)
     {
-        write_factory_->CreateTextFormat(
-            L"Arial",
-            NULL,
-            DWRITE_FONT_WEIGHT_NORMAL,
-            DWRITE_FONT_STYLE_NORMAL,
-            DWRITE_FONT_STRETCH_NORMAL,
-            12.f,
-            L"en-us",
-            &write_text_format_
-        );
+        render_target_->Resize(D2D1::SizeU(rect.right - rect.left, rect.bottom - rect.top));
     }
 }
 
@@ -62,62 +53,305 @@ void Graphics::EndDraw()
 
 Graphics::Graphics() :
     factory_(),
-    render_target_(),
-    write_factory_(),
-    write_text_format_(),
-    text_brush_(),
-    text_color_(1.f, 1.f, 1.f)
+    render_target_()
 {
 }
 
 Graphics::~Graphics()
 {
-    write_text_format_->Release();
-    write_factory_->Release();
-    text_brush_->Release();
     render_target_->Release();
     factory_->Release();
+}
+
+void Graphics::ClearScreen(Color color)
+{
+    float red = static_cast<float>(color.r) / 255.f;
+    float green = static_cast<float>(color.g) / 255.f;
+    float blue = static_cast<float>(color.b) / 255.f;
+    float alpha = static_cast<float>(color.a) / 255.f;
     
-    CoUninitialize();
+    render_target_->Clear(D2D1::ColorF(
+        red,
+        green,
+        blue,
+        alpha
+    ));
 }
 
-void Graphics::Clear(int r, int g, int b)
+void Graphics::FillRectangle(Rect position, Color color)
 {
-    render_target_->Clear(ColorF(r / 255.f, g / 255.f, b / 255.f));
-}
-
-void Graphics::Label(FRect position, LPCWSTR kText)
-{
-    D2D1_RECT_F rect = {};
-
-    rect.left = position.left;
-    rect.top = position.top;
-    rect.right = position.right;
-    rect.bottom = position.bottom;
-
-    render_target_->DrawText(
-        kText,
-        wcslen(kText),
-        write_text_format_,
-        rect,
-        text_brush_
+    D2D1_RECT_F rect = D2D1::RectF(
+        position.x,
+        position.y,
+        position.x + position.width,
+        position.y + position.height
     );
+    
+    float red = static_cast<float>(color.r) / 255.f;
+    float green = static_cast<float>(color.g) / 255.f;
+    float blue = static_cast<float>(color.b) / 255.f;
+    float alpha = static_cast<float>(color.a) / 255.f;
+
+    ID2D1SolidColorBrush* brush;
+    render_target_->CreateSolidColorBrush(
+        D2D1::ColorF(
+            red,
+            green,
+            blue,
+            alpha
+        ),
+        &brush
+    );
+
+    render_target_->FillRectangle(&rect, brush);
+
+    brush->Release();
 }
 
-void Graphics::SetTextAlign(DWRITE_TEXT_ALIGNMENT alignment)
+void Graphics::DrawRectangle(Rect position, Color color, float stroke)
 {
-    write_text_format_->SetTextAlignment(alignment);
+    D2D1_RECT_F rect = D2D1::RectF(
+        position.x,
+        position.y,
+        position.x + position.width,
+        position.y + position.height
+    );
+
+    float red = static_cast<float>(color.r) / 255.f;
+    float green = static_cast<float>(color.g) / 255.f;
+    float blue = static_cast<float>(color.b) / 255.f;
+    float alpha = static_cast<float>(color.a) / 255.f;
+
+    ID2D1SolidColorBrush* brush;
+    render_target_->CreateSolidColorBrush(
+        D2D1::ColorF(
+            red,
+            green,
+            blue,
+            alpha
+        ),
+        &brush
+    );
+
+    render_target_->DrawRectangle(&rect, brush, stroke);
+
+    brush->Release();
 }
 
-void Graphics::SetParAlign(DWRITE_PARAGRAPH_ALIGNMENT alignment)
+void Graphics::FillRoundedRectangle(Rect position, Color color, float radius)
 {
-    write_text_format_->SetParagraphAlignment(alignment);
+    D2D1_RECT_F rect = D2D1::RectF(
+        position.x,
+        position.y,
+        position.x + position.width,
+        position.y + position.height
+    );
+
+    D2D1_ROUNDED_RECT rounded = D2D1::RoundedRect(rect, radius, radius);
+
+    float red = static_cast<float>(color.r) / 255.f;
+    float green = static_cast<float>(color.g) / 255.f;
+    float blue = static_cast<float>(color.b) / 255.f;
+    float alpha = static_cast<float>(color.a) / 255.f;
+
+    ID2D1SolidColorBrush* brush;
+    render_target_->CreateSolidColorBrush(
+        D2D1::ColorF(
+            red,
+            green,
+            blue,
+            alpha
+        ),
+        &brush
+    );
+
+    render_target_->FillRoundedRectangle(&rounded, brush);
+
+    brush->Release();
 }
 
-void Graphics::SetTextColor(int r, int g, int b, int a)
+void Graphics::DrawRoundedRectangle(Rect position, Color color, float radius, float stroke)
 {
-    text_color_ = ColorF(r / 255.f, g / 255.f, b / 255.f, a / 255.f);
+    D2D1_RECT_F rect = D2D1::RectF(
+        position.x,
+        position.y,
+        position.x + position.width,
+        position.y + position.height
+    );
 
-    text_brush_->Release();
-    render_target_->CreateSolidColorBrush(text_color_, &text_brush_);
+    D2D1_ROUNDED_RECT rounded = D2D1::RoundedRect(rect, radius, radius);
+
+    float red = static_cast<float>(color.r) / 255.f;
+    float green = static_cast<float>(color.g) / 255.f;
+    float blue = static_cast<float>(color.b) / 255.f;
+    float alpha = static_cast<float>(color.a) / 255.f;
+
+    ID2D1SolidColorBrush* brush;
+    render_target_->CreateSolidColorBrush(
+        D2D1::ColorF(
+            red,
+            green,
+            blue,
+            alpha
+        ),
+        &brush
+    );
+
+    render_target_->DrawRoundedRectangle(&rounded, brush, stroke);
+
+    brush->Release();
+}
+
+void Graphics::FillEllipse(Rect position, Color color)
+{
+    D2D1_ELLIPSE ellipse = D2D1::Ellipse(
+        D2D1::Point2F(position.x, position.y),
+        position.width, position.height
+    );
+
+    float red = static_cast<float>(color.r) / 255.f;
+    float green = static_cast<float>(color.g) / 255.f;
+    float blue = static_cast<float>(color.b) / 255.f;
+    float alpha = static_cast<float>(color.a) / 255.f;
+
+    ID2D1SolidColorBrush* brush;
+    render_target_->CreateSolidColorBrush(
+        D2D1::ColorF(
+            red,
+            green,
+            blue,
+            alpha
+        ),
+        &brush
+    );
+
+    render_target_->FillEllipse(&ellipse, brush);
+
+    brush->Release();
+}
+
+void Graphics::DrawEllipse(Rect position, Color color, float stroke)
+{
+    D2D1_ELLIPSE ellipse = D2D1::Ellipse(
+        D2D1::Point2F(position.x, position.y),
+        position.width, position.height
+    );
+
+    float red = static_cast<float>(color.r) / 255.f;
+    float green = static_cast<float>(color.g) / 255.f;
+    float blue = static_cast<float>(color.b) / 255.f;
+    float alpha = static_cast<float>(color.a) / 255.f;
+
+    ID2D1SolidColorBrush* brush;
+    render_target_->CreateSolidColorBrush(
+        D2D1::ColorF(
+            red,
+            green,
+            blue,
+            alpha
+        ),
+        &brush
+    );
+
+    render_target_->DrawEllipse(&ellipse, brush, stroke);
+
+    brush->Release();
+}
+
+void Graphics::DrawLine(Vector2 a, Vector2 b, Color color, float stroke)
+{
+    float red = static_cast<float>(color.r) / 255.f;
+    float green = static_cast<float>(color.g) / 255.f;
+    float blue = static_cast<float>(color.b) / 255.f;
+    float alpha = static_cast<float>(color.a) / 255.f;
+
+    ID2D1SolidColorBrush* brush;
+    render_target_->CreateSolidColorBrush(
+        D2D1::ColorF(
+            red,
+            green,
+            blue,
+            alpha
+        ),
+        &brush
+    );
+
+    render_target_->DrawLine(
+        D2D1::Point2F(a.x, a.y),
+        D2D1::Point2F(b.x, b.y),
+        brush,
+        stroke
+    );
+
+    brush->Release();
+}
+
+void Graphics::DrawTextW(Rect position, Color color, std::wstring text, float font_size, DWRITE_TEXT_ALIGNMENT h_align, DWRITE_PARAGRAPH_ALIGNMENT v_align)
+{
+    D2D1_RECT_F rect = D2D1::RectF(
+        position.x,
+        position.y,
+        position.x + position.width,
+        position.y + position.height
+    );
+    
+    IDWriteFactory* write_factory;
+    HRESULT result = DWriteCreateFactory(
+        DWRITE_FACTORY_TYPE_SHARED,
+        __uuidof(IDWriteFactory),
+        reinterpret_cast<IUnknown**>(&write_factory)
+    );
+
+    if (FAILED(result))
+    {
+        return;
+    }
+
+    IDWriteTextFormat* write_text_format;
+    result = write_factory->CreateTextFormat(
+        L"Arial",
+        NULL,
+        DWRITE_FONT_WEIGHT_NORMAL,
+        DWRITE_FONT_STYLE_NORMAL,
+        DWRITE_FONT_STRETCH_NORMAL,
+        font_size,
+        L"en-us",
+        &write_text_format
+    );
+    
+    if (FAILED(result))
+    {
+        return;
+    }
+
+    write_text_format->SetTextAlignment(h_align);
+    write_text_format->SetParagraphAlignment(v_align);
+    
+    float red = static_cast<float>(color.r) / 255.f;
+    float green = static_cast<float>(color.g) / 255.f;
+    float blue = static_cast<float>(color.b) / 255.f;
+    float alpha = static_cast<float>(color.a) / 255.f;
+
+    ID2D1SolidColorBrush* brush;
+    render_target_->CreateSolidColorBrush(
+        D2D1::ColorF(
+            red,
+            green,
+            blue,
+            alpha
+        ),
+        &brush
+    );
+
+    render_target_->DrawTextW(
+        text.c_str(),
+        static_cast<UINT32>(text.size()),
+        write_text_format,
+        rect,
+        brush
+    );
+
+    brush->Release();
+    write_text_format->Release();
+    write_factory->Release();
 }
