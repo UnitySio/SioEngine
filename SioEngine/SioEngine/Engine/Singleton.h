@@ -32,7 +32,7 @@ public:
     /**
      * \brief Singleton 객체를 메모리 해제합니다.
      */
-    void Release()
+    virtual void Release()
     {
         instance_.reset();
     }

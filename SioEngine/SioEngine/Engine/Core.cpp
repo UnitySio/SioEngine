@@ -3,6 +3,9 @@
 #include "Graphics.h"
 #include "TimeManager.h"
 #include "Scene/SceneManager.h"
+#include "InputManager.h"
+#include "Audio/AudioManager.h"
+#include "Audio/Audio.h"
 
 LRESULT Core::WndProc(
     HWND hWnd,
@@ -30,8 +33,10 @@ LRESULT Core::WndProc(
 
         WaitForSingleObject(logic_handle_, INFINITE);
 
-        SCENE->Release();
-        TIME->Release();
+        AUDIO_MANAGER->Release();
+        INPUT_MANAGER->Release();
+        SCENE_MANAGER->Release();
+        TIME_MANAGER->Release();
         GRAPHICS->Release();
         GetInstance()->Release();
 
@@ -67,17 +72,30 @@ DWORD WINAPI Core::LogicThread(LPVOID lpParam)
 
 void Core::FixedUpdate()
 {
-    SCENE->FixedUpdate();
+    SCENE_MANAGER->FixedUpdate();
 }
 
 void Core::Update()
 {
-    SCENE->Update();
+    SCENE_MANAGER->Update();
+    AUDIO_MANAGER->Update();
+
+    if (INPUT_MANAGER->GetKey(VK_RIGHT))
+    {
+        x_ += 100.f * DELTA_TIME;
+    }
+
+    static Audio* audio = new Audio("GhostOfMyPast.mp3", true);
+    if (!audio->IsPlaying())
+    {
+        audio->Play();
+    }
+    
 }
 
 void Core::LateUpdate()
 {
-    SCENE->LateUpdate();
+    SCENE_MANAGER->LateUpdate();
 }
 
 void Core::Render()
@@ -85,7 +103,12 @@ void Core::Render()
     GRAPHICS->BeginDraw();
     GRAPHICS->ClearScreen({49, 77, 121});
 
-    SCENE->Render();
+    SCENE_MANAGER->Render();
+
+    GRAPHICS->FillEllipse(
+        {x_, y_, 32.f, 32.f},
+        {}
+    );
 
     GRAPHICS->EndDraw();
 }
@@ -99,7 +122,9 @@ Core::Core() :
     logic_handle_(),
     semaphore_(),
     is_logic_loop_(true),
-    timer_()
+    timer_(),
+    x_(32.f),
+    y_(32.f)
 {
 }
 
@@ -153,7 +178,12 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
         return FALSE;
     }
 
-    TIME->Initaite();
+    TIME_MANAGER->Initaite();
+
+    if (!AUDIO_MANAGER->Initiate())
+    {
+        return FALSE;
+    }
 
     logic_handle_ = CreateThread(NULL, 0, LogicThread, NULL, 0, NULL);
 
@@ -169,13 +199,13 @@ HWND Core::GetHWND()
 
 void Core::MainLogic()
 {
-    TIME->Update();
+    TIME_MANAGER->Update();
     timer_ += DELTA_TIME;
 
-    while (timer_ >= TIME->fixed_time_step_)
+    while (timer_ >= TIME_MANAGER->fixed_time_step_)
     {
         FixedUpdate();
-        timer_ -= TIME->fixed_time_step_;
+        timer_ -= TIME_MANAGER->fixed_time_step_;
     }
 
     Update();
@@ -188,4 +218,5 @@ void Core::MainLogic()
 void Core::SubLogic()
 {
     WaitForSingleObject(semaphore_, INFINITE);
+    INPUT_MANAGER->Update();
 }

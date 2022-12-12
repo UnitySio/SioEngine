@@ -1,13 +1,16 @@
 ﻿#pragma once
 #pragma comment(lib, "d2d1")
 #pragma comment(lib, "dwrite")
+#pragma comment(lib, "fmod_vc")
 
 #define _CRTDBG_MAP_ALLOC
 
 #define CORE Core::GetInstance()
 #define GRAPHICS Graphics::GetInstance()
-#define TIME TimeManager::GetInstance()
-#define SCENE SceneManager::GetInstance()
+#define TIME_MANAGER TimeManager::GetInstance()
+#define SCENE_MANAGER SceneManager::GetInstance()
+#define INPUT_MANAGER InputManager::GetInstance()
+#define AUDIO_MANAGER AudioManager::GetInstance()
 
 #define DELTA_TIME TimeManager::GetInstance()->GetDeltaTime()
 #define FIXED_DELTA_TIME TimeManager::GetInstance()->GetFixedDeltaTime()
@@ -30,6 +33,7 @@
 #include <dwrite.h>
 #include <algorithm>
 #include <string>
+#include <map>
 
 struct Color
 {

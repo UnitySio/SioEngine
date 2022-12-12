@@ -74,6 +74,22 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <IncludePath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\inc;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\lib\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -151,9 +167,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Audio\Audio.h" />
+    <ClInclude Include="Engine\Audio\AudioManager.h" />
     <ClInclude Include="Engine\Core.h" />
     <ClInclude Include="Engine\Coroutine.h" />
     <ClInclude Include="Engine\Graphics.h" />
+    <ClInclude Include="Engine\InputManager.h" />
     <ClInclude Include="Engine\Object\Object.h" />
     <ClInclude Include="Engine\pch.h" />
     <ClInclude Include="Engine\Scene\Scene.h" />
@@ -167,6 +186,8 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Audio\Audio.cpp" />
+    <ClCompile Include="Engine\Audio\AudioManager.cpp" />
     <ClCompile Include="Engine\Core.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -330,6 +351,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
+    <ClCompile Include="Engine\InputManager.cpp" />
     <ClCompile Include="Engine\Object\Object.cpp" />
     <ClCompile Include="Engine\pch.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -591,10 +613,7 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Engine\IMGUI" />
-    <Folder Include="Engine\Network" />
     <Folder Include="Engine\Object\Component" />
-    <Folder Include="Game" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

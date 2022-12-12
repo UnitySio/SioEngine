@@ -69,7 +69,7 @@ void Graphics::ClearScreen(Color color)
     float green = static_cast<float>(color.g) / 255.f;
     float blue = static_cast<float>(color.b) / 255.f;
     float alpha = static_cast<float>(color.a) / 255.f;
-    
+
     render_target_->Clear(D2D1::ColorF(
         red,
         green,
@@ -86,7 +86,7 @@ void Graphics::FillRectangle(Rect position, Color color)
         position.x + position.width,
         position.y + position.height
     );
-    
+
     float red = static_cast<float>(color.r) / 255.f;
     float green = static_cast<float>(color.g) / 255.f;
     float blue = static_cast<float>(color.b) / 255.f;
@@ -286,7 +286,8 @@ void Graphics::DrawLine(Vector2 a, Vector2 b, Color color, float stroke)
     brush->Release();
 }
 
-void Graphics::DrawTextW(Rect position, Color color, std::wstring text, float font_size, DWRITE_TEXT_ALIGNMENT h_align, DWRITE_PARAGRAPH_ALIGNMENT v_align)
+void Graphics::DrawTextW(Rect position, Color color, std::wstring text, float font_size, DWRITE_TEXT_ALIGNMENT h_align,
+                         DWRITE_PARAGRAPH_ALIGNMENT v_align)
 {
     D2D1_RECT_F rect = D2D1::RectF(
         position.x,
@@ -294,7 +295,7 @@ void Graphics::DrawTextW(Rect position, Color color, std::wstring text, float fo
         position.x + position.width,
         position.y + position.height
     );
-    
+
     IDWriteFactory* write_factory;
     HRESULT result = DWriteCreateFactory(
         DWRITE_FACTORY_TYPE_SHARED,
@@ -318,7 +319,7 @@ void Graphics::DrawTextW(Rect position, Color color, std::wstring text, float fo
         L"en-us",
         &write_text_format
     );
-    
+
     if (FAILED(result))
     {
         return;
@@ -326,7 +327,7 @@ void Graphics::DrawTextW(Rect position, Color color, std::wstring text, float fo
 
     write_text_format->SetTextAlignment(h_align);
     write_text_format->SetParagraphAlignment(v_align);
-    
+
     float red = static_cast<float>(color.r) / 255.f;
     float green = static_cast<float>(color.g) / 255.f;
     float blue = static_cast<float>(color.b) / 255.f;
