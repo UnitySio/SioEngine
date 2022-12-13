@@ -5,7 +5,6 @@
 #include "Scene/SceneManager.h"
 #include "InputManager.h"
 #include "Audio/AudioManager.h"
-#include "Audio/Audio.h"
 
 LRESULT Core::WndProc(
     HWND hWnd,
@@ -84,13 +83,6 @@ void Core::Update()
     {
         x_ += 100.f * DELTA_TIME;
     }
-
-    static Audio* audio = new Audio("GhostOfMyPast.mp3", true);
-    if (!audio->IsPlaying())
-    {
-        audio->Play();
-    }
-    
 }
 
 void Core::LateUpdate()

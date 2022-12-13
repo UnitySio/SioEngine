@@ -34,6 +34,7 @@
 #include <algorithm>
 #include <string>
 #include <map>
+#include <vector>
 
 struct Color
 {

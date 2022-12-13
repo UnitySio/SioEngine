@@ -5,7 +5,7 @@ void InputManager::Update()
 {
     HWND focus = GetFocus();
     
-    std::map<int, KeyState>::iterator iter = keys_.begin();
+    auto iter = keys_.begin();
     
     for (; iter != keys_.end(); ++iter)
     {
