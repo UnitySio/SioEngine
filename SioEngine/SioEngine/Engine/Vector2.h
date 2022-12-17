@@ -19,43 +19,43 @@ public:
     Vector2 operator*(const Vector2& kVector2);
     Vector2 operator/(const Vector2& kVector2);
 
-    Vector2 operator+(float kValue);
-    Vector2 operator-(float kValue);
-    Vector2 operator*(float kValue);
-    Vector2 operator/(float kValue);
+    Vector2 operator+(float val);
+    Vector2 operator-(float val);
+    Vector2 operator*(float val);
+    Vector2 operator/(float val);
 
     /**
-     * \brief Vector2(0.f, 0.f) 작성에 대한 속기
+     * \brief Vector2(0.f, 0.f)
      * \return Vector2
      */
     Vector2 Zero();
 
     /**
-     * \brief Vector2(1.f, 1.f) 작성에 대한 속기
+     * \brief Vector2(1.f, 1.f)
      * \return Vector2
      */
     Vector2 One();
 
     /**
-     * \brief Vector2(-1.f, 0.f) 작성에 대한 속기
+     * \brief Vector2(-1.f, 0.f)
      * \return Vector2
      */
     Vector2 Left();
 
     /**
-     * \brief Vector2(0.f, -1.f) 작성에 대한 속기
+     * \brief Vector2(0.f, -1.f)
      * \return Vector2
      */
     Vector2 Up();
 
     /**
-     * \brief Vector2(1.f, 0.f) 작성에 대한 속기
+     * \brief Vector2(1.f, 0.f)
      * \return Vector2
      */
     Vector2 Right();
 
     /**
-     * \brief Vector2(0.f, 1.f) 작성에 대한 속기
+     * \brief Vector2(0.f, 1.f)
      * \return Vector2
      */
     Vector2 Down();
@@ -79,6 +79,8 @@ public:
 
     bool operator==(const Vector2& kVector2) const;
     bool operator!=(const Vector2& kVector2) const;
+    bool operator==(float val) const;
+    bool operator!=(float val) const;
 
     /**
      * \brief 백터의 길이를 반환합니다.

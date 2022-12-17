@@ -15,7 +15,10 @@ LRESULT Core::WndProc(
 {
     if (message == WM_SIZE)
     {
-        GRAPHICS->Resize();
+        RECT rect = {};
+        GetClientRect(Core::GetInstance()->GetHWND(), &rect);
+        
+        GRAPHICS->Resize(rect.right - rect.left, rect.bottom - rect.top);
     }
     else if (message == WM_GETMINMAXINFO)
     {
@@ -25,6 +28,11 @@ LRESULT Core::WndProc(
         reinterpret_cast<MINMAXINFO*>(lParam)->ptMaxTrackSize.y = window_area_.bottom - window_area_.top;
 
         return 0;
+    }
+    else if (message == WM_SETFOCUS ||
+        message == WM_KILLFOCUS)
+    {
+        focus_ = GetFocus();
     }
     else if (message == WM_DESTROY)
     {
@@ -77,12 +85,7 @@ void Core::FixedUpdate()
 void Core::Update()
 {
     SCENE_MANAGER->Update();
-    AUDIO_MANAGER->Update();
-
-    if (INPUT_MANAGER->GetKey(VK_RIGHT))
-    {
-        x_ += 100.f * DELTA_TIME;
-    }
+    INPUT_MANAGER->Update();
 }
 
 void Core::LateUpdate()
@@ -92,31 +95,25 @@ void Core::LateUpdate()
 
 void Core::Render()
 {
-    GRAPHICS->BeginDraw();
-    GRAPHICS->ClearScreen({49, 77, 121});
-
     SCENE_MANAGER->Render();
 
-    GRAPHICS->FillEllipse(
-        {x_, y_, 32.f, 32.f},
-        {}
+    GRAPHICS->DrawTextW(
+        {10.f, 10.f, 100.f, 20.f},
+        {},
+        L"FPS: " + std::to_wstring(TIME_MANAGER->GetFPS())
     );
-
-    GRAPHICS->EndDraw();
 }
 
 Core::Core() :
     kClassName(L"SIOENGINE"),
     kWindowName(L"Sio Engine"),
     hWnd(),
+    focus_(),
     resolution_{},
     window_area_{},
     logic_handle_(),
-    semaphore_(),
     is_logic_loop_(true),
-    timer_(),
-    x_(32.f),
-    y_(32.f)
+    timer_()
 {
 }
 
@@ -177,9 +174,10 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
         return FALSE;
     }
 
-    logic_handle_ = CreateThread(NULL, 0, LogicThread, NULL, 0, NULL);
+    AUDIO_MANAGER->AddSound(L"Ghost Of My Past", L"GhostOfMyPast.mp3", true);
+    AUDIO_MANAGER->Play(L"Ghost Of My Past");
 
-    semaphore_ = CreateSemaphore(NULL, 0, 1, NULL);
+    logic_handle_ = CreateThread(NULL, 0, LogicThread, NULL, 0, NULL);
 
     return TRUE;
 }
@@ -187,6 +185,16 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
 HWND Core::GetHWND()
 {
     return hWnd;
+}
+
+HWND Core::GetHWNDFocus()
+{
+    return focus_;
+}
+
+POINT Core::GetResolution()
+{
+    return resolution_;
 }
 
 void Core::MainLogic()
@@ -202,13 +210,13 @@ void Core::MainLogic()
 
     Update();
     LateUpdate();
+
+    GRAPHICS->BeginDraw();
+    GRAPHICS->ClearScreen({49, 77, 121});
+
     Render();
 
-    ReleaseSemaphore(semaphore_, 1, NULL);
-}
+    GRAPHICS->EndDraw();
 
-void Core::SubLogic()
-{
-    WaitForSingleObject(semaphore_, INFINITE);
-    INPUT_MANAGER->Update();
+    AUDIO_MANAGER->Update();
 }

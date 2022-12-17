@@ -3,7 +3,7 @@
 
 void AudioManager::Release()
 {
-    auto iter = sounds_.begin();
+    std::map<std::wstring, FMOD_SOUND*>::iterator iter = sounds_.begin();
     for (; iter != sounds_.end(); ++iter)
     {
         FMOD_Sound_Release(iter->second);
@@ -34,8 +34,6 @@ bool AudioManager::Initiate()
         return false;
     }
 
-    AddSound("BGM", "GhostOfMyPast.mp3", true);
-
     return true;
 }
 
@@ -45,18 +43,21 @@ AudioManager::AudioManager() :
 {
 }
 
-void AudioManager::AddSound(std::string name, const char* path, bool is_loop)
+void AudioManager::AddSound(std::wstring name, std::wstring path, bool is_loop)
 {
     FMOD_SOUND* sound = NULL;
     FMOD_RESULT result;
 
+    std::string path_str;
+    path_str.assign(path.begin(), path.end());
+
     if (is_loop)
     {
-        result = FMOD_System_CreateSound(fmod_system_, path, FMOD_LOOP_NORMAL, 0, &sound);
+        result = FMOD_System_CreateSound(fmod_system_, path_str.c_str(), FMOD_LOOP_NORMAL, 0, &sound);
     }
     else
     {
-        result = FMOD_System_CreateSound(fmod_system_, path, FMOD_DEFAULT, 0, &sound);
+        result = FMOD_System_CreateSound(fmod_system_, path_str.c_str(), FMOD_DEFAULT, 0, &sound);
     }
 
     if (result != FMOD_OK)
@@ -65,21 +66,78 @@ void AudioManager::AddSound(std::string name, const char* path, bool is_loop)
     }
 
     sounds_.insert({name, sound});
-
-    Play("BGM");
 }
 
-void AudioManager::Play(std::string name)
+void AudioManager::Play(std::wstring name)
 {
-    static int idx = 0;
-    
-    FMOD_BOOL is_playing = false;
-    FMOD_Channel_IsPlaying(channels_[idx], &is_playing);
+    int idx = 0;
 
-    if (is_playing)
+    for (FMOD_CHANNEL* i : channels_)
     {
+        FMOD_BOOL is_play = false;
+        FMOD_Channel_IsPlaying(i, &is_play);
+
+        if (!is_play)
+        {
+            FMOD_System_PlaySound(fmod_system_, sounds_[name], NULL, false, &channels_[idx]);
+            break;
+        }
+
         idx = (idx + 1) % CHANNEL_COUNT;
     }
+}
 
-    FMOD_System_PlaySound(fmod_system_, sounds_[name], NULL, false, &channels_[idx]);
+void AudioManager::Pause()
+{
+    for (FMOD_CHANNEL* i : channels_)
+    {
+        if (i == NULL)
+        {
+            break;
+        }
+
+        FMOD_Channel_SetPaused(i, true);
+    }
+}
+
+void AudioManager::Resume()
+{
+    for (FMOD_CHANNEL* i : channels_)
+    {
+        if (i == NULL)
+        {
+            break;
+        }
+        
+        FMOD_Channel_SetPaused(i, false);
+    }
+}
+
+void AudioManager::Stop()
+{
+    for (FMOD_CHANNEL* i : channels_)
+    {
+        if (i == NULL)
+        {
+            break;
+        }
+
+        FMOD_Channel_Stop(i);
+    }
+}
+
+void AudioManager::SetVolume(int volume)
+{
+    volume = std::clamp(volume, 0, 100);
+    float f = static_cast<float>(volume) / 100.f;
+
+    for (FMOD_CHANNEL* i : channels_)
+    {
+        if (i == NULL)
+        {
+            break;
+        }
+
+        FMOD_Channel_SetVolume(i, f);
+    }
 }

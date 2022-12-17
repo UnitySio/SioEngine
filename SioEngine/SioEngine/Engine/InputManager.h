@@ -22,6 +22,10 @@ class InputManager :
 
     std::map<int, KeyState> keys_;
 
+    Vector2 mouse_pos_;
+    Vector2 mouse_prev_pos_;
+    Vector2 mouse_delta_;
+
     void Update();
 
 public:
@@ -48,4 +52,16 @@ public:
      * \return bool
      */
     bool GetKeyUp(int key_code);
+
+    /**
+     * \brief 마우스가 움직이고 있는지 확인합니다.
+     * \return bool
+     */
+    bool GetMouseMove();
+
+    /**
+     * \brief 마우스의 좌표를 반환합니다.
+     * \return Vector2
+     */
+    Vector2 GetMousePos();
 };

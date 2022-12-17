@@ -1,8 +1,4 @@
 ﻿#pragma once
-#pragma comment(lib, "d2d1")
-#pragma comment(lib, "dwrite")
-#pragma comment(lib, "fmod_vc")
-
 #define _CRTDBG_MAP_ALLOC
 
 #define CORE Core::GetInstance()
@@ -29,8 +25,6 @@
 #include <crtdbg.h>
 #include <memory>
 #include <mutex>
-#include <d2d1.h>
-#include <dwrite.h>
 #include <algorithm>
 #include <string>
 #include <map>

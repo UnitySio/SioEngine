@@ -169,7 +169,6 @@
   <ItemGroup>
     <ClInclude Include="Engine\Audio\AudioManager.h" />
     <ClInclude Include="Engine\Core.h" />
-    <ClInclude Include="Engine\Coroutine.h" />
     <ClInclude Include="Engine\Graphics.h" />
     <ClInclude Include="Engine\InputManager.h" />
     <ClInclude Include="Engine\Object\Object.h" />
@@ -267,7 +266,6 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
-    <ClCompile Include="Engine\Coroutine.cpp" />
     <ClCompile Include="Engine\Graphics.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -609,9 +607,6 @@
   <ItemGroup>
     <Image Include="SioEngine.ico" />
     <Image Include="small.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Engine\Object\Component" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

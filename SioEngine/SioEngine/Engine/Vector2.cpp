@@ -73,24 +73,24 @@ Vector2 Vector2::operator/(const Vector2& kVector2)
     return {x / kVector2.x, y / kVector2.y};
 }
 
-Vector2 Vector2::operator+(float kValue)
+Vector2 Vector2::operator+(float val)
 {
-    return {x + kValue, y + kValue};
+    return {x + val, y + val};
 }
 
-Vector2 Vector2::operator-(float kValue)
+Vector2 Vector2::operator-(float val)
 {
-    return {x - kValue, y - kValue};
+    return {x - val, y - val};
 }
 
-Vector2 Vector2::operator*(float kValue)
+Vector2 Vector2::operator*(float val)
 {
-    return {x * kValue, y * kValue};
+    return {x * val, y * val};
 }
 
-Vector2 Vector2::operator/(float kValue)
+Vector2 Vector2::operator/(float val)
 {
-    return {x / kValue, y / kValue};
+    return {x / val, y / val};
 }
 
 Vector2 Vector2::Zero()
@@ -156,6 +156,28 @@ bool Vector2::operator!=(const Vector2& kVector2) const
 {
     if (fabsf(x - kVector2.x) > FLT_EPSILON ||
         fabsf(y - kVector2.y) > FLT_EPSILON)
+    {
+        return true;
+    }
+    
+    return false;
+}
+
+bool Vector2::operator==(float val) const
+{
+    if (fabsf(x - val) <= FLT_EPSILON &&
+        fabsf(y - val) <= FLT_EPSILON)
+    {
+        return true;
+    }
+    
+    return false;
+}
+
+bool Vector2::operator!=(float val) const
+{
+    if (fabsf(x - val) > FLT_EPSILON ||
+        fabsf(y - val) > FLT_EPSILON)
     {
         return true;
     }

@@ -8,19 +8,17 @@ class Core :
     LPCWSTR kWindowName;
 
     HWND hWnd;
+    HWND focus_;
 
     POINT resolution_;
 
     RECT window_area_;
 
     HANDLE logic_handle_;
-    HANDLE semaphore_;
 
     bool is_logic_loop_;
 
     float timer_;
-    float x_;
-    float y_;
 
     LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -40,7 +38,9 @@ public:
     BOOL InitInstance(HINSTANCE hInstance, int nCmdShow);
 
     HWND GetHWND();
+    HWND GetHWNDFocus();
 
+    POINT GetResolution();
+    
     void MainLogic();
-    void SubLogic();
 };

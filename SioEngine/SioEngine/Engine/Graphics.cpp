@@ -27,17 +27,25 @@ bool Graphics::Initiate()
         return false;
     }
 
+    render_target_->CreateCompatibleRenderTarget(
+        D2D1::SizeF(0.f, 0.f),
+        D2D1::SizeU(rect.right - rect.left, rect.bottom - rect.top),
+        &bitmap_render_target_
+    );
+    
+    if (FAILED(result))
+    {
+        return false;
+    }
+
     return true;
 }
 
-void Graphics::Resize()
+void Graphics::Resize(int width, int height)
 {
-    RECT rect = {};
-    GetClientRect(Core::GetInstance()->GetHWND(), &rect);
-
     if (render_target_ != NULL)
     {
-        render_target_->Resize(D2D1::SizeU(rect.right - rect.left, rect.bottom - rect.top));
+        render_target_->Resize(D2D1::SizeU(width, height));
     }
 }
 
@@ -355,4 +363,8 @@ void Graphics::DrawTextW(Rect position, Color color, std::wstring text, float fo
     brush->Release();
     write_text_format->Release();
     write_factory->Release();
+}
+
+void Graphics::Zoom()
+{
 }

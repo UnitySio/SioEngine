@@ -40,7 +40,6 @@ int APIENTRY wWinMain(
         }
         else
         {
-            CORE->SubLogic();
         }
     }
 
