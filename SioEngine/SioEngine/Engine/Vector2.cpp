@@ -187,8 +187,8 @@ bool Vector2::operator!=(float val) const
 
 float Vector2::Magnitude()
 {
-    double temp_x = static_cast<double>(x);
-    double temp_y = static_cast<double>(y);
+    auto temp_x = static_cast<double>(x);
+    auto temp_y = static_cast<double>(y);
     
     return static_cast<float>(sqrt(pow(temp_x, 2) + pow(temp_y, 2)));
 }

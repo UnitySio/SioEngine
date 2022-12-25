@@ -20,6 +20,8 @@ class Core :
 
     float timer_;
 
+    Vector2 position_;
+
     LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
@@ -36,6 +38,9 @@ public:
 
     ATOM MyRegisterClass(HINSTANCE hInstance);
     BOOL InitInstance(HINSTANCE hInstance, int nCmdShow);
+
+    bool InitiateWindow(HINSTANCE hInstance, int nCmdShow);
+    bool UpdateMessage();
 
     HWND GetHWND();
     HWND GetHWNDFocus();

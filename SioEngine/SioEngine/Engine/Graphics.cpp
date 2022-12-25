@@ -73,10 +73,10 @@ Graphics::~Graphics()
 
 void Graphics::ClearScreen(Color color)
 {
-    float red = static_cast<float>(color.r) / 255.f;
-    float green = static_cast<float>(color.g) / 255.f;
-    float blue = static_cast<float>(color.b) / 255.f;
-    float alpha = static_cast<float>(color.a) / 255.f;
+    auto red = static_cast<float>(color.r) / 255.f;
+    auto green = static_cast<float>(color.g) / 255.f;
+    auto blue = static_cast<float>(color.b) / 255.f;
+    auto alpha = static_cast<float>(color.a) / 255.f;
 
     render_target_->Clear(D2D1::ColorF(
         red,
@@ -95,10 +95,10 @@ void Graphics::FillRectangle(Rect position, Color color)
         position.y + position.height
     );
 
-    float red = static_cast<float>(color.r) / 255.f;
-    float green = static_cast<float>(color.g) / 255.f;
-    float blue = static_cast<float>(color.b) / 255.f;
-    float alpha = static_cast<float>(color.a) / 255.f;
+    auto red = static_cast<float>(color.r) / 255.f;
+    auto green = static_cast<float>(color.g) / 255.f;
+    auto blue = static_cast<float>(color.b) / 255.f;
+    auto alpha = static_cast<float>(color.a) / 255.f;
 
     ID2D1SolidColorBrush* brush;
     render_target_->CreateSolidColorBrush(
@@ -125,10 +125,10 @@ void Graphics::DrawRectangle(Rect position, Color color, float stroke)
         position.y + position.height
     );
 
-    float red = static_cast<float>(color.r) / 255.f;
-    float green = static_cast<float>(color.g) / 255.f;
-    float blue = static_cast<float>(color.b) / 255.f;
-    float alpha = static_cast<float>(color.a) / 255.f;
+    auto red = static_cast<float>(color.r) / 255.f;
+    auto green = static_cast<float>(color.g) / 255.f;
+    auto blue = static_cast<float>(color.b) / 255.f;
+    auto alpha = static_cast<float>(color.a) / 255.f;
 
     ID2D1SolidColorBrush* brush;
     render_target_->CreateSolidColorBrush(
@@ -157,10 +157,10 @@ void Graphics::FillRoundedRectangle(Rect position, Color color, float radius)
 
     D2D1_ROUNDED_RECT rounded = D2D1::RoundedRect(rect, radius, radius);
 
-    float red = static_cast<float>(color.r) / 255.f;
-    float green = static_cast<float>(color.g) / 255.f;
-    float blue = static_cast<float>(color.b) / 255.f;
-    float alpha = static_cast<float>(color.a) / 255.f;
+    auto red = static_cast<float>(color.r) / 255.f;
+    auto green = static_cast<float>(color.g) / 255.f;
+    auto blue = static_cast<float>(color.b) / 255.f;
+    auto alpha = static_cast<float>(color.a) / 255.f;
 
     ID2D1SolidColorBrush* brush;
     render_target_->CreateSolidColorBrush(
@@ -189,10 +189,10 @@ void Graphics::DrawRoundedRectangle(Rect position, Color color, float radius, fl
 
     D2D1_ROUNDED_RECT rounded = D2D1::RoundedRect(rect, radius, radius);
 
-    float red = static_cast<float>(color.r) / 255.f;
-    float green = static_cast<float>(color.g) / 255.f;
-    float blue = static_cast<float>(color.b) / 255.f;
-    float alpha = static_cast<float>(color.a) / 255.f;
+    auto red = static_cast<float>(color.r) / 255.f;
+    auto green = static_cast<float>(color.g) / 255.f;
+    auto blue = static_cast<float>(color.b) / 255.f;
+    auto alpha = static_cast<float>(color.a) / 255.f;
 
     ID2D1SolidColorBrush* brush;
     render_target_->CreateSolidColorBrush(
@@ -217,10 +217,10 @@ void Graphics::FillEllipse(Rect position, Color color)
         position.width, position.height
     );
 
-    float red = static_cast<float>(color.r) / 255.f;
-    float green = static_cast<float>(color.g) / 255.f;
-    float blue = static_cast<float>(color.b) / 255.f;
-    float alpha = static_cast<float>(color.a) / 255.f;
+    auto red = static_cast<float>(color.r) / 255.f;
+    auto green = static_cast<float>(color.g) / 255.f;
+    auto blue = static_cast<float>(color.b) / 255.f;
+    auto alpha = static_cast<float>(color.a) / 255.f;
 
     ID2D1SolidColorBrush* brush;
     render_target_->CreateSolidColorBrush(
@@ -245,10 +245,10 @@ void Graphics::DrawEllipse(Rect position, Color color, float stroke)
         position.width, position.height
     );
 
-    float red = static_cast<float>(color.r) / 255.f;
-    float green = static_cast<float>(color.g) / 255.f;
-    float blue = static_cast<float>(color.b) / 255.f;
-    float alpha = static_cast<float>(color.a) / 255.f;
+    auto red = static_cast<float>(color.r) / 255.f;
+    auto green = static_cast<float>(color.g) / 255.f;
+    auto blue = static_cast<float>(color.b) / 255.f;
+    auto alpha = static_cast<float>(color.a) / 255.f;
 
     ID2D1SolidColorBrush* brush;
     render_target_->CreateSolidColorBrush(
@@ -268,10 +268,10 @@ void Graphics::DrawEllipse(Rect position, Color color, float stroke)
 
 void Graphics::DrawLine(Vector2 a, Vector2 b, Color color, float stroke)
 {
-    float red = static_cast<float>(color.r) / 255.f;
-    float green = static_cast<float>(color.g) / 255.f;
-    float blue = static_cast<float>(color.b) / 255.f;
-    float alpha = static_cast<float>(color.a) / 255.f;
+    auto red = static_cast<float>(color.r) / 255.f;
+    auto green = static_cast<float>(color.g) / 255.f;
+    auto blue = static_cast<float>(color.b) / 255.f;
+    auto alpha = static_cast<float>(color.a) / 255.f;
 
     ID2D1SolidColorBrush* brush;
     render_target_->CreateSolidColorBrush(
@@ -336,10 +336,10 @@ void Graphics::DrawTextW(Rect position, Color color, std::wstring text, float fo
     write_text_format->SetTextAlignment(h_align);
     write_text_format->SetParagraphAlignment(v_align);
 
-    float red = static_cast<float>(color.r) / 255.f;
-    float green = static_cast<float>(color.g) / 255.f;
-    float blue = static_cast<float>(color.b) / 255.f;
-    float alpha = static_cast<float>(color.a) / 255.f;
+    auto red = static_cast<float>(color.r) / 255.f;
+    auto green = static_cast<float>(color.g) / 255.f;
+    auto blue = static_cast<float>(color.b) / 255.f;
+    auto alpha = static_cast<float>(color.a) / 255.f;
 
     ID2D1SolidColorBrush* brush;
     render_target_->CreateSolidColorBrush(
@@ -363,8 +363,4 @@ void Graphics::DrawTextW(Rect position, Color color, std::wstring text, float fo
     brush->Release();
     write_text_format->Release();
     write_factory->Release();
-}
-
-void Graphics::Zoom()
-{
 }

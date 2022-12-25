@@ -3,7 +3,7 @@
 
 void AudioManager::Release()
 {
-    std::map<std::wstring, FMOD_SOUND*>::iterator iter = sounds_.begin();
+    auto iter = sounds_.begin();
     for (; iter != sounds_.end(); ++iter)
     {
         FMOD_Sound_Release(iter->second);
@@ -129,7 +129,7 @@ void AudioManager::Stop()
 void AudioManager::SetVolume(int volume)
 {
     volume = std::clamp(volume, 0, 100);
-    float f = static_cast<float>(volume) / 100.f;
+    auto f = static_cast<float>(volume) / 100.f;
 
     for (FMOD_CHANNEL* i : channels_)
     {

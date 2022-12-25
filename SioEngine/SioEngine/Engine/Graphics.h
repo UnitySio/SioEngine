@@ -115,6 +115,4 @@ public:
      */
     void DrawTextW(Rect position, Color color, std::wstring text, float font_size = 12.f,
                    DWRITE_TEXT_ALIGNMENT h_align = DTA_LEFT, DWRITE_PARAGRAPH_ALIGNMENT v_align = DTA_TOP);
-
-    void Zoom();
 };

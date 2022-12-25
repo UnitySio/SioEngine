@@ -6,6 +6,7 @@
 #define TIME_MANAGER TimeManager::GetInstance()
 #define SCENE_MANAGER SceneManager::GetInstance()
 #define INPUT_MANAGER InputManager::GetInstance()
+#define GAMEPAD_MANAGER GamepadManager::GetInstance()
 #define AUDIO_MANAGER AudioManager::GetInstance()
 
 #define DELTA_TIME TimeManager::GetInstance()->GetDeltaTime()
@@ -19,6 +20,7 @@
 #define DTA_BOTTOM DWRITE_PARAGRAPH_ALIGNMENT_FAR
 
 #include "../framework.h"
+#include "../Resource.h"
 #include "Vector2.h"
 
 #include <cstdlib>

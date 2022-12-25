@@ -2,8 +2,9 @@
 #include "Core.h"
 #include "Graphics.h"
 #include "TimeManager.h"
-#include "Scene/SceneManager.h"
 #include "InputManager.h"
+#include "GamepadManager.h"
+#include "Scene/SceneManager.h"
 #include "Audio/AudioManager.h"
 
 LRESULT Core::WndProc(
@@ -17,7 +18,7 @@ LRESULT Core::WndProc(
     {
         RECT rect = {};
         GetClientRect(Core::GetInstance()->GetHWND(), &rect);
-        
+
         GRAPHICS->Resize(rect.right - rect.left, rect.bottom - rect.top);
     }
     else if (message == WM_GETMINMAXINFO)
@@ -41,8 +42,9 @@ LRESULT Core::WndProc(
         WaitForSingleObject(logic_handle_, INFINITE);
 
         AUDIO_MANAGER->Release();
-        INPUT_MANAGER->Release();
         SCENE_MANAGER->Release();
+        GAMEPAD_MANAGER->Release();
+        INPUT_MANAGER->Release();
         TIME_MANAGER->Release();
         GRAPHICS->Release();
         GetInstance()->Release();
@@ -84,8 +86,9 @@ void Core::FixedUpdate()
 
 void Core::Update()
 {
-    SCENE_MANAGER->Update();
     INPUT_MANAGER->Update();
+    GAMEPAD_MANAGER->Update();
+    SCENE_MANAGER->Update();
 }
 
 void Core::LateUpdate()
@@ -102,6 +105,32 @@ void Core::Render()
         {},
         L"FPS: " + std::to_wstring(TIME_MANAGER->GetFPS())
     );
+
+    GRAPHICS->FillEllipse(
+        {position_.x, position_.y, 32.f, 32.f},
+        {}
+    );
+
+    Color color;
+
+    std::wstring str = L"ÄÁÆ®·Ñ·¯ »óÅÂ: ";
+
+    if (GAMEPAD_MANAGER->IsConnected(0))
+    {
+        str += L"¿¬°áµÊ";
+        color = {0, 255, 0};
+    }
+    else
+    {
+        str += L"¿¬°á ²÷±è";
+        color = {255, 0, 0};
+    }
+
+    GRAPHICS->DrawTextW(
+        {10.f, 30.f, 300.f, 20.f},
+        color,
+        str
+    );
 }
 
 Core::Core() :
@@ -113,20 +142,29 @@ Core::Core() :
     window_area_{},
     logic_handle_(),
     is_logic_loop_(true),
-    timer_()
+    timer_(),
+    position_{640.f, 360.f}
 {
 }
 
 ATOM Core::MyRegisterClass(HINSTANCE hInstance)
 {
-    WNDCLASS wc = {};
+    WNDCLASSEX wcex = {};
 
-    wc.lpfnWndProc = GetInstance()->StaticWndProc;
-    wc.hInstance = hInstance;
-    wc.hCursor = LoadCursor(NULL, IDC_ARROW);
-    wc.lpszClassName = kClassName;
+    wcex.cbSize = sizeof(WNDCLASSEX);
+    wcex.style = CS_HREDRAW | CS_VREDRAW;
+    wcex.lpfnWndProc = GetInstance()->StaticWndProc;
+    wcex.cbClsExtra = 0;
+    wcex.cbWndExtra = 0;
+    wcex.hInstance = hInstance;
+    wcex.hIcon = NULL;
+    wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wcex.hbrBackground = static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
+    wcex.lpszMenuName = NULL;
+    wcex.lpszClassName = kClassName;
+    wcex.hIconSm = NULL;
 
-    return RegisterClass(&wc);
+    return RegisterClassEx(&wcex);
 }
 
 BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
@@ -138,7 +176,7 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
     window_area_ = {0, 0, resolution_.x, resolution_.y};
     AdjustWindowRect(&window_area_, WS_OVERLAPPEDWINDOW, FALSE);
 
-    hWnd = CreateWindowEx(
+    hWnd = CreateWindowExW(
         0,
         kClassName,
         kWindowName,
@@ -180,6 +218,31 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
     logic_handle_ = CreateThread(NULL, 0, LogicThread, NULL, 0, NULL);
 
     return TRUE;
+}
+
+bool Core::InitiateWindow(HINSTANCE hInstance, int nCmdShow)
+{
+    MyRegisterClass(hInstance);
+
+    if (!InitInstance(hInstance, nCmdShow))
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool Core::UpdateMessage()
+{
+    MSG msg = {};
+
+    if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+    {
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
+    }
+
+    return msg.message != WM_QUIT;
 }
 
 HWND Core::GetHWND()

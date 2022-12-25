@@ -4,7 +4,7 @@
 
 void InputManager::Update()
 {
-    std::map<int, KeyState>::iterator iter = keys_.begin();
+    auto iter = keys_.begin();
     for (; iter != keys_.end(); ++iter)
     {
         if (CORE->GetHWNDFocus())
@@ -13,39 +13,39 @@ void InputManager::Update()
             {
                 if (iter->second.is_down)
                 {
-                    iter->second.type = KeyType::kHold;
+                    iter->second.state = KeyState::kHeld;
                 }
                 else
                 {
-                    iter->second.type = KeyType::kDown;
+                    iter->second.state = KeyState::kDown;
                 }
-        
+
                 iter->second.is_down = true;
             }
             else
             {
                 if (iter->second.is_down)
                 {
-                    iter->second.type = KeyType::kUp;
+                    iter->second.state = KeyState::kUp;
                 }
                 else
                 {
-                    iter->second.type = KeyType::kNone;
+                    iter->second.state = KeyState::kNone;
                 }
-        
+
                 iter->second.is_down = false;
             }
         }
         else
         {
-            if (iter->second.type == KeyType::kDown ||
-                iter->second.type == KeyType::kHold)
+            if (iter->second.state == KeyState::kDown ||
+                iter->second.state == KeyState::kHeld)
             {
-                iter->second.type = KeyType::kUp;
+                iter->second.state = KeyState::kUp;
             }
             else
             {
-                iter->second.type = KeyType::kNone;
+                iter->second.state = KeyState::kNone;
             }
 
             iter->second.is_down = false;
@@ -58,25 +58,25 @@ void InputManager::Update()
 
     float mouse_x = static_cast<float>(mouse_pos.x);
     float mouse_y = static_cast<float>(mouse_pos.y);
-    
-    mouse_prev_pos_ = mouse_pos_;
-    mouse_pos_ = {mouse_x, mouse_y};
-    mouse_delta_ = mouse_pos_ - mouse_prev_pos_;
+
+    mouse_previous_position_ = mouse_position_;
+    mouse_position_ = {mouse_x, mouse_y};
+    mouse_delta_ = mouse_position_ - mouse_previous_position_;
 }
 
 bool InputManager::GetKeyDown(int key_code)
 {
-    return keys_[key_code].type == KeyType::kDown;
+    return keys_[key_code].state == KeyState::kDown;
 }
 
 bool InputManager::GetKey(int key_code)
 {
-    return keys_[key_code].type == KeyType::kHold;
+    return keys_[key_code].state == KeyState::kHeld;
 }
 
 bool InputManager::GetKeyUp(int key_code)
 {
-    return keys_[key_code].type == KeyType::kUp;
+    return keys_[key_code].state == KeyState::kUp;
 }
 
 bool InputManager::GetMouseMove()
@@ -84,8 +84,7 @@ bool InputManager::GetMouseMove()
     return mouse_delta_ != 0;
 }
 
-Vector2 InputManager::GetMousePos()
+Vector2 InputManager::GetMousePosition()
 {
-    return mouse_pos_;
+    return mouse_position_;
 }
-

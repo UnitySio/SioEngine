@@ -14,9 +14,7 @@ int APIENTRY wWinMain(
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(pCmdLine);
 
-    CORE->MyRegisterClass(hInstance);
-
-    if (!CORE->InitInstance(hInstance, nCmdShow))
+    if (!CORE->InitiateWindow(hInstance, nCmdShow))
     {
         return 0;
     }
@@ -25,22 +23,8 @@ int APIENTRY wWinMain(
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-    MSG msg = {};
-    while (TRUE)
+    while (CORE->UpdateMessage())
     {
-        if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-        {
-            if (msg.message == WM_QUIT)
-            {
-                break;
-            }
-
-            TranslateMessage(&msg);
-            DispatchMessage(&msg);
-        }
-        else
-        {
-        }
     }
 
 #ifdef _DEBUG
