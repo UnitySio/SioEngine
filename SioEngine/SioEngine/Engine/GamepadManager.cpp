@@ -21,6 +21,7 @@ void GamepadManager::Update()
         {
             gamepads_[i].is_connected = true;
 
+            UpdateStickAxis(i);
             UpdateButtonState(i);
             UpdateTriggerState(i);
         }
@@ -29,6 +30,43 @@ void GamepadManager::Update()
             gamepads_[i].is_connected = false;
         }
     }
+}
+
+void GamepadManager::UpdateStickAxis(int user)
+{
+    const auto left_stick_x = static_cast<float>(state_.Gamepad.sThumbLX);
+    const auto left_stick_y = static_cast<float>(state_.Gamepad.sThumbLY);
+
+    const auto right_stick_x = static_cast<float>(state_.Gamepad.sThumbRX);
+    const auto right_stick_y = static_cast<float>(state_.Gamepad.sThumbRY);
+
+    Vector2 left_stick = {left_stick_x, -left_stick_y};
+    Vector2 right_stick = {right_stick_x, -right_stick_y};
+
+    float left_stick_value = left_stick.Magnitude();
+    float right_stick_value = right_stick.Magnitude();
+
+    if (left_stick_value > gamepads_[user].left_stick_deadzone)
+    {
+    }
+    else
+    {
+        left_stick_value = 0.f;
+    }
+
+    if (right_stick_value > gamepads_[user].right_stick_deadzone)
+    {
+    }
+    else
+    {
+        right_stick_value = 0.f;
+    }
+
+    gamepads_[user].left_stick_value = left_stick_value;
+    gamepads_[user].right_stick_value = right_stick_value;
+    
+    gamepads_[user].left_stick_axis = left_stick.Normalized();
+    gamepads_[user].right_stick_axis = right_stick.Normalized();
 }
 
 void GamepadManager::UpdateButtonState(int user)
@@ -91,7 +129,6 @@ void GamepadManager::UpdateTriggerState(int user)
 
     if (left_trigger > gamepads_[user].trigger_threshold)
     {
-        gamepads_[user].left_trigger = left_trigger / TRIGGER_MAX_THRESHOLD;
     }
     else
     {
@@ -100,7 +137,6 @@ void GamepadManager::UpdateTriggerState(int user)
 
     if (right_trigger > gamepads_[user].trigger_threshold)
     {
-        gamepads_[user].right_trigger = right_trigger / TRIGGER_MAX_THRESHOLD;
     }
     else
     {
@@ -186,4 +222,32 @@ float GamepadManager::GetRightTrigger(int user)
     user = std::clamp(user, 0, XUSER_MAX_COUNT - 1);
 
     return gamepads_[user].right_trigger;
+}
+
+float GamepadManager::GetLeftStickValue(int user)
+{
+    user = std::clamp(user, 0, XUSER_MAX_COUNT - 1);
+
+    return gamepads_[user].left_stick_value;
+}
+
+float GamepadManager::GetRightStickValue(int user)
+{
+    user = std::clamp(user, 0, XUSER_MAX_COUNT - 1);
+
+    return gamepads_[user].right_stick_value;
+}
+
+Vector2 GamepadManager::GetLeftStickAxis(int user)
+{
+    user = std::clamp(user, 0, XUSER_MAX_COUNT - 1);
+
+    return gamepads_[user].left_stick_axis;
+}
+
+Vector2 GamepadManager::GetRightStickAxis(int user)
+{
+    user = std::clamp(user, 0, XUSER_MAX_COUNT - 1);
+
+    return gamepads_[user].right_stick_axis;
 }

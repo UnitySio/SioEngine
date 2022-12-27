@@ -83,7 +83,7 @@
     <LibraryPath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\inc;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\Spine\include;C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\inc;$(IncludePath)</IncludePath>
     <LibraryPath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -179,6 +179,98 @@
     <ClInclude Include="Engine\Singleton.h" />
     <ClInclude Include="Engine\TimeManager.h" />
     <ClInclude Include="Engine\Vector2.h" />
+    <ClInclude Include="Extension\FMOD\inc\fmod.h" />
+    <ClInclude Include="Extension\FMOD\inc\fmod.hpp" />
+    <ClInclude Include="Extension\FMOD\inc\fmod_codec.h" />
+    <ClInclude Include="Extension\FMOD\inc\fmod_common.h" />
+    <ClInclude Include="Extension\FMOD\inc\fmod_dsp.h" />
+    <ClInclude Include="Extension\FMOD\inc\fmod_dsp_effects.h" />
+    <ClInclude Include="Extension\FMOD\inc\fmod_errors.h" />
+    <ClInclude Include="Extension\FMOD\inc\fmod_output.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Animation.h" />
+    <ClInclude Include="Extension\Spine\include\spine\AnimationState.h" />
+    <ClInclude Include="Extension\Spine\include\spine\AnimationStateData.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Atlas.h" />
+    <ClInclude Include="Extension\Spine\include\spine\AtlasAttachmentLoader.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Attachment.h" />
+    <ClInclude Include="Extension\Spine\include\spine\AttachmentLoader.h" />
+    <ClInclude Include="Extension\Spine\include\spine\AttachmentTimeline.h" />
+    <ClInclude Include="Extension\Spine\include\spine\AttachmentType.h" />
+    <ClInclude Include="Extension\Spine\include\spine\BlendMode.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Bone.h" />
+    <ClInclude Include="Extension\Spine\include\spine\BoneData.h" />
+    <ClInclude Include="Extension\Spine\include\spine\BoundingBoxAttachment.h" />
+    <ClInclude Include="Extension\Spine\include\spine\ClippingAttachment.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Color.h" />
+    <ClInclude Include="Extension\Spine\include\spine\ColorTimeline.h" />
+    <ClInclude Include="Extension\Spine\include\spine\ConstraintData.h" />
+    <ClInclude Include="Extension\Spine\include\spine\ContainerUtil.h" />
+    <ClInclude Include="Extension\Spine\include\spine\CurveTimeline.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Debug.h" />
+    <ClInclude Include="Extension\Spine\include\spine\DeformTimeline.h" />
+    <ClInclude Include="Extension\Spine\include\spine\dll.h" />
+    <ClInclude Include="Extension\Spine\include\spine\DrawOrderTimeline.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Event.h" />
+    <ClInclude Include="Extension\Spine\include\spine\EventData.h" />
+    <ClInclude Include="Extension\Spine\include\spine\EventTimeline.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Extension.h" />
+    <ClInclude Include="Extension\Spine\include\spine\HashMap.h" />
+    <ClInclude Include="Extension\Spine\include\spine\HasRendererObject.h" />
+    <ClInclude Include="Extension\Spine\include\spine\IkConstraint.h" />
+    <ClInclude Include="Extension\Spine\include\spine\IkConstraintData.h" />
+    <ClInclude Include="Extension\Spine\include\spine\IkConstraintTimeline.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Json.h" />
+    <ClInclude Include="Extension\Spine\include\spine\LinkedMesh.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Log.h" />
+    <ClInclude Include="Extension\Spine\include\spine\MathUtil.h" />
+    <ClInclude Include="Extension\Spine\include\spine\MeshAttachment.h" />
+    <ClInclude Include="Extension\Spine\include\spine\MixBlend.h" />
+    <ClInclude Include="Extension\Spine\include\spine\MixDirection.h" />
+    <ClInclude Include="Extension\Spine\include\spine\PathAttachment.h" />
+    <ClInclude Include="Extension\Spine\include\spine\PathConstraint.h" />
+    <ClInclude Include="Extension\Spine\include\spine\PathConstraintData.h" />
+    <ClInclude Include="Extension\Spine\include\spine\PathConstraintMixTimeline.h" />
+    <ClInclude Include="Extension\Spine\include\spine\PathConstraintPositionTimeline.h" />
+    <ClInclude Include="Extension\Spine\include\spine\PathConstraintSpacingTimeline.h" />
+    <ClInclude Include="Extension\Spine\include\spine\PointAttachment.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Pool.h" />
+    <ClInclude Include="Extension\Spine\include\spine\PositionMode.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Property.h" />
+    <ClInclude Include="Extension\Spine\include\spine\RegionAttachment.h" />
+    <ClInclude Include="Extension\Spine\include\spine\RotateMode.h" />
+    <ClInclude Include="Extension\Spine\include\spine\RotateTimeline.h" />
+    <ClInclude Include="Extension\Spine\include\spine\RTTI.h" />
+    <ClInclude Include="Extension\Spine\include\spine\ScaleTimeline.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Sequence.h" />
+    <ClInclude Include="Extension\Spine\include\spine\SequenceTimeline.h" />
+    <ClInclude Include="Extension\Spine\include\spine\ShearTimeline.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Skeleton.h" />
+    <ClInclude Include="Extension\Spine\include\spine\SkeletonBinary.h" />
+    <ClInclude Include="Extension\Spine\include\spine\SkeletonBounds.h" />
+    <ClInclude Include="Extension\Spine\include\spine\SkeletonClipping.h" />
+    <ClInclude Include="Extension\Spine\include\spine\SkeletonData.h" />
+    <ClInclude Include="Extension\Spine\include\spine\SkeletonJson.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Skin.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Slot.h" />
+    <ClInclude Include="Extension\Spine\include\spine\SlotData.h" />
+    <ClInclude Include="Extension\Spine\include\spine\SpacingMode.h" />
+    <ClInclude Include="Extension\Spine\include\spine\spine.h" />
+    <ClInclude Include="Extension\Spine\include\spine\SpineObject.h" />
+    <ClInclude Include="Extension\Spine\include\spine\SpineString.h" />
+    <ClInclude Include="Extension\Spine\include\spine\TextureLoader.h" />
+    <ClInclude Include="Extension\Spine\include\spine\TextureRegion.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Timeline.h" />
+    <ClInclude Include="Extension\Spine\include\spine\TransformConstraint.h" />
+    <ClInclude Include="Extension\Spine\include\spine\TransformConstraintData.h" />
+    <ClInclude Include="Extension\Spine\include\spine\TransformConstraintTimeline.h" />
+    <ClInclude Include="Extension\Spine\include\spine\TransformMode.h" />
+    <ClInclude Include="Extension\Spine\include\spine\TranslateTimeline.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Triangulator.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Updatable.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Vector.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Version.h" />
+    <ClInclude Include="Extension\Spine\include\spine\VertexAttachment.h" />
+    <ClInclude Include="Extension\Spine\include\spine\Vertices.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SioEngine.h" />
@@ -601,6 +693,68 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Vector2.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\Animation.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\AnimationState.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\AnimationStateData.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\Atlas.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\AtlasAttachmentLoader.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\Attachment.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\AttachmentLoader.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\AttachmentTimeline.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\Bone.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\BoneData.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\BoundingBoxAttachment.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\ClippingAttachment.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\ColorTimeline.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\ConstraintData.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\CurveTimeline.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\DeformTimeline.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\DrawOrderTimeline.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\Event.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\EventData.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\EventTimeline.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\Extension.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\IkConstraint.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\IkConstraintData.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\IkConstraintTimeline.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\Json.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\LinkedMesh.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\Log.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\MathUtil.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\MeshAttachment.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\PathAttachment.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\PathConstraint.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\PathConstraintData.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\PathConstraintMixTimeline.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\PathConstraintPositionTimeline.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\PathConstraintSpacingTimeline.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\PointAttachment.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\RegionAttachment.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\RotateTimeline.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\RTTI.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\ScaleTimeline.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\Sequence.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\SequenceTimeline.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\ShearTimeline.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\Skeleton.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\SkeletonBinary.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\SkeletonBounds.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\SkeletonClipping.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\SkeletonData.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\SkeletonJson.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\Skin.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\Slot.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\SlotData.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\SpineObject.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\TextureLoader.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\Timeline.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\TransformConstraint.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\TransformConstraintData.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\TransformConstraintTimeline.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\TranslateTimeline.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\Triangulator.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\Updatable.cpp" />
+    <ClCompile Include="Extension\Spine\src\spine\VertexAttachment.cpp" />
     <ClCompile Include="SioEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -612,6 +766,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Engine\TempCode.txt" />
+    <Content Include="Extension\FMOD\lib\x64\fmod.dll" />
+    <Content Include="Extension\FMOD\lib\x64\fmodL.dll" />
+    <Content Include="Extension\FMOD\lib\x64\fmodL_vc.lib" />
+    <Content Include="Extension\FMOD\lib\x64\fmod_vc.lib" />
+    <Content Include="Extension\FMOD\lib\x86\fmod.dll" />
+    <Content Include="Extension\FMOD\lib\x86\fmodL.dll" />
+    <Content Include="Extension\FMOD\lib\x86\fmodL_vc.lib" />
+    <Content Include="Extension\FMOD\lib\x86\fmod_vc.lib" />
+    <Content Include="Extension\FMOD\lib\x86\libfmod.a" />
+    <Content Include="Extension\FMOD\lib\x86\libfmodL.a" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Extension\FMOD\inc\fmod.cs" />
+    <Compile Include="Extension\FMOD\inc\fmod_dsp.cs" />
+    <Compile Include="Extension\FMOD\inc\fmod_errors.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Engine\Spine" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

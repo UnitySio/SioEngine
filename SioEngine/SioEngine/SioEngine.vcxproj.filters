@@ -30,9 +30,6 @@
     <ClInclude Include="Engine\Core.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Coroutine.h">
-      <Filter>헤더 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Graphics.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
@@ -57,15 +54,21 @@
     <ClInclude Include="Engine\Scene\SceneManager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Audio\AudioManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\GamepadManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\InputManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SioEngine.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Core.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Coroutine.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Graphics.cpp">
@@ -90,6 +93,15 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Scene\SceneManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Audio\AudioManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GamepadManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\InputManager.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
