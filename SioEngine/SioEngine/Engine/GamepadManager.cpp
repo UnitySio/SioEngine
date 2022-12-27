@@ -48,22 +48,35 @@ void GamepadManager::UpdateStickAxis(int user)
 
     if (left_stick_value > gamepads_[user].left_stick_deadzone)
     {
+        if (left_stick_value > 32767.0f)
+        {
+            left_stick_value = 32767.0f;
+        }
+
+        left_stick_value -= gamepads_[user].left_stick_deadzone;
+
+        gamepads_[user].left_stick_value = left_stick_value / (32767.0f - gamepads_[user].left_stick_deadzone);
     }
     else
     {
-        left_stick_value = 0.f;
+        gamepads_[user].left_stick_value = 0.f;
     }
 
     if (right_stick_value > gamepads_[user].right_stick_deadzone)
     {
+        if (right_stick_value > 32767.0f)
+        {
+            right_stick_value = 32767.0f;
+        }
+
+        right_stick_value -= gamepads_[user].right_stick_deadzone;
+
+        gamepads_[user].right_stick_value = right_stick_value / (32767.0f - gamepads_[user].right_stick_deadzone);
     }
     else
     {
-        right_stick_value = 0.f;
+        gamepads_[user].right_stick_value = 0.f;
     }
-
-    gamepads_[user].left_stick_value = left_stick_value;
-    gamepads_[user].right_stick_value = right_stick_value;
     
     gamepads_[user].left_stick_axis = left_stick.Normalized();
     gamepads_[user].right_stick_axis = right_stick.Normalized();
@@ -124,11 +137,19 @@ void GamepadManager::UpdateTriggerState(int user)
 {
     user = std::clamp(user, 0, XUSER_MAX_COUNT - 1);
 
-    const auto left_trigger = static_cast<float>(state_.Gamepad.bLeftTrigger);
-    const auto right_trigger = static_cast<float>(state_.Gamepad.bRightTrigger);
+    auto left_trigger = static_cast<float>(state_.Gamepad.bLeftTrigger);
+    auto right_trigger = static_cast<float>(state_.Gamepad.bRightTrigger);
 
     if (left_trigger > gamepads_[user].trigger_threshold)
     {
+        if (left_trigger > 255.f)
+        {
+            left_trigger = 255.f;
+        }
+
+        left_trigger -= gamepads_[user].trigger_threshold;
+
+        gamepads_[user].left_trigger = left_trigger / (255.f - gamepads_[user].trigger_threshold);
     }
     else
     {
@@ -137,15 +158,19 @@ void GamepadManager::UpdateTriggerState(int user)
 
     if (right_trigger > gamepads_[user].trigger_threshold)
     {
+        if (right_trigger > 255.f)
+        {
+            right_trigger = 255.f;
+        }
+
+        right_trigger -= gamepads_[user].trigger_threshold;
+
+        gamepads_[user].right_trigger = right_trigger / (255.f - gamepads_[user].trigger_threshold);
     }
     else
     {
         gamepads_[user].right_trigger = 0.f;
     }
-}
-
-GamepadManager::GamepadManager()
-{
 }
 
 bool GamepadManager::IsConnected(int user)

@@ -765,7 +765,6 @@
     <Image Include="small.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Engine\TempCode.txt" />
     <Content Include="Extension\FMOD\lib\x64\fmod.dll" />
     <Content Include="Extension\FMOD\lib\x64\fmodL.dll" />
     <Content Include="Extension\FMOD\lib\x64\fmodL_vc.lib" />

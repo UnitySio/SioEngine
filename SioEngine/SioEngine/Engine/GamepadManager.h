@@ -63,7 +63,7 @@ class GamepadManager :
     void UpdateTriggerState(int user);
 
 public:
-    GamepadManager();
+    GamepadManager() = default;
     ~GamepadManager() final = default;
 
     /**
