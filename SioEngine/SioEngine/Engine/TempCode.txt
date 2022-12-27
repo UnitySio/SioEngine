@@ -1,0 +1,3 @@
+WCHAR word[1024];
+_stprintf_s(word, L"\n");
+OutputDebugString(word);

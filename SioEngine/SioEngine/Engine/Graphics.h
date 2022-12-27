@@ -1,5 +1,11 @@
 #pragma once
+#pragma comment(lib, "d2d1")
+#pragma comment(lib, "dwrite")
+
 #include "Singleton.h"
+
+#include <d2d1.h>
+#include <dwrite.h>
 
 class Graphics :
     public Singleton<Graphics>
@@ -8,6 +14,7 @@ class Graphics :
 
     ID2D1Factory* factory_;
     ID2D1HwndRenderTarget* render_target_;
+    ID2D1BitmapRenderTarget* bitmap_render_target_;
 
     /**
      * \brief Direct2D를 사용하기 위한 객체들을 초기화하고 성공 여부를 반환합니다.
@@ -17,8 +24,10 @@ class Graphics :
 
     /**
      * \brief Render Target의 크기를 재조정합니다.
+     * \param width 가로 크기
+     * \param height 세로 크기
      */
-    void Resize();
+    void Resize(int width, int height);
 
     /**
      * \brief 화면에 그리기를 시작합니다.
@@ -104,5 +113,6 @@ public:
      * \param h_align 가로 정렬
      * \param v_align 세로 정렬
      */
-    void DrawTextW(Rect position, Color color, std::wstring text, float font_size = 12.f, DWRITE_TEXT_ALIGNMENT h_align = DTA_LEFT, DWRITE_PARAGRAPH_ALIGNMENT v_align = DTA_TOP);
+    void DrawTextW(Rect position, Color color, std::wstring text, float font_size = 12.f,
+                   DWRITE_TEXT_ALIGNMENT h_align = DTA_LEFT, DWRITE_PARAGRAPH_ALIGNMENT v_align = DTA_TOP);
 };

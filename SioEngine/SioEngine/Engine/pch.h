@@ -1,13 +1,13 @@
 ﻿#pragma once
-#pragma comment(lib, "d2d1")
-#pragma comment(lib, "dwrite")
-
 #define _CRTDBG_MAP_ALLOC
 
 #define CORE Core::GetInstance()
 #define GRAPHICS Graphics::GetInstance()
-#define TIME TimeManager::GetInstance()
-#define SCENE SceneManager::GetInstance()
+#define TIME_MANAGER TimeManager::GetInstance()
+#define SCENE_MANAGER SceneManager::GetInstance()
+#define INPUT_MANAGER InputManager::GetInstance()
+#define GAMEPAD_MANAGER GamepadManager::GetInstance()
+#define AUDIO_MANAGER AudioManager::GetInstance()
 
 #define DELTA_TIME TimeManager::GetInstance()->GetDeltaTime()
 #define FIXED_DELTA_TIME TimeManager::GetInstance()->GetFixedDeltaTime()
@@ -20,16 +20,17 @@
 #define DTA_BOTTOM DWRITE_PARAGRAPH_ALIGNMENT_FAR
 
 #include "../framework.h"
+#include "../Resource.h"
 #include "Vector2.h"
 
 #include <cstdlib>
 #include <crtdbg.h>
 #include <memory>
 #include <mutex>
-#include <d2d1.h>
-#include <dwrite.h>
 #include <algorithm>
 #include <string>
+#include <map>
+#include <vector>
 
 struct Color
 {

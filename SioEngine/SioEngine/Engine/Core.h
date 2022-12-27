@@ -8,17 +8,19 @@ class Core :
     LPCWSTR kWindowName;
 
     HWND hWnd;
+    HWND focus_;
 
     POINT resolution_;
 
     RECT window_area_;
 
     HANDLE logic_handle_;
-    HANDLE semaphore_;
 
     bool is_logic_loop_;
 
     float timer_;
+
+    Vector2 position_;
 
     LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -37,8 +39,13 @@ public:
     ATOM MyRegisterClass(HINSTANCE hInstance);
     BOOL InitInstance(HINSTANCE hInstance, int nCmdShow);
 
-    HWND GetHWND();
+    bool InitiateWindow(HINSTANCE hInstance, int nCmdShow);
+    bool UpdateMessage();
 
+    HWND GetHWND();
+    HWND GetHWNDFocus();
+
+    POINT GetResolution();
+    
     void MainLogic();
-    void SubLogic();
 };
