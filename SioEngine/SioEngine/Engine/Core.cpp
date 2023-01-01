@@ -89,6 +89,15 @@ void Core::Update()
     INPUT_MANAGER->Update();
     GAMEPAD_MANAGER->Update();
     SCENE_MANAGER->Update();
+
+    if (GAMEPAD_MANAGER->GetButtonDown(0, XINPUT_GAMEPAD_A))
+    {
+        GAMEPAD_MANAGER->SetVibrate(0, 0, 0);
+        GAMEPAD_MANAGER->SetVibrate(0, 30000, 30000);
+    }
+
+    position_ += GAMEPAD_MANAGER->GetLeftStickAxis(0) * (300.f * GAMEPAD_MANAGER->GetLeftStickValue(0)) * TIME_MANAGER->
+        GetDeltaTime();
 }
 
 void Core::LateUpdate()
@@ -172,7 +181,7 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
     const int screen_width = GetSystemMetrics(SM_CXSCREEN);
     const int screen_height = GetSystemMetrics(SM_CYSCREEN);
 
-    resolution_ = {1280, 720};
+    resolution_ = {640, 480};
     window_area_ = {0, 0, resolution_.x, resolution_.y};
     AdjustWindowRect(&window_area_, WS_OVERLAPPEDWINDOW, FALSE);
 
@@ -213,7 +222,7 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
     }
 
     AUDIO_MANAGER->AddSound(L"Ghost Of My Past", L"GhostOfMyPast.mp3", true);
-    AUDIO_MANAGER->Play(L"Ghost Of My Past");
+    //AUDIO_MANAGER->Play(L"Ghost Of My Past");
 
     logic_handle_ = CreateThread(NULL, 0, LogicThread, NULL, 0, NULL);
 
@@ -282,4 +291,17 @@ void Core::MainLogic()
     GRAPHICS->EndDraw();
 
     AUDIO_MANAGER->Update();
+}
+
+void Core::Log(std::wstring format, ...)
+{
+    va_list args;
+    va_start(args, format);
+
+    WCHAR buffer[1024];
+    vswprintf_s(buffer, format.c_str(), args);
+
+    OutputDebugStringW(buffer);
+
+    va_end(args);
 }

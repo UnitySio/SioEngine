@@ -48,4 +48,11 @@ public:
     POINT GetResolution();
     
     void MainLogic();
+
+    /**
+     * \brief 디버거 로그 메시지를 출력합니다.
+     * \param format 문자열
+     * \param ... 인수
+     */
+    void Log(std::wstring format, ...);
 };

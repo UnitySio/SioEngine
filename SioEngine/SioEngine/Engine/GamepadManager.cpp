@@ -276,3 +276,18 @@ Vector2 GamepadManager::GetRightStickAxis(int user)
 
     return gamepads_[user].right_stick_axis;
 }
+
+void GamepadManager::SetVibrate(int user, float left_moter_speed, float right_moter_speed)
+{
+    user = std::clamp(user, 0, XUSER_MAX_COUNT - 1);
+    left_moter_speed = std::clamp(left_moter_speed, 0.f, 1.f);
+    right_moter_speed = std::clamp(right_moter_speed, 0.f, 1.f);
+
+    XINPUT_VIBRATION vibration;
+    ZeroMemory(&vibration, sizeof(XINPUT_VIBRATION));
+
+    vibration.wLeftMotorSpeed = static_cast<WORD>(left_moter_speed * 65535.f);
+    vibration.wRightMotorSpeed = static_cast<WORD>(right_moter_speed * 65535.f);
+
+    XInputSetState(user, &vibration);
+}
