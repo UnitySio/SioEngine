@@ -48,22 +48,35 @@ void GamepadManager::UpdateStickAxis(int user)
 
     if (left_stick_value > gamepads_[user].left_stick_deadzone)
     {
+        if (left_stick_value > 32767.0f)
+        {
+            left_stick_value = 32767.0f;
+        }
+
+        left_stick_value -= gamepads_[user].left_stick_deadzone;
+
+        gamepads_[user].left_stick_value = left_stick_value / (32767.0f - gamepads_[user].left_stick_deadzone);
     }
     else
     {
-        left_stick_value = 0.f;
+        gamepads_[user].left_stick_value = 0.f;
     }
 
     if (right_stick_value > gamepads_[user].right_stick_deadzone)
     {
+        if (right_stick_value > 32767.0f)
+        {
+            right_stick_value = 32767.0f;
+        }
+
+        right_stick_value -= gamepads_[user].right_stick_deadzone;
+
+        gamepads_[user].right_stick_value = right_stick_value / (32767.0f - gamepads_[user].right_stick_deadzone);
     }
     else
     {
-        right_stick_value = 0.f;
+        gamepads_[user].right_stick_value = 0.f;
     }
-
-    gamepads_[user].left_stick_value = left_stick_value;
-    gamepads_[user].right_stick_value = right_stick_value;
     
     gamepads_[user].left_stick_axis = left_stick.Normalized();
     gamepads_[user].right_stick_axis = right_stick.Normalized();
@@ -124,11 +137,19 @@ void GamepadManager::UpdateTriggerState(int user)
 {
     user = std::clamp(user, 0, XUSER_MAX_COUNT - 1);
 
-    const auto left_trigger = static_cast<float>(state_.Gamepad.bLeftTrigger);
-    const auto right_trigger = static_cast<float>(state_.Gamepad.bRightTrigger);
+    auto left_trigger = static_cast<float>(state_.Gamepad.bLeftTrigger);
+    auto right_trigger = static_cast<float>(state_.Gamepad.bRightTrigger);
 
     if (left_trigger > gamepads_[user].trigger_threshold)
     {
+        if (left_trigger > 255.f)
+        {
+            left_trigger = 255.f;
+        }
+
+        left_trigger -= gamepads_[user].trigger_threshold;
+
+        gamepads_[user].left_trigger = left_trigger / (255.f - gamepads_[user].trigger_threshold);
     }
     else
     {
@@ -137,15 +158,19 @@ void GamepadManager::UpdateTriggerState(int user)
 
     if (right_trigger > gamepads_[user].trigger_threshold)
     {
+        if (right_trigger > 255.f)
+        {
+            right_trigger = 255.f;
+        }
+
+        right_trigger -= gamepads_[user].trigger_threshold;
+
+        gamepads_[user].right_trigger = right_trigger / (255.f - gamepads_[user].trigger_threshold);
     }
     else
     {
         gamepads_[user].right_trigger = 0.f;
     }
-}
-
-GamepadManager::GamepadManager()
-{
 }
 
 bool GamepadManager::IsConnected(int user)
@@ -250,4 +275,19 @@ Vector2 GamepadManager::GetRightStickAxis(int user)
     user = std::clamp(user, 0, XUSER_MAX_COUNT - 1);
 
     return gamepads_[user].right_stick_axis;
+}
+
+void GamepadManager::SetVibrate(int user, float left_moter_speed, float right_moter_speed)
+{
+    user = std::clamp(user, 0, XUSER_MAX_COUNT - 1);
+    left_moter_speed = std::clamp(left_moter_speed, 0.f, 1.f);
+    right_moter_speed = std::clamp(right_moter_speed, 0.f, 1.f);
+
+    XINPUT_VIBRATION vibration;
+    ZeroMemory(&vibration, sizeof(XINPUT_VIBRATION));
+
+    vibration.wLeftMotorSpeed = static_cast<WORD>(left_moter_speed * 65535.f);
+    vibration.wRightMotorSpeed = static_cast<WORD>(right_moter_speed * 65535.f);
+
+    XInputSetState(user, &vibration);
 }

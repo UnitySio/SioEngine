@@ -63,7 +63,7 @@ class GamepadManager :
     void UpdateTriggerState(int user);
 
 public:
-    GamepadManager();
+    GamepadManager() = default;
     ~GamepadManager() final = default;
 
     /**
@@ -145,4 +145,12 @@ public:
      * \return Vector2
      */
     Vector2 GetRightStickAxis(int user);
+
+    /**
+     * \brief 게임패드에 모터 속도를 설정합니다.
+     * \param user 유저 번호
+     * \param left_moter_speed 왼쪽 모터 속도
+     * \param right_moter_speed 오른쪽 모터 속도
+     */
+    void SetVibrate(int user, float left_moter_speed, float right_moter_speed);
 };
