@@ -69,3 +69,11 @@ struct Circle
     float radius_x;
     float radius_y;
 };
+
+enum class UserIndex : int
+{
+    kOne = 0,
+    kTwo,
+    kThree,
+    kFour
+};

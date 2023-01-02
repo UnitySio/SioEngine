@@ -55,23 +55,23 @@ class GamepadManager :
 
     Gamepad gamepads_[XUSER_MAX_COUNT];
 
-    DWORD UpdateGamepadState(int user);
+    DWORD UpdateGamepadState(UserIndex user);
 
     void Update();
-    void UpdateStickAxis(int user);
-    void UpdateButtonState(int user);
-    void UpdateTriggerState(int user);
+    void UpdateStickAxis(UserIndex user);
+    void UpdateButtonState(UserIndex user);
+    void UpdateTriggerState(UserIndex user);
 
 public:
     GamepadManager() = default;
-    ~GamepadManager() final = default;
+    ~GamepadManager() final;
 
     /**
      * \brief 게임패드가 연결이 되었는지 확인합니다.
      * \param user 유저 번호
      * \return bool
      */
-    bool IsConnected(int user);
+    bool IsConnected(UserIndex user = UserIndex::kOne);
 
     /**
      * \brief 게임패드의 버튼이 눌렸는지 확인합니다.
@@ -79,7 +79,7 @@ public:
      * \param button_code 버튼 코드
      * \return bool
      */
-    bool GetButtonDown(int user, int button_code);
+    bool GetButtonDown(UserIndex user, int button_code);
 
     /**
      * \brief 게임패드의 버튼이 눌려져 있는지 확인합니다.
@@ -87,7 +87,7 @@ public:
      * \param button_code 버튼 코드
      * \return bool
      */
-    bool GetButton(int user, int button_code);
+    bool GetButton(UserIndex user, int button_code);
 
     /**
      * \brief 게임패드의 버튼이 떼어졌는지 확인합니다.
@@ -95,56 +95,56 @@ public:
      * \param button_code 버튼 코드
      * \return bool
      */
-    bool GetButtonUp(int user, int button_code);
+    bool GetButtonUp(UserIndex user, int button_code);
 
     /**
      * \brief 게임패드의 배터리 잔량을 반환합니다.
      * \param user 유저 번호
      * \return float
      */
-    float GetBatteryLevel(int user);
+    float GetBatteryLevel(UserIndex user = UserIndex::kOne);
 
     /**
      * \brief 게임패드 왼쪽 트리거의 값을 반환합니다.
      * \param user 
      * \return float
      */
-    float GetLeftTrigger(int user);
+    float GetLeftTrigger(UserIndex user = UserIndex::kOne);
 
     /**
      * \brief 게임패드 오른쪽 트리거의 값을 반환합니다.
      * \param user 유저 번호
      * \return float
      */
-    float GetRightTrigger(int user);
+    float GetRightTrigger(UserIndex user = UserIndex::kOne);
 
     /**
      * \brief 게임패드 왼쪽 스틱의 값을 반환합니다.
      * \param user 유저 번호
      * \return float
      */
-    float GetLeftStickValue(int user);
+    float GetLeftStickValue(UserIndex user = UserIndex::kOne);
 
     /**
      * \brief 게임패드 오른쪽 스틱의 값을 반환합니다.
      * \param user 유저 번호
      * \return flaot
      */
-    float GetRightStickValue(int user);
+    float GetRightStickValue(UserIndex user = UserIndex::kOne);
 
     /**
      * \brief 게임패드 왼쪽 스틱의 축을 반환합니다.
      * \param user 유저 번호
      * \return Vector2
      */
-    Vector2 GetLeftStickAxis(int user);
+    Vector2 GetLeftStickAxis(UserIndex user = UserIndex::kOne);
 
     /**
      * \brief 게임패드 오른쪽 스틱의 축을 반환합니다.
      * \param user 유저 번호
      * \return Vector2
      */
-    Vector2 GetRightStickAxis(int user);
+    Vector2 GetRightStickAxis(UserIndex user = UserIndex::kOne);
 
     /**
      * \brief 게임패드에 모터 속도를 설정합니다.
@@ -152,5 +152,5 @@ public:
      * \param left_moter_speed 왼쪽 모터 속도
      * \param right_moter_speed 오른쪽 모터 속도
      */
-    void SetVibrate(int user, float left_moter_speed, float right_moter_speed);
+    void SetVibrate(UserIndex user = UserIndex::kOne, float left_moter_speed = 0.f, float right_moter_speed = 0.f);
 };

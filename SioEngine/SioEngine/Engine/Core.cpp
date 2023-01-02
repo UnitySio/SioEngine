@@ -90,13 +90,12 @@ void Core::Update()
     GAMEPAD_MANAGER->Update();
     SCENE_MANAGER->Update();
 
-    if (GAMEPAD_MANAGER->GetButtonDown(0, XINPUT_GAMEPAD_A))
+    if (GAMEPAD_MANAGER->GetButton(UserIndex::kOne, XINPUT_GAMEPAD_A))
     {
-        GAMEPAD_MANAGER->SetVibrate(0, 0, 0);
-        GAMEPAD_MANAGER->SetVibrate(0, 30000, 30000);
+        GAMEPAD_MANAGER->SetVibrate(UserIndex::kOne, 1.f, 1.f);
     }
 
-    position_ += GAMEPAD_MANAGER->GetLeftStickAxis(0) * (300.f * GAMEPAD_MANAGER->GetLeftStickValue(0)) * TIME_MANAGER->
+    position_ += GAMEPAD_MANAGER->GetLeftStickAxis() * (300.f * GAMEPAD_MANAGER->GetLeftStickValue()) * TIME_MANAGER->
         GetDeltaTime();
 }
 
@@ -124,7 +123,7 @@ void Core::Render()
 
     std::wstring str = L"컨트롤러 상태: ";
 
-    if (GAMEPAD_MANAGER->IsConnected(0))
+    if (GAMEPAD_MANAGER->IsConnected())
     {
         str += L"연결됨";
         color = {0, 255, 0};
@@ -158,7 +157,7 @@ Core::Core() :
 
 ATOM Core::MyRegisterClass(HINSTANCE hInstance)
 {
-    WNDCLASSEX wcex = {};
+    WNDCLASSEX wcex;
 
     wcex.cbSize = sizeof(WNDCLASSEX);
     wcex.style = CS_HREDRAW | CS_VREDRAW;
@@ -222,7 +221,7 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
     }
 
     AUDIO_MANAGER->AddSound(L"Ghost Of My Past", L"GhostOfMyPast.mp3", true);
-    //AUDIO_MANAGER->Play(L"Ghost Of My Past");
+    AUDIO_MANAGER->Play(L"Ghost Of My Past");
 
     logic_handle_ = CreateThread(NULL, 0, LogicThread, NULL, 0, NULL);
 
