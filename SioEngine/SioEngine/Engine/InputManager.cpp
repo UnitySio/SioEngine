@@ -4,8 +4,7 @@
 
 void InputManager::Update()
 {
-    auto iter = keys_.begin();
-    for (; iter != keys_.end(); ++iter)
+    for (auto iter = keys_.begin(); iter != keys_.end(); ++iter)
     {
         if (CORE->GetHWNDFocus())
         {
@@ -56,8 +55,8 @@ void InputManager::Update()
     GetCursorPos(&mouse_pos);
     ScreenToClient(CORE->GetHWND(), &mouse_pos);
 
-    float mouse_x = static_cast<float>(mouse_pos.x);
-    float mouse_y = static_cast<float>(mouse_pos.y);
+    const auto mouse_x = static_cast<float>(mouse_pos.x);
+    const auto mouse_y = static_cast<float>(mouse_pos.y);
 
     mouse_previous_position_ = mouse_position_;
     mouse_position_ = {mouse_x, mouse_y};
