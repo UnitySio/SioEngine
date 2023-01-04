@@ -6,6 +6,15 @@
 #include "GamepadManager.h"
 #include "Scene/SceneManager.h"
 #include "Audio/AudioManager.h"
+#include "imgui.h"
+#include "imgui_impl_dx11.h"
+#include "imgui_impl_win32.h"
+
+extern LRESULT ImGui_ImplWin32_WndProcHandler(
+    HWND hWnd,
+    UINT msg,
+    WPARAM wParam,
+    LPARAM lParam);
 
 LRESULT Core::WndProc(
     HWND hWnd,
@@ -14,14 +23,12 @@ LRESULT Core::WndProc(
     LPARAM lParam
 )
 {
-    if (message == WM_SIZE)
+    if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
     {
-        RECT rect = {};
-        GetClientRect(Core::GetInstance()->GetHWND(), &rect);
-
-        GRAPHICS->Resize(rect.right - rect.left, rect.bottom - rect.top);
+        return true;
     }
-    else if (message == WM_GETMINMAXINFO)
+
+    if (message == WM_GETMINMAXINFO)
     {
         reinterpret_cast<MINMAXINFO*>(lParam)->ptMinTrackSize.x = window_area_.right - window_area_.left;
         reinterpret_cast<MINMAXINFO*>(lParam)->ptMinTrackSize.y = window_area_.bottom - window_area_.top;
@@ -107,38 +114,6 @@ void Core::LateUpdate()
 void Core::Render()
 {
     SCENE_MANAGER->Render();
-
-    GRAPHICS->DrawTextW(
-        {10.f, 10.f, 100.f, 20.f},
-        {},
-        L"FPS: " + std::to_wstring(TIME_MANAGER->GetFPS())
-    );
-
-    GRAPHICS->FillEllipse(
-        {position_.x, position_.y, 32.f, 32.f},
-        {}
-    );
-
-    Color color;
-
-    std::wstring str = L"ÄÁÆ®·Ñ·¯ »óÅÂ: ";
-
-    if (GAMEPAD_MANAGER->IsConnected())
-    {
-        str += L"¿¬°áµÊ";
-        color = {0, 255, 0};
-    }
-    else
-    {
-        str += L"¿¬°á ²÷±è";
-        color = {255, 0, 0};
-    }
-
-    GRAPHICS->DrawTextW(
-        {10.f, 30.f, 300.f, 20.f},
-        color,
-        str
-    );
 }
 
 Core::Core() :
@@ -208,10 +183,17 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
 
     CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
 
-    if (!GRAPHICS->Initiate())
+    if (!GRAPHICS->Initaite())
     {
         return FALSE;
     }
+
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    ImGui_ImplWin32_Init(hWnd);
+    ImGui_ImplDX11_Init(GRAPHICS->device_, GRAPHICS->device_context_);
+    ImGui::StyleColorsDark();
 
     TIME_MANAGER->Initaite();
 
@@ -282,12 +264,29 @@ void Core::MainLogic()
     Update();
     LateUpdate();
 
-    GRAPHICS->BeginDraw();
-    GRAPHICS->ClearScreen({49, 77, 121});
+    GRAPHICS->BeginRender();
 
     Render();
 
-    GRAPHICS->EndDraw();
+    ImGui_ImplDX11_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    ImGui::NewFrame();
+
+    ImGui::Begin("Debug");
+    ImGui::Text("Hello, world %d", 123);
+
+    if (ImGui::Button("Save"))
+    {
+    }
+
+    static float f = 0.f;
+    ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
+    ImGui::End();
+
+    ImGui::Render();
+    ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+
+    GRAPHICS->EndRender();
 
     AUDIO_MANAGER->Update();
 }

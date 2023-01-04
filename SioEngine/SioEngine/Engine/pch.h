@@ -12,18 +12,9 @@
 #define DELTA_TIME TimeManager::GetInstance()->GetDeltaTime()
 #define FIXED_DELTA_TIME TimeManager::GetInstance()->GetFixedDeltaTime()
 
-#define DTA_LEFT DWRITE_TEXT_ALIGNMENT_LEADING
-#define DTA_CENTER DWRITE_TEXT_ALIGNMENT_CENTER
-#define DTA_RIGHT DWRITE_TEXT_ALIGNMENT_TRAILING
-#define DTA_TOP DWRITE_PARAGRAPH_ALIGNMENT_NEAR
-#define DTA_MIDDLE DWRITE_PARAGRAPH_ALIGNMENT_CENTER
-#define DTA_BOTTOM DWRITE_PARAGRAPH_ALIGNMENT_FAR
-
 #include "../framework.h"
 #include "../Resource.h"
 #include "Vector2.h"
-#include "imgui_impl_dx11.h"
-#include "imgui_impl_win32.h"
 
 #include <cstdlib>
 #include <crtdbg.h>

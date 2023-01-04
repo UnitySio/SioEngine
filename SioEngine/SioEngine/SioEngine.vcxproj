@@ -179,6 +179,14 @@
     <ClInclude Include="Engine\Singleton.h" />
     <ClInclude Include="Engine\TimeManager.h" />
     <ClInclude Include="Engine\Vector2.h" />
+    <ClInclude Include="Extension\ImGui\imconfig.h" />
+    <ClInclude Include="Extension\ImGui\imgui.h" />
+    <ClInclude Include="Extension\ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="Extension\ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="Extension\ImGui\imgui_internal.h" />
+    <ClInclude Include="Extension\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="Extension\ImGui\imstb_textedit.h" />
+    <ClInclude Include="Extension\ImGui\imstb_truetype.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SioEngine.h" />
@@ -601,6 +609,13 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Vector2.cpp" />
+    <ClCompile Include="Extension\ImGui\imgui.cpp" />
+    <ClCompile Include="Extension\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="Extension\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="Extension\ImGui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="Extension\ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="Extension\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="Extension\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="SioEngine.cpp" />
   </ItemGroup>
   <ItemGroup>
