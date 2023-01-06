@@ -20,4 +20,4 @@ WinAPI 기반의 자체엔진 프로젝트입니다.
 ![Life Cycle drawio (1)](https://user-images.githubusercontent.com/38973547/206721528-f65760ad-8d38-459d-8a3e-d63f1dcae06d.png)
 
 ### Developer Comment
-* 작성 
+* 작성 예정
