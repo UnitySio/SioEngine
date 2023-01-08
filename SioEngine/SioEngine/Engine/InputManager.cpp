@@ -87,3 +87,8 @@ Vector2 InputManager::GetMousePosition()
 {
     return mouse_position_;
 }
+
+Vector2 InputManager::GetMouseDelta()
+{
+    return mouse_delta_;
+}

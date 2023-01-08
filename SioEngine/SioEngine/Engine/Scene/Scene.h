@@ -11,6 +11,7 @@ class Scene :
     void Update();
     void LateUpdate();
     void Render();
+    void OnGUI();
 
 protected:
     virtual void Enter() = 0;

@@ -64,4 +64,6 @@ public:
      * \return Vector2
      */
     Vector2 GetMousePosition();
+
+    Vector2 GetMouseDelta();
 };

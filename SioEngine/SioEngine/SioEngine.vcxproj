@@ -75,19 +75,19 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\inc;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\Spine\include\spine;C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\ImGui;C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\inc</IncludePath>
     <LibraryPath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\inc;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\Spine\include\spine;C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\ImGui;C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\inc</IncludePath>
     <LibraryPath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\ImGui;C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\Spine\include;C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\inc;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\Spine\include\spine;C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\ImGui;C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\inc</IncludePath>
     <LibraryPath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\inc;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\Spine\include\spine;C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\ImGui;C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\inc</IncludePath>
     <LibraryPath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -167,7 +167,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Engine\Audio\AudioManager.h" />
+    <ClInclude Include="Engine\AudioManager.h" />
     <ClInclude Include="Engine\Core.h" />
     <ClInclude Include="Engine\GamepadManager.h" />
     <ClInclude Include="Engine\Graphics.h" />
@@ -179,13 +179,102 @@
     <ClInclude Include="Engine\Singleton.h" />
     <ClInclude Include="Engine\TimeManager.h" />
     <ClInclude Include="Engine\Vector2.h" />
+    <ClInclude Include="Extension\ImGui\imconfig.h" />
+    <ClInclude Include="Extension\ImGui\imgui.h" />
+    <ClInclude Include="Extension\ImGui\imgui_impl_dx11.h" />
+    <ClInclude Include="Extension\ImGui\imgui_impl_win32.h" />
+    <ClInclude Include="Extension\ImGui\imgui_internal.h" />
+    <ClInclude Include="Extension\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="Extension\ImGui\imstb_textedit.h" />
+    <ClInclude Include="Extension\ImGui\imstb_truetype.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="SioEngine.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Engine\Audio\AudioManager.cpp" />
+    <ClCompile Include="Engine\AudioManager.cpp">
+      <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <Optimization>Disabled</Optimization>
+      <SupportJustMyCode>true</SupportJustMyCode>
+      <AssemblerOutput>NoListing</AssemblerOutput>
+      <AssemblerListingLocation>x64\Debug\</AssemblerListingLocation>
+      <UndefineAllPreprocessorDefinitions>false</UndefineAllPreprocessorDefinitions>
+      <BrowseInformation>false</BrowseInformation>
+      <BrowseInformationFile>x64\Debug\</BrowseInformationFile>
+      <CompileAs>Default</CompileAs>
+      <ConformanceMode>true</ConformanceMode>
+      <DiagnosticsFormat>Column</DiagnosticsFormat>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <ErrorReporting>Prompt</ErrorReporting>
+      <ExpandAttributedSource>false</ExpandAttributedSource>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <EnableASAN>false</EnableASAN>
+      <EnableFuzzer>false</EnableFuzzer>
+      <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Precise</FloatingPointModel>
+      <ForceConformanceInForLoopScope>true</ForceConformanceInForLoopScope>
+      <GenerateModuleDependencies>false</GenerateModuleDependencies>
+      <GenerateSourceDependencies>false</GenerateSourceDependencies>
+      <GenerateXMLDocumentationFiles>false</GenerateXMLDocumentationFiles>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <IgnoreStandardIncludePath>false</IgnoreStandardIncludePath>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>Default</LanguageStandard_C>
+      <MinimalRebuild>false</MinimalRebuild>
+      <ModuleDependenciesFile>x64\Debug\</ModuleDependenciesFile>
+      <ModuleOutputFile>x64\Debug\</ModuleOutputFile>
+      <OmitDefaultLibName>false</OmitDefaultLibName>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <ObjectFileName>x64\Debug\</ObjectFileName>
+      <CallingConvention>Cdecl</CallingConvention>
+      <ProgramDataBaseFileName>x64\Debug\vc143.pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>x64\Debug\SioEngine.pch</PrecompiledHeaderOutputFile>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessKeepComments>false</PreprocessKeepComments>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+      <ShowIncludes>false</ShowIncludes>
+      <SourceDependenciesFile>x64\Debug\</SourceDependenciesFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <SmallerTypeCheck>false</SmallerTypeCheck>
+      <SpectreMitigation>false</SpectreMitigation>
+      <StructMemberAlignment>Default</StructMemberAlignment>
+      <TrackerLogDirectory>x64\Debug\SioEngine.tlog\</TrackerLogDirectory>
+      <TranslateIncludes>false</TranslateIncludes>
+      <MinimalRebuildFromTracking>true</MinimalRebuildFromTracking>
+      <TreatWarningAsError>false</TreatWarningAsError>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <UseFullPaths>true</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <XMLDocumentationFileName>x64\Debug\</XMLDocumentationFileName>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <IntelJCCErratum>false</IntelJCCErratum>
+      <TreatAngleIncludeAsExternal>false</TreatAngleIncludeAsExternal>
+      <ExternalWarningLevel>InheritWarningLevel</ExternalWarningLevel>
+      <TreatExternalTemplatesAsInternal>true</TreatExternalTemplatesAsInternal>
+      <DisableAnalyzeExternal>false</DisableAnalyzeExternal>
+      <IncludeInUnityFile>true</IncludeInUnityFile>
+      <UnityFilesDirectory>x64\Debug\</UnityFilesDirectory>
+      <OrderInUnityFile>100</OrderInUnityFile>
+      <CombineFilesOnlyFromTheSameFolder>false</CombineFilesOnlyFromTheSameFolder>
+      <MinFilesInUnityFile>2</MinFilesInUnityFile>
+      <MaxFilesInUnityFile>0</MaxFilesInUnityFile>
+      <MinUnityFiles>1</MinUnityFiles>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_UNICODE;UNICODE;</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>Engine</AdditionalIncludeDirectories>
+      <LinkCompiled>true</LinkCompiled>
+    </ClCompile>
     <ClCompile Include="Engine\Core.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -435,6 +524,8 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">x64\Release\SioEngine.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">x64\Release\SioEngine.pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <ClCompile Include="Engine\Scene\Scene.cpp" />
     <ClCompile Include="Engine\Scene\SceneManager.cpp" />
@@ -601,6 +692,13 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\Vector2.cpp" />
+    <ClCompile Include="Extension\ImGui\imgui.cpp" />
+    <ClCompile Include="Extension\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="Extension\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="Extension\ImGui\imgui_impl_dx11.cpp" />
+    <ClCompile Include="Extension\ImGui\imgui_impl_win32.cpp" />
+    <ClCompile Include="Extension\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="Extension\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="SioEngine.cpp" />
   </ItemGroup>
   <ItemGroup>

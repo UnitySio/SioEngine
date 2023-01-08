@@ -22,8 +22,6 @@
 #include "../framework.h"
 #include "../Resource.h"
 #include "Vector2.h"
-#include "imgui_impl_dx11.h"
-#include "imgui_impl_win32.h"
 
 #include <cstdlib>
 #include <crtdbg.h>

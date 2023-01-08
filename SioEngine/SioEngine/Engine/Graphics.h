@@ -1,9 +1,11 @@
 #pragma once
+#pragma comment(lib, "d3d11")
 #pragma comment(lib, "d2d1")
 #pragma comment(lib, "dwrite")
 
 #include "Singleton.h"
 
+#include <d3d11.h>
 #include <d2d1.h>
 #include <dwrite.h>
 
@@ -12,48 +14,38 @@ class Graphics :
 {
     friend class Core;
 
-    ID2D1Factory* factory_;
-    ID2D1HwndRenderTarget* render_target_;
-    ID2D1BitmapRenderTarget* bitmap_render_target_;
+    ID3D11Device* d3d_device_;
+    ID3D11DeviceContext* d3d_device_context_;
+    ID3D11RenderTargetView* d3d_render_target_view_;
 
-    /**
-     * \brief Direct2D를 사용하기 위한 객체들을 초기화하고 성공 여부를 반환합니다.
-     * \return bool
-     */
-    bool Initiate();
+    D3D11_VIEWPORT d3d_viewport_;
 
-    /**
-     * \brief Render Target의 크기를 재조정합니다.
-     * \param width 가로 크기
-     * \param height 세로 크기
-     */
-    void Resize(int width, int height);
+    IDXGISwapChain* dxgi_swap_chain_;
 
-    /**
-     * \brief 화면에 그리기를 시작합니다.
-     */
-    void BeginDraw();
+    ID2D1Factory* d2d_factory_;
+    ID2D1RenderTarget* d2d_render_target_;
 
-    /**
-     * \brief 화면에 그리기를 끝냅니다.
-     */
-    void EndDraw();
+    bool Initaite();
+    bool CreateDeviceD3D();
+    bool CreateRenderTargetD3D();
+    bool CreateFactoryD2D();
+    bool CreateRenderTargetD2D();
+
+    void BeginRenderD3D();
+    void EndRenderD3D();
+    void BeginRenderD2D();
+    void EndRenderD2D();
 
 public:
-    Graphics();
+    Graphics() = default;
     ~Graphics() final;
-
-    /**
-     * \brief 화면을 지정한 색상으로 초기화합니다.
-     */
-    void ClearScreen(Color color);
 
     /**
      * \brief 화면에 꽉찬 사각형을 그립니다.
      * \param position 위치
      * \param color 색상
      */
-    void FillRectangle(Rect position, Color color);
+    void FillRectangle(Rect position, Color color, float z_rotation = 0.f);
 
     /**
      * \brief 화면에 사각형을 그립니다.
