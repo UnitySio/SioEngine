@@ -37,3 +37,11 @@ void SceneManager::Render()
         current_scene_->Render();
     }
 }
+
+void SceneManager::OnGUI()
+{
+    if (current_scene_ != NULL)
+    {
+        current_scene_->OnGUI();
+    }
+}

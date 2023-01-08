@@ -22,6 +22,10 @@ void Scene::Render()
 {
 }
 
+void Scene::OnGUI()
+{
+}
+
 void Scene::SetName(std::wstring name)
 {
     name_ = name;

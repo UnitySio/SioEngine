@@ -19,8 +19,13 @@ class Core :
     bool is_logic_loop_;
 
     float timer_;
+    float z_rotation_;
+
+    float scale_[2];
 
     Vector2 position_;
+
+    std::vector<std::string> logs_;
 
     LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -31,6 +36,7 @@ class Core :
     void Update();
     void LateUpdate();
     void Render();
+    void OnGUI();
 
 public:
     Core();
@@ -48,6 +54,7 @@ public:
     POINT GetResolution();
     
     void MainLogic();
+    void SubLogic();
 
     /**
      * \brief 디버거 로그 메시지를 출력합니다.
