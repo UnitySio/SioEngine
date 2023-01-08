@@ -5,7 +5,7 @@
 #include "InputManager.h"
 #include "GamepadManager.h"
 #include "Scene/SceneManager.h"
-#include "Audio/AudioManager.h"
+#include "AudioManager.h"
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
@@ -25,7 +25,7 @@ LRESULT Core::WndProc(
 {
     if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
     {
-        return true;
+        return 0;
     }
 
     if (message == WM_GETMINMAXINFO)
@@ -37,16 +37,24 @@ LRESULT Core::WndProc(
 
         return 0;
     }
-    else if (message == WM_SETFOCUS ||
+
+    if (message == WM_SETFOCUS ||
         message == WM_KILLFOCUS)
     {
         focus_ = GetFocus();
+
+        return 0;
     }
-    else if (message == WM_DESTROY)
+
+    if (message == WM_DESTROY)
     {
         is_logic_loop_ = false;
 
         WaitForSingleObject(logic_handle_, INFINITE);
+
+        ImGui_ImplDX11_Shutdown();
+        ImGui_ImplWin32_Shutdown();
+        ImGui::DestroyContext();
 
         AUDIO_MANAGER->Release();
         SCENE_MANAGER->Release();
@@ -97,13 +105,36 @@ void Core::Update()
     GAMEPAD_MANAGER->Update();
     SCENE_MANAGER->Update();
 
-    if (GAMEPAD_MANAGER->GetButton(UserIndex::kOne, XINPUT_GAMEPAD_A))
+    if (INPUT_MANAGER->GetKey(MK_LBUTTON))
     {
-        GAMEPAD_MANAGER->SetVibrate(UserIndex::kOne, 1.f, 1.f);
+        Vector2 mouse_position = INPUT_MANAGER->GetMousePosition();
+
+        if (mouse_position.x > position_.x - scale_[0] &&
+            mouse_position.x < position_.x + (scale_[0] * 2) &&
+            mouse_position.y > position_.y - scale_[1] &&
+            mouse_position.y < position_.y + (scale_[1] * 2))
+        {
+            position_ += INPUT_MANAGER->GetMouseDelta();
+        }
     }
 
-    position_ += GAMEPAD_MANAGER->GetLeftStickAxis() * (300.f * GAMEPAD_MANAGER->GetLeftStickValue()) * TIME_MANAGER->
-        GetDeltaTime();
+    if (INPUT_MANAGER->GetKey(MK_RBUTTON))
+    {
+        Vector2 mouse_position = INPUT_MANAGER->GetMousePosition();
+
+        if (mouse_position.x > position_.x - scale_[0] &&
+            mouse_position.x < position_.x + (scale_[0] * 2) &&
+            mouse_position.y > position_.y - scale_[1] &&
+            mouse_position.y < position_.y + (scale_[1] * 2))
+        {
+            z_rotation_++;
+
+            if (z_rotation_ > 360.f)
+            {
+                z_rotation_ = 0.f;
+            }
+        }
+    }
 }
 
 void Core::LateUpdate()
@@ -114,6 +145,96 @@ void Core::LateUpdate()
 void Core::Render()
 {
     SCENE_MANAGER->Render();
+
+    GRAPHICS->FillRectangle(
+        {position_.x, position_.y, scale_[0], scale_[1]},
+        {255, 255, 255},
+        z_rotation_
+    );
+}
+
+void Core::OnGUI()
+{
+    SCENE_MANAGER->OnGUI();
+
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("File"))
+        {
+            if (ImGui::MenuItem("Exit"))
+            {
+                PostMessage(hWnd, WM_DESTROY, 0, 0);
+            }
+
+            ImGui::EndMenu();
+        }
+
+        ImGui::EndMainMenuBar();
+    }
+
+    float* position[2] = {
+        &position_.x,
+        &position_.y
+    };
+
+    if (ImGui::Begin("Inspector"))
+    {
+        const Vector2 mouse_position = INPUT_MANAGER->GetMousePosition();
+
+        ImGui::Text("FPS : %d", TIME_MANAGER->GetFPS());
+        ImGui::Text("X: %.f, Y: %.f", mouse_position.x, mouse_position.y);
+        ImGui::Separator();
+
+        if (ImGui::CollapsingHeader("Transform"))
+        {
+            ImGui::InputFloat2("Position", *position);
+            ImGui::InputFloat("Z Rotation", &z_rotation_);
+            ImGui::InputFloat2("Scale", scale_);
+        }
+
+        ImGui::Separator();
+        ImGui::End();
+    }
+
+    if (ImGui::Begin("Hierarchy"))
+    {
+        ImGui::End();
+    }
+
+    if (ImGui::Begin("Console"))
+    {
+        if (ImGui::Button("Clear"))
+        {
+            logs_.clear();
+        }
+
+        ImGui::Separator();
+
+        if (ImGui::BeginChild("Console"))
+        {
+            ImGuiListClipper clipper;
+            clipper.Begin(logs_.size());
+
+            while (clipper.Step())
+            {
+                for (size_t i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
+                {
+                    ImGui::Text(logs_[i].c_str());
+                }
+            }
+
+            clipper.End();
+
+            if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
+            {
+                ImGui::SetScrollHereY(1.f);
+            }
+
+            ImGui::EndChild();
+        }
+
+        ImGui::End();
+    }
 }
 
 Core::Core() :
@@ -126,6 +247,7 @@ Core::Core() :
     logic_handle_(),
     is_logic_loop_(true),
     timer_(),
+    scale_{},
     position_{640.f, 360.f}
 {
 }
@@ -133,6 +255,7 @@ Core::Core() :
 ATOM Core::MyRegisterClass(HINSTANCE hInstance)
 {
     WNDCLASSEX wcex;
+    ZeroMemory(&wcex, sizeof(WNDCLASSEX));
 
     wcex.cbSize = sizeof(WNDCLASSEX);
     wcex.style = CS_HREDRAW | CS_VREDRAW;
@@ -140,12 +263,12 @@ ATOM Core::MyRegisterClass(HINSTANCE hInstance)
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = hInstance;
-    wcex.hIcon = NULL;
-    wcex.hCursor = LoadCursor(NULL, IDC_ARROW);
+    wcex.hIcon = nullptr;
+    wcex.hCursor = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground = static_cast<HBRUSH>(GetStockObject(BLACK_BRUSH));
-    wcex.lpszMenuName = NULL;
+    wcex.lpszMenuName = nullptr;
     wcex.lpszClassName = kClassName;
-    wcex.hIconSm = NULL;
+    wcex.hIconSm = nullptr;
 
     return RegisterClassEx(&wcex);
 }
@@ -155,9 +278,9 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
     const int screen_width = GetSystemMetrics(SM_CXSCREEN);
     const int screen_height = GetSystemMetrics(SM_CYSCREEN);
 
-    resolution_ = {640, 480};
+    resolution_ = {1366, 768};
     window_area_ = {0, 0, resolution_.x, resolution_.y};
-    AdjustWindowRect(&window_area_, WS_OVERLAPPEDWINDOW, FALSE);
+    AdjustWindowRect(&window_area_, WS_OVERLAPPEDWINDOW, false);
 
     hWnd = CreateWindowExW(
         0,
@@ -168,46 +291,44 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
         (screen_height - (window_area_.bottom - window_area_.top)) / 2,
         window_area_.right - window_area_.left,
         window_area_.bottom - window_area_.top,
-        NULL,
-        NULL,
+        nullptr,
+        nullptr,
         hInstance,
-        NULL
+        nullptr
     );
 
-    if (hWnd == NULL)
+    if (hWnd == nullptr)
     {
-        return FALSE;
+        return false;
     }
 
     ShowWindow(hWnd, nCmdShow);
 
-    CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+    CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
 
     if (!GRAPHICS->Initaite())
     {
-        return FALSE;
+        return false;
     }
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
-    ImGui_ImplWin32_Init(hWnd);
-    ImGui_ImplDX11_Init(GRAPHICS->device_, GRAPHICS->device_context_);
+    io.Fonts->AddFontFromFileTTF(".\\Font\\NanumBarunGothic.ttf", 14.f, nullptr, io.Fonts->GetGlyphRangesKorean());
     ImGui::StyleColorsDark();
+    ImGui_ImplWin32_Init(hWnd);
+    ImGui_ImplDX11_Init(GRAPHICS->d3d_device_, GRAPHICS->d3d_device_context_);
 
     TIME_MANAGER->Initaite();
 
     if (!AUDIO_MANAGER->Initiate())
     {
-        return FALSE;
+        return false;
     }
 
-    AUDIO_MANAGER->AddSound(L"Ghost Of My Past", L"GhostOfMyPast.mp3", true);
-    AUDIO_MANAGER->Play(L"Ghost Of My Past");
+    logic_handle_ = CreateThread(nullptr, 0, LogicThread, nullptr, 0, nullptr);
 
-    logic_handle_ = CreateThread(NULL, 0, LogicThread, NULL, 0, NULL);
-
-    return TRUE;
+    return true;
 }
 
 bool Core::InitiateWindow(HINSTANCE hInstance, int nCmdShow)
@@ -226,7 +347,7 @@ bool Core::UpdateMessage()
 {
     MSG msg = {};
 
-    if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+    if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
     {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
@@ -264,31 +385,29 @@ void Core::MainLogic()
     Update();
     LateUpdate();
 
-    GRAPHICS->BeginRender();
+    GRAPHICS->BeginRenderD3D();
+    GRAPHICS->BeginRenderD2D();
 
     Render();
+
+    GRAPHICS->EndRenderD2D();
 
     ImGui_ImplDX11_NewFrame();
     ImGui_ImplWin32_NewFrame();
     ImGui::NewFrame();
 
-    ImGui::Begin("Debug");
-    ImGui::Text("Hello, world %d", 123);
-
-    if (ImGui::Button("Save"))
-    {
-    }
-
-    static float f = 0.f;
-    ImGui::SliderFloat("float", &f, 0.0f, 1.0f);
-    ImGui::End();
+    OnGUI();
 
     ImGui::Render();
     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
-    GRAPHICS->EndRender();
+    GRAPHICS->EndRenderD3D();
 
     AUDIO_MANAGER->Update();
+}
+
+void Core::SubLogic()
+{
 }
 
 void Core::Log(std::wstring format, ...)

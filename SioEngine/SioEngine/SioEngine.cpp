@@ -25,6 +25,7 @@ int APIENTRY wWinMain(
 
     while (CORE->UpdateMessage())
     {
+        CORE->SubLogic();
     }
 
 #ifdef _DEBUG
