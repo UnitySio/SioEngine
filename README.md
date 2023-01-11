@@ -11,7 +11,7 @@ WinAPI 기반의 자체엔진 프로젝트입니다.
 * [Google Naming Convention](https://google.github.io/styleguide/cppguide.html#General_Naming_Rules)
 
 ### Using Graphic Library
-* Direct2D
+* DirectX 11, Spine, ImGui
 
 ### Using Sound Library
 * FMOD
@@ -20,4 +20,6 @@ WinAPI 기반의 자체엔진 프로젝트입니다.
 ![Life Cycle drawio (1)](https://user-images.githubusercontent.com/38973547/206721528-f65760ad-8d38-459d-8a3e-d63f1dcae06d.png)
 
 ### Developer Comment
-* 추후 DirectX로의 그래픽 라이브러리 변경과 Spine 도입 예정
+* 작성 예정
+![KakaoTalk_20230110_155712964](https://user-images.githubusercontent.com/38973547/211482961-476282c7-56f8-4e69-b761-4205403cb744.gif)
+
