@@ -187,8 +187,8 @@ bool Vector2::operator!=(float val) const
 
 float Vector2::Magnitude()
 {
-    auto temp_x = static_cast<double>(x);
-    auto temp_y = static_cast<double>(y);
+    const auto temp_x = static_cast<double>(x);
+    const auto temp_y = static_cast<double>(y);
     
     return static_cast<float>(sqrt(pow(temp_x, 2) + pow(temp_y, 2)));
 }
@@ -197,6 +197,12 @@ float Vector2::Distance(Vector2 a, Vector2 b)
 {
     Vector2 diff = a - b;
     return diff.Magnitude();
+}
+
+float Vector2::Dot(Vector2 a, Vector2 b)
+{
+    const float theta = (a.x * b.x) + (a.y * b.y);
+    return theta;
 }
 
 void Vector2::Normalize()

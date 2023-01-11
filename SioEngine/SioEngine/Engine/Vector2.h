@@ -97,6 +97,14 @@ public:
     float Distance(Vector2 a, Vector2 b);
 
     /**
+     * \brief 두 백터의 내적을 반환합니다.
+     * \param a 첫번째 백터
+     * \param b 두번째 백터
+     * \return float
+     */
+    float Dot(Vector2 a, Vector2 b);
+
+    /**
      * \brief 백터를 정규화를 합니다.
      */
     void Normalize();

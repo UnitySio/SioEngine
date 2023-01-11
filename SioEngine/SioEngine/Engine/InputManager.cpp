@@ -51,16 +51,19 @@ void InputManager::Update()
         }
     }
 
-    POINT mouse_pos = {};
-    GetCursorPos(&mouse_pos);
-    ScreenToClient(CORE->GetHWND(), &mouse_pos);
+    if (CORE->GetHWNDFocus())
+    {
+        POINT mouse_pos = {};
+        GetCursorPos(&mouse_pos);
+        ScreenToClient(CORE->GetHWND(), &mouse_pos);
 
-    const auto mouse_x = static_cast<float>(mouse_pos.x);
-    const auto mouse_y = static_cast<float>(mouse_pos.y);
+        const auto mouse_x = static_cast<float>(mouse_pos.x);
+        const auto mouse_y = static_cast<float>(mouse_pos.y);
 
-    mouse_previous_position_ = mouse_position_;
-    mouse_position_ = {mouse_x, mouse_y};
-    mouse_delta_ = mouse_position_ - mouse_previous_position_;
+        mouse_previous_position_ = mouse_position_;
+        mouse_position_ = {mouse_x, mouse_y};
+        mouse_delta_ = mouse_position_ - mouse_previous_position_;
+    }
 }
 
 bool InputManager::GetKeyDown(int key_code)

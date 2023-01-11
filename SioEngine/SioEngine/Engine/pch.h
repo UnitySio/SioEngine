@@ -19,6 +19,8 @@
 #define DTA_MIDDLE DWRITE_PARAGRAPH_ALIGNMENT_CENTER
 #define DTA_BOTTOM DWRITE_PARAGRAPH_ALIGNMENT_FAR
 
+#define PI std::atan(1) * 4
+
 #include "../framework.h"
 #include "../Resource.h"
 #include "Vector2.h"
@@ -31,6 +33,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <complex>
 
 struct Color
 {
