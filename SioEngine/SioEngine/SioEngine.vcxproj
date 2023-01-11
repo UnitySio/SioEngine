@@ -83,7 +83,7 @@
     <LibraryPath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\Spine\include\spine;C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\ImGui;C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\inc</IncludePath>
+    <IncludePath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\Spine\include;C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\ImGui;C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\inc</IncludePath>
     <LibraryPath>C:\Users\dnwls\Documents\SioEngine\SioEngine\SioEngine\Extension\FMOD\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

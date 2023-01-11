@@ -23,9 +23,12 @@ int APIENTRY wWinMain(
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-    while (CORE->UpdateMessage())
+    MSG msg = {};
+
+    while (GetMessage(&msg, nullptr, 0, 0) > 0)
     {
-        CORE->SubLogic();
+        TranslateMessage(&msg);
+        DispatchMessage(&msg);
     }
 
 #ifdef _DEBUG

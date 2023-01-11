@@ -20,10 +20,12 @@ class Core :
 
     float timer_;
     float z_rotation_;
-
-    float scale_[2];
+    float opacity_;
+    float font_size_;
 
     Vector2 position_;
+    Vector2 scale_;
+    Vector2 temp_;
 
     std::vector<std::string> logs_;
 
@@ -46,15 +48,13 @@ public:
     BOOL InitInstance(HINSTANCE hInstance, int nCmdShow);
 
     bool InitiateWindow(HINSTANCE hInstance, int nCmdShow);
-    bool UpdateMessage();
 
     HWND GetHWND();
     HWND GetHWNDFocus();
 
     POINT GetResolution();
-    
+
     void MainLogic();
-    void SubLogic();
 
     /**
      * \brief 디버거 로그 메시지를 출력합니다.

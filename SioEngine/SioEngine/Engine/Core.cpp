@@ -109,31 +109,28 @@ void Core::Update()
     {
         Vector2 mouse_position = INPUT_MANAGER->GetMousePosition();
 
-        if (mouse_position.x > position_.x - scale_[0] &&
-            mouse_position.x < position_.x + (scale_[0] * 2) &&
-            mouse_position.y > position_.y - scale_[1] &&
-            mouse_position.y < position_.y + (scale_[1] * 2))
+        if (mouse_position.x > position_.x - (scale_.x / 2.f) &&
+            mouse_position.x < position_.x + (scale_.x / 2.f) &&
+            mouse_position.y > position_.y - (scale_.y / 2.f) &&
+            mouse_position.y < position_.y + (scale_.y / 2.f))
         {
             position_ += INPUT_MANAGER->GetMouseDelta();
         }
     }
+    
+    float radian = z_rotation_ + 270.f * (PI / 180.f);
+    float x = cos(radian);
+    float y = sin(radian);
 
-    if (INPUT_MANAGER->GetKey(MK_RBUTTON))
+    Vector2 position = {x, y};
+
+    temp_ += position * 100.f * DELTA_TIME;
+
+    Log(L"Radian: %f, X: %f, Y: %f", radian, x, y);
+
+    if (logs_.size() > 100)
     {
-        Vector2 mouse_position = INPUT_MANAGER->GetMousePosition();
-
-        if (mouse_position.x > position_.x - scale_[0] &&
-            mouse_position.x < position_.x + (scale_[0] * 2) &&
-            mouse_position.y > position_.y - scale_[1] &&
-            mouse_position.y < position_.y + (scale_[1] * 2))
-        {
-            z_rotation_++;
-
-            if (z_rotation_ > 360.f)
-            {
-                z_rotation_ = 0.f;
-            }
-        }
+        logs_.clear();
     }
 }
 
@@ -145,11 +142,51 @@ void Core::LateUpdate()
 void Core::Render()
 {
     SCENE_MANAGER->Render();
+    
+    GRAPHICS->FillEllipse(
+        {temp_.x, temp_.y, 32.f, 32.f},
+        {255, 255, 0}
+    );
 
-    GRAPHICS->FillRectangle(
-        {position_.x, position_.y, scale_[0], scale_[1]},
-        {255, 255, 255},
+    static auto bitmap = GRAPHICS->LoadImageW(L"unity.png");
+    GRAPHICS->DrawBitmap(
+        bitmap,
+        {position_.x, position_.y, scale_.x, scale_.y},
+        opacity_,
         z_rotation_
+    );
+
+    GRAPHICS->FillEllipse(
+        {position_.x, position_.y, 5.f, 5.f},
+        {255, 0, 0}
+    );
+
+    GRAPHICS->DrawTextW(
+        {position_.x, position_.y, 300.f, 30.f},
+        {255, 255, 255},
+        L"Hello World",
+        font_size_,
+        DTA_CENTER,
+        DTA_MIDDLE,
+        z_rotation_
+    );
+
+    GRAPHICS->DrawLine(
+        temp_,
+        position_,
+        {255, 0, 0}
+    );
+
+    GRAPHICS->DrawLine(
+        temp_,
+        {position_.x, temp_.y},
+        {255, 0, 0}
+    );
+    
+    GRAPHICS->DrawLine(
+        position_,
+        {position_.x, temp_.y},
+        {255, 0, 0}
     );
 }
 
@@ -177,64 +214,77 @@ void Core::OnGUI()
         &position_.y
     };
 
-    if (ImGui::Begin("Inspector"))
+    float* scale[2] = {
+        &scale_.x,
+        &scale_.y
+    };
+
+    // Inspector
+    ImGui::Begin("Inspector");
+
+    if (ImGui::CollapsingHeader("Transform"))
     {
-        const Vector2 mouse_position = INPUT_MANAGER->GetMousePosition();
-
-        ImGui::Text("FPS : %d", TIME_MANAGER->GetFPS());
-        ImGui::Text("X: %.f, Y: %.f", mouse_position.x, mouse_position.y);
-        ImGui::Separator();
-
-        if (ImGui::CollapsingHeader("Transform"))
-        {
-            ImGui::InputFloat2("Position", *position);
-            ImGui::InputFloat("Z Rotation", &z_rotation_);
-            ImGui::InputFloat2("Scale", scale_);
-        }
-
-        ImGui::Separator();
-        ImGui::End();
+        ImGui::InputFloat2("Position", *position);
+        ImGui::InputFloat("Z Rotation", &z_rotation_);
+        ImGui::InputFloat2("Scale", *scale);
     }
 
-    if (ImGui::Begin("Hierarchy"))
+    ImGui::Separator();
+
+    if (ImGui::CollapsingHeader("Sprite Renderer"))
     {
-        ImGui::End();
+        ImGui::SliderFloat("Opacity", &opacity_, 0.f, 1.f);
     }
 
-    if (ImGui::Begin("Console"))
+    ImGui::Separator();
+    ImGui::End();
+
+    // Hierarchy
+    ImGui::Begin("Hierarchy");
+    ImGui::End();
+
+    // Console
+    ImGui::Begin("Console");
+
+    if (ImGui::Button("Clear"))
     {
-        if (ImGui::Button("Clear"))
-        {
-            logs_.clear();
-        }
-
-        ImGui::Separator();
-
-        if (ImGui::BeginChild("Console"))
-        {
-            ImGuiListClipper clipper;
-            clipper.Begin(logs_.size());
-
-            while (clipper.Step())
-            {
-                for (size_t i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
-                {
-                    ImGui::Text(logs_[i].c_str());
-                }
-            }
-
-            clipper.End();
-
-            if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
-            {
-                ImGui::SetScrollHereY(1.f);
-            }
-
-            ImGui::EndChild();
-        }
-
-        ImGui::End();
+        logs_.clear();
     }
+
+    ImGui::Separator();
+    ImGui::BeginChild("Console");
+
+    ImGuiListClipper clipper;
+    clipper.Begin(logs_.size());
+
+    while (clipper.Step())
+    {
+        for (size_t i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
+        {
+            ImGui::Text(logs_[i].c_str());
+        }
+    }
+
+    clipper.End();
+
+    if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
+    {
+        ImGui::SetScrollHereY(1.f);
+    }
+
+    ImGui::EndChild();
+    ImGui::End();
+
+    ImGui::Begin("Debug");
+
+    const Vector2 mouse_position = INPUT_MANAGER->GetMousePosition();
+
+    ImGui::Text("FPS : %d", TIME_MANAGER->GetFPS());
+    ImGui::Text("X: %.f, Y: %.f", mouse_position.x, mouse_position.y);
+    ImGui::InputFloat("Time Scale", &TIME_MANAGER->time_scale_);
+    ImGui::InputFloat("Font Size", &font_size_);
+
+    ImGui::End();
 }
 
 Core::Core() :
@@ -247,8 +297,10 @@ Core::Core() :
     logic_handle_(),
     is_logic_loop_(true),
     timer_(),
-    scale_{},
-    position_{640.f, 360.f}
+    opacity_(),
+    font_size_(12.f),
+    position_{640.f, 360.f},
+    temp_{640.f, 360.f}
 {
 }
 
@@ -304,7 +356,7 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
 
     ShowWindow(hWnd, nCmdShow);
 
-    CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+    CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 
     if (!GRAPHICS->Initaite())
     {
@@ -314,6 +366,8 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
+    static_cast<void>(io);
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     io.Fonts->AddFontFromFileTTF(".\\Font\\NanumBarunGothic.ttf", 14.f, nullptr, io.Fonts->GetGlyphRangesKorean());
     ImGui::StyleColorsDark();
     ImGui_ImplWin32_Init(hWnd);
@@ -341,19 +395,6 @@ bool Core::InitiateWindow(HINSTANCE hInstance, int nCmdShow)
     }
 
     return true;
-}
-
-bool Core::UpdateMessage()
-{
-    MSG msg = {};
-
-    if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
-    {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
-
-    return msg.message != WM_QUIT;
 }
 
 HWND Core::GetHWND()
@@ -387,7 +428,7 @@ void Core::MainLogic()
 
     GRAPHICS->BeginRenderD3D();
     GRAPHICS->BeginRenderD2D();
-
+    
     Render();
 
     GRAPHICS->EndRenderD2D();
@@ -406,10 +447,6 @@ void Core::MainLogic()
     AUDIO_MANAGER->Update();
 }
 
-void Core::SubLogic()
-{
-}
-
 void Core::Log(std::wstring format, ...)
 {
     va_list args;
@@ -417,8 +454,13 @@ void Core::Log(std::wstring format, ...)
 
     WCHAR buffer[1024];
     vswprintf_s(buffer, format.c_str(), args);
+    wcscat_s(buffer, L"\n");
+
+    std::string str;
+    str.assign(buffer, buffer + wcslen(buffer));
 
     OutputDebugStringW(buffer);
+    logs_.push_back(str);
 
     va_end(args);
 }
