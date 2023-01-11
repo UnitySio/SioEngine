@@ -19,13 +19,6 @@ class Core :
     bool is_logic_loop_;
 
     float timer_;
-    float z_rotation_;
-    float opacity_;
-    float font_size_;
-
-    Vector2 position_;
-    Vector2 scale_;
-    Vector2 temp_;
 
     std::vector<std::string> logs_;
 

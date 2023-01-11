@@ -32,3 +32,7 @@ void Object::LateUpdate()
 void Object::Render()
 {
 }
+
+void Object::OnGUI()
+{
+}

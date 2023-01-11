@@ -104,34 +104,6 @@ void Core::Update()
     INPUT_MANAGER->Update();
     GAMEPAD_MANAGER->Update();
     SCENE_MANAGER->Update();
-
-    if (INPUT_MANAGER->GetKey(MK_LBUTTON))
-    {
-        Vector2 mouse_position = INPUT_MANAGER->GetMousePosition();
-
-        if (mouse_position.x > position_.x - (scale_.x / 2.f) &&
-            mouse_position.x < position_.x + (scale_.x / 2.f) &&
-            mouse_position.y > position_.y - (scale_.y / 2.f) &&
-            mouse_position.y < position_.y + (scale_.y / 2.f))
-        {
-            position_ += INPUT_MANAGER->GetMouseDelta();
-        }
-    }
-    
-    float radian = z_rotation_ + 270.f * (PI / 180.f);
-    float x = cos(radian);
-    float y = sin(radian);
-
-    Vector2 position = {x, y};
-
-    temp_ += position * 100.f * DELTA_TIME;
-
-    Log(L"Radian: %f, X: %f, Y: %f", radian, x, y);
-
-    if (logs_.size() > 100)
-    {
-        logs_.clear();
-    }
 }
 
 void Core::LateUpdate()
@@ -142,52 +114,6 @@ void Core::LateUpdate()
 void Core::Render()
 {
     SCENE_MANAGER->Render();
-    
-    GRAPHICS->FillEllipse(
-        {temp_.x, temp_.y, 32.f, 32.f},
-        {255, 255, 0}
-    );
-
-    static auto bitmap = GRAPHICS->LoadImageW(L"unity.png");
-    GRAPHICS->DrawBitmap(
-        bitmap,
-        {position_.x, position_.y, scale_.x, scale_.y},
-        opacity_,
-        z_rotation_
-    );
-
-    GRAPHICS->FillEllipse(
-        {position_.x, position_.y, 5.f, 5.f},
-        {255, 0, 0}
-    );
-
-    GRAPHICS->DrawTextW(
-        {position_.x, position_.y, 300.f, 30.f},
-        {255, 255, 255},
-        L"Hello World",
-        font_size_,
-        DTA_CENTER,
-        DTA_MIDDLE,
-        z_rotation_
-    );
-
-    GRAPHICS->DrawLine(
-        temp_,
-        position_,
-        {255, 0, 0}
-    );
-
-    GRAPHICS->DrawLine(
-        temp_,
-        {position_.x, temp_.y},
-        {255, 0, 0}
-    );
-    
-    GRAPHICS->DrawLine(
-        position_,
-        {position_.x, temp_.y},
-        {255, 0, 0}
-    );
 }
 
 void Core::OnGUI()
@@ -209,34 +135,8 @@ void Core::OnGUI()
         ImGui::EndMainMenuBar();
     }
 
-    float* position[2] = {
-        &position_.x,
-        &position_.y
-    };
-
-    float* scale[2] = {
-        &scale_.x,
-        &scale_.y
-    };
-
     // Inspector
     ImGui::Begin("Inspector");
-
-    if (ImGui::CollapsingHeader("Transform"))
-    {
-        ImGui::InputFloat2("Position", *position);
-        ImGui::InputFloat("Z Rotation", &z_rotation_);
-        ImGui::InputFloat2("Scale", *scale);
-    }
-
-    ImGui::Separator();
-
-    if (ImGui::CollapsingHeader("Sprite Renderer"))
-    {
-        ImGui::SliderFloat("Opacity", &opacity_, 0.f, 1.f);
-    }
-
-    ImGui::Separator();
     ImGui::End();
 
     // Hierarchy
@@ -281,8 +181,8 @@ void Core::OnGUI()
 
     ImGui::Text("FPS : %d", TIME_MANAGER->GetFPS());
     ImGui::Text("X: %.f, Y: %.f", mouse_position.x, mouse_position.y);
+    ImGui::Text("Delta Time: %f", DELTA_TIME);
     ImGui::InputFloat("Time Scale", &TIME_MANAGER->time_scale_);
-    ImGui::InputFloat("Font Size", &font_size_);
 
     ImGui::End();
 }
@@ -296,11 +196,7 @@ Core::Core() :
     window_area_{},
     logic_handle_(),
     is_logic_loop_(true),
-    timer_(),
-    opacity_(),
-    font_size_(12.f),
-    position_{640.f, 360.f},
-    temp_{640.f, 360.f}
+    timer_()
 {
 }
 
@@ -365,8 +261,7 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
-    static_cast<void>(io);
+    ImGuiIO& io = ImGui::GetIO(); static_cast<void>(io);
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     io.Fonts->AddFontFromFileTTF(".\\Font\\NanumBarunGothic.ttf", 14.f, nullptr, io.Fonts->GetGlyphRangesKorean());
     ImGui::StyleColorsDark();

@@ -172,6 +172,7 @@
     <ClInclude Include="Engine\GamepadManager.h" />
     <ClInclude Include="Engine\Graphics.h" />
     <ClInclude Include="Engine\InputManager.h" />
+    <ClInclude Include="Engine\Object\Component\Transform.h" />
     <ClInclude Include="Engine\Object\Object.h" />
     <ClInclude Include="Engine\pch.h" />
     <ClInclude Include="Engine\Scene\Scene.h" />
@@ -439,6 +440,7 @@
       <LinkCompiled>true</LinkCompiled>
     </ClCompile>
     <ClCompile Include="Engine\InputManager.cpp" />
+    <ClCompile Include="Engine\Object\Component\Transform.cpp" />
     <ClCompile Include="Engine\Object\Object.cpp" />
     <ClCompile Include="Engine\pch.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
@@ -707,6 +709,9 @@
   <ItemGroup>
     <Image Include="SioEngine.ico" />
     <Image Include="small.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Notepad.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

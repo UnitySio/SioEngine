@@ -57,11 +57,11 @@ void InputManager::Update()
         GetCursorPos(&mouse_pos);
         ScreenToClient(CORE->GetHWND(), &mouse_pos);
 
-        const auto mouse_x = static_cast<float>(mouse_pos.x);
-        const auto mouse_y = static_cast<float>(mouse_pos.y);
+        const auto kMouseX = static_cast<float>(mouse_pos.x);
+        const auto kMouseY = static_cast<float>(mouse_pos.y);
 
         mouse_previous_position_ = mouse_position_;
-        mouse_position_ = {mouse_x, mouse_y};
+        mouse_position_ = {kMouseX, kMouseY};
         mouse_delta_ = mouse_position_ - mouse_previous_position_;
     }
 }
