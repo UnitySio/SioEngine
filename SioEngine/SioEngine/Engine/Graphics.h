@@ -40,90 +40,90 @@ class Graphics :
 public:
     Graphics() = default;
     ~Graphics() final;
- 
+
     ID2D1Bitmap* LoadImageW(std::wstring file_name);
 
     /**
-     * \brief í™”ë©´ì— ê½‰ì°¬ ì‚¬ê°í˜•ì„ ê·¸ë¦½ë‹ˆë‹¤.
-     * \param position ìœ„ì¹˜
-     * \param color ìƒ‰ìƒ
-     * \param z_rotation ê°ë„
+     * \brief È­¸é¿¡ ²ËÂù »ç°¢ÇüÀ» ±×¸³´Ï´Ù.
+     * \param position À§Ä¡
+     * \param color »ö»ó
+     * \param z_rotation °¢µµ
      */
     void FillRectangle(Rect position, Color color, float z_rotation = 0.f);
 
     /**
-     * \brief í™”ë©´ì— ì‚¬ê°í˜•ì„ ê·¸ë¦½ë‹ˆë‹¤.
-     * \param position ìœ„ì¹˜
-     * \param color ìƒ‰ìƒ
-     * \param stroke ë‘ê»˜
-     * \param z_rotation ê°ë„
+     * \brief È­¸é¿¡ »ç°¢ÇüÀ» ±×¸³´Ï´Ù.
+     * \param position À§Ä¡
+     * \param color »ö»ó
+     * \param stroke µÎ²²
+     * \param z_rotation °¢µµ
      */
     void DrawRectangle(Rect position, Color color, float stroke = 1.f, float z_rotation = 0.f);
 
     /**
-     * \brief í™”ë©´ì— ê°€ì¥ìë¦¬ê°€ ë‘¥ê·¼ ê½‰ì°¬ ì‚¬ê°í˜•ì„ ê·¸ë¦½ë‹ˆë‹¤.
-     * \param position ìœ„ì¹˜
-     * \param color ìƒ‰ìƒ
-     * \param radius ê³¡ë¥ 
-     * \param z_rotation ê°ë„
+     * \brief È­¸é¿¡ °¡ÀåÀÚ¸®°¡ µÕ±Ù ²ËÂù »ç°¢ÇüÀ» ±×¸³´Ï´Ù.
+     * \param position À§Ä¡
+     * \param color »ö»ó
+     * \param radius °î·ü
+     * \param z_rotation °¢µµ
      */
     void FillRoundedRectangle(Rect position, Color color, float radius = 0.f, float z_rotation = 0.f);
 
     /**
-     * \brief í™”ë©´ì— ê°€ì¥ìë¦¬ê°€ ë‘¥ê·¼ ì‚¬ê°í˜•ì„ ê·¸ë¦½ë‹ˆë‹¤.
-     * \param position ìœ„ì¹˜
-     * \param color ìƒ‰ìƒ
-     * \param radius ê³¡ë¥ 
-     * \param stroke ë‘ê»˜
-     * \param z_rotation ê°ë„
+     * \brief È­¸é¿¡ °¡ÀåÀÚ¸®°¡ µÕ±Ù »ç°¢ÇüÀ» ±×¸³´Ï´Ù.
+     * \param position À§Ä¡
+     * \param color »ö»ó
+     * \param radius °î·ü
+     * \param stroke µÎ²²
+     * \param z_rotation °¢µµ
      */
     void DrawRoundedRectangle(Rect position, Color color, float radius = 0.f, float stroke = 1.f, float z_rotation = 0.f);
 
     /**
-     * \brief í™”ë©´ì— ê½‰ì°¬ ì›ì„ ê·¸ë¦½ë‹ˆë‹¤.
-     * \param position ìœ„ì¹˜
-     * \param color ìƒ‰ìƒ
-     * \param z_rotation ê°ë„
+     * \brief È­¸é¿¡ ²ËÂù ¿øÀ» ±×¸³´Ï´Ù.
+     * \param position À§Ä¡
+     * \param color »ö»ó
+     * \param z_rotation °¢µµ
      */
     void FillEllipse(Rect position, Color color, float z_rotation = 0.f);
 
     /**
-     * \brief í™”ë©´ì— ì›ì„ ê·¸ë¦½ë‹ˆë‹¤.
-     * \param position ìœ„ì¹˜
-     * \param color ìƒ‰ìƒ
-     * \param stroke ë‘ê»˜
-     * \param z_rotation ê°ë„
+     * \brief È­¸é¿¡ ¿øÀ» ±×¸³´Ï´Ù.
+     * \param position À§Ä¡
+     * \param color »ö»ó
+     * \param stroke µÎ²²
+     * \param z_rotation °¢µµ
      */
     void DrawEllipse(Rect position, Color color, float stroke = 1.f, float z_rotation = 0.f);
 
     /**
-     * \brief í™”ë©´ì— aì—ì„œ bê¹Œì§€ ì„ ì„ ê·¸ë¦½ë‹ˆë‹¤.
-     * \param a ì‹œì‘ ì§€ì 
-     * \param b ë ì§€ì 
-     * \param color ìƒ‰ìƒ
-     * \param stroke ë‘ê»˜
+     * \brief È­¸é¿¡ a¿¡¼­ b±îÁö ¼±À» ±×¸³´Ï´Ù.
+     * \param a ½ÃÀÛ ÁöÁ¡
+     * \param b ³¡ ÁöÁ¡
+     * \param color »ö»ó
+     * \param stroke µÎ²²
      */
     void DrawLine(Vector2 a, Vector2 b, Color color, float stroke = 1.f);
 
     /**
-     * \brief í™”ë©´ì— í…ìŠ¤íŠ¸ë¥¼ í‘œì‹œí•©ë‹ˆë‹¤.
-     * \param position ìœ„ì¹˜
-     * \param color ìƒ‰ìƒ
-     * \param text í…ìŠ¤íŠ¸
-     * \param font_size í°íŠ¸ í¬ê¸°
-     * \param h_align ê°€ë¡œ ì •ë ¬
-     * \param v_align ì„¸ë¡œ ì •ë ¬
-     * \param z_rotation ê°ë„
+     * \brief È­¸é¿¡ ÅØ½ºÆ®¸¦ Ç¥½ÃÇÕ´Ï´Ù.
+     * \param position À§Ä¡
+     * \param color »ö»ó
+     * \param text ÅØ½ºÆ®
+     * \param font_size ÆùÆ® Å©±â
+     * \param h_align °¡·Î Á¤·Ä
+     * \param v_align ¼¼·Î Á¤·Ä
+     * \param z_rotation °¢µµ
      */
     void DrawTextW(Rect position, Color color, std::wstring text, float font_size = 12.f,
-                   DWRITE_TEXT_ALIGNMENT h_align = DTA_LEFT, DWRITE_PARAGRAPH_ALIGNMENT v_align = DTA_TOP, float z_rotation = 0.f);
+        DWRITE_TEXT_ALIGNMENT h_align = DTA_LEFT, DWRITE_PARAGRAPH_ALIGNMENT v_align = DTA_TOP, float z_rotation = 0.f);
 
     /**
-     * \brief í™”ë©´ì— ë¹„íŠ¸ë§µì„ ê·¸ë¦½ë‹ˆë‹¤.
-     * \param bitmap ë¹„íŠ¸ë§µ
-     * \param position ìœ„ì¹˜
-     * \param opacity íˆ¬ëª…ë„
-     * \param z_rotation ê°ë„
+     * \brief È­¸é¿¡ ºñÆ®¸ÊÀ» ±×¸³´Ï´Ù.
+     * \param bitmap ºñÆ®¸Ê
+     * \param position À§Ä¡
+     * \param opacity Åõ¸íµµ
+     * \param z_rotation °¢µµ
      */
     void DrawBitmap(ID2D1Bitmap* bitmap, Rect position, float opacity = 1.f, float z_rotation = 0.f);
 };

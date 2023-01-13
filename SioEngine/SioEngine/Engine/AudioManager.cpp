@@ -57,7 +57,7 @@ void AudioManager::AddSound(std::string name, std::string path, bool is_loop)
         return;
     }
 
-    sounds_.insert({name, sound});
+    sounds_.insert({ name, sound });
 }
 
 void AudioManager::Play(std::string name)
@@ -100,7 +100,7 @@ void AudioManager::Resume()
         {
             break;
         }
-        
+
         FMOD_Channel_SetPaused(i, false);
     }
 }
@@ -122,7 +122,7 @@ void AudioManager::SetVolume(int volume)
 {
     volume = std::clamp(volume, 0, 100);
 
-    const auto kVolume = static_cast<float>(volume) / 100.f;
+    const auto f = static_cast<float>(volume) / 100.f;
 
     for (FMOD_CHANNEL* i : channels_)
     {
@@ -131,6 +131,6 @@ void AudioManager::SetVolume(int volume)
             break;
         }
 
-        FMOD_Channel_SetVolume(i, kVolume);
+        FMOD_Channel_SetVolume(i, f);
     }
 }

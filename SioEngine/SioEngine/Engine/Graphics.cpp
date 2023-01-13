@@ -28,7 +28,7 @@ bool Graphics::CreateDeviceD3D()
     swap_chain_desc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
     swap_chain_desc.Flags = 0;
 
-    const D3D_FEATURE_LEVEL kFeatureLevels[2] = {
+    const D3D_FEATURE_LEVEL feature_levels[2] = {
         D3D_FEATURE_LEVEL_11_1,
         D3D_FEATURE_LEVEL_11_0
     };
@@ -38,7 +38,7 @@ bool Graphics::CreateDeviceD3D()
         D3D_DRIVER_TYPE_HARDWARE,
         nullptr,
         D3D11_CREATE_DEVICE_BGRA_SUPPORT,
-        kFeatureLevels,
+        feature_levels,
         2,
         D3D11_SDK_VERSION,
         &swap_chain_desc,
@@ -72,7 +72,7 @@ bool Graphics::CreateRenderTargetD3D()
 
     back_buffer->Release();
 
-    // Î≥¥Î•ò (ÌôïÏù∏ ÌõÑ Ìï®ÏàòÎ°ú Î∂ÑÎ¶¨Ìï† ÏòàÏ†ï)
+    // ∫∏∑˘ (»Æ¿Œ »ƒ «‘ºˆ∑Œ ∫–∏Æ«“ øπ¡§)
     d3d_viewport_.TopLeftX = 0.f;
     d3d_viewport_.TopLeftY = 0.f;
     d3d_viewport_.Width = static_cast<float>(CORE->GetResolution().x);
@@ -95,7 +95,7 @@ bool Graphics::CreateFactoryD2D()
 
 bool Graphics::CreateRenderTargetD2D()
 {
-    const float kDPI = GetDpiForWindow(CORE->GetHWND());
+    const float dpi = GetDpiForWindow(CORE->GetHWND());
 
     const D2D1_RENDER_TARGET_PROPERTIES render_target_properties = D2D1::RenderTargetProperties(
         D2D1_RENDER_TARGET_TYPE_DEFAULT,
@@ -103,8 +103,8 @@ bool Graphics::CreateRenderTargetD2D()
             DXGI_FORMAT_UNKNOWN,
             D2D1_ALPHA_MODE_PREMULTIPLIED
         ),
-        kDPI,
-        kDPI
+        dpi,
+        dpi
     );
 
     IDXGISurface* back_buffer;
@@ -131,7 +131,7 @@ bool Graphics::CreateRenderTargetD2D()
 
 void Graphics::BeginRenderD3D()
 {
-    const float kColor[4] = {
+    const float clear_color[4] = {
         49.f / 255.f,
         77.f / 255.f,
         121.f / 255.f,
@@ -140,7 +140,7 @@ void Graphics::BeginRenderD3D()
 
     d3d_device_context_->OMSetRenderTargets(1, &d3d_render_target_view_, nullptr);
     d3d_device_context_->RSSetViewports(1, &d3d_viewport_);
-    d3d_device_context_->ClearRenderTargetView(d3d_render_target_view_, kColor);
+    d3d_device_context_->ClearRenderTargetView(d3d_render_target_view_, clear_color);
 }
 
 void Graphics::EndRenderD3D()
@@ -255,37 +255,37 @@ void Graphics::FillRectangle(Rect position, Color color, float z_rotation)
 {
     z_rotation = std::clamp(z_rotation, 0.f, 360.f);
 
-    const D2D1_RECT_F kRect = D2D1::RectF(
+    const D2D1_RECT_F rect = D2D1::RectF(
         position.x - (position.width / 2.f),
         position.y - (position.height / 2.f),
         position.x + (position.width / 2.f),
         position.y + (position.height / 2.f)
     );
 
-    const auto kRed = static_cast<float>(color.r) / 255.f;
-    const auto kGreen = static_cast<float>(color.g) / 255.f;
-    const auto kBlue = static_cast<float>(color.b) / 255.f;
-    const auto kAlpha = static_cast<float>(color.a) / 255.f;
+    const auto red = static_cast<float>(color.r) / 255.f;
+    const auto green = static_cast<float>(color.g) / 255.f;
+    const auto blue = static_cast<float>(color.b) / 255.f;
+    const auto alpha = static_cast<float>(color.a) / 255.f;
 
     ID2D1SolidColorBrush* brush;
     d2d_render_target_->CreateSolidColorBrush(
         D2D1::ColorF(
-            kRed,
-            kGreen,
-            kBlue,
-            kAlpha
+            red,
+            green,
+            blue,
+            alpha
         ),
         &brush
     );
 
-    const D2D1_POINT_2F kCenter = D2D1::Point2F(
+    D2D1_POINT_2F center = D2D1::Point2F(
         position.x,
         position.y
     );
 
-    d2d_render_target_->SetTransform(D2D1::Matrix3x2F::Rotation(z_rotation, kCenter));
+    d2d_render_target_->SetTransform(D2D1::Matrix3x2F::Rotation(z_rotation, center));
 
-    d2d_render_target_->FillRectangle(&kRect, brush);
+    d2d_render_target_->FillRectangle(&rect, brush);
 
     brush->Release();
 }
@@ -294,37 +294,37 @@ void Graphics::DrawRectangle(Rect position, Color color, float stroke, float z_r
 {
     z_rotation = std::clamp(z_rotation, 0.f, 360.f);
 
-    const D2D1_RECT_F kRect = D2D1::RectF(
+    const D2D1_RECT_F rect = D2D1::RectF(
         position.x - (position.width / 2.f),
         position.y - (position.height / 2.f),
         position.x + (position.width / 2.f),
         position.y + (position.height / 2.f)
     );
 
-    const auto kRed = static_cast<float>(color.r) / 255.f;
-    const auto kGreen = static_cast<float>(color.g) / 255.f;
-    const auto kBlue = static_cast<float>(color.b) / 255.f;
-    const auto kAlpha = static_cast<float>(color.a) / 255.f;
+    const auto red = static_cast<float>(color.r) / 255.f;
+    const auto green = static_cast<float>(color.g) / 255.f;
+    const auto blue = static_cast<float>(color.b) / 255.f;
+    const auto alpha = static_cast<float>(color.a) / 255.f;
 
     ID2D1SolidColorBrush* brush;
     d2d_render_target_->CreateSolidColorBrush(
         D2D1::ColorF(
-            kRed,
-            kGreen,
-            kBlue,
-            kAlpha
+            red,
+            green,
+            blue,
+            alpha
         ),
         &brush
     );
 
-    const D2D1_POINT_2F kCenter = D2D1::Point2F(
+    D2D1_POINT_2F center = D2D1::Point2F(
         position.x,
         position.y
     );
 
-    d2d_render_target_->SetTransform(D2D1::Matrix3x2F::Rotation(z_rotation, kCenter));
+    d2d_render_target_->SetTransform(D2D1::Matrix3x2F::Rotation(z_rotation, center));
 
-    d2d_render_target_->DrawRectangle(&kRect, brush, stroke);
+    d2d_render_target_->DrawRectangle(&rect, brush, stroke);
 
     brush->Release();
 }
@@ -333,39 +333,39 @@ void Graphics::FillRoundedRectangle(Rect position, Color color, float radius, fl
 {
     z_rotation = std::clamp(z_rotation, 0.f, 360.f);
 
-    const D2D1_RECT_F kRect = D2D1::RectF(
+    const D2D1_RECT_F rect = D2D1::RectF(
         position.x - (position.width / 2.f),
         position.y - (position.height / 2.f),
         position.x + (position.width / 2.f),
         position.y + (position.height / 2.f)
     );
 
-    const D2D1_ROUNDED_RECT kRounded = D2D1::RoundedRect(kRect, radius, radius);
+    const D2D1_ROUNDED_RECT rounded = D2D1::RoundedRect(rect, radius, radius);
 
-    const auto kRed = static_cast<float>(color.r) / 255.f;
-    const auto kGreen = static_cast<float>(color.g) / 255.f;
-    const auto kBlue = static_cast<float>(color.b) / 255.f;
-    const auto kAlpha = static_cast<float>(color.a) / 255.f;
+    const auto red = static_cast<float>(color.r) / 255.f;
+    const auto green = static_cast<float>(color.g) / 255.f;
+    const auto blue = static_cast<float>(color.b) / 255.f;
+    const auto alpha = static_cast<float>(color.a) / 255.f;
 
     ID2D1SolidColorBrush* brush;
     d2d_render_target_->CreateSolidColorBrush(
         D2D1::ColorF(
-            kRed,
-            kGreen,
-            kBlue,
-            kAlpha
+            red,
+            green,
+            blue,
+            alpha
         ),
         &brush
     );
 
-    const D2D1_POINT_2F kCenter = D2D1::Point2F(
+    D2D1_POINT_2F center = D2D1::Point2F(
         position.x,
         position.y
     );
 
-    d2d_render_target_->SetTransform(D2D1::Matrix3x2F::Rotation(z_rotation, kCenter));
+    d2d_render_target_->SetTransform(D2D1::Matrix3x2F::Rotation(z_rotation, center));
 
-    d2d_render_target_->FillRoundedRectangle(&kRounded, brush);
+    d2d_render_target_->FillRoundedRectangle(&rounded, brush);
 
     brush->Release();
 }
@@ -374,39 +374,39 @@ void Graphics::DrawRoundedRectangle(Rect position, Color color, float radius, fl
 {
     z_rotation = std::clamp(z_rotation, 0.f, 360.f);
 
-    const D2D1_RECT_F kRect = D2D1::RectF(
+    const D2D1_RECT_F rect = D2D1::RectF(
         position.x - (position.width / 2.f),
         position.y - (position.height / 2.f),
         position.x + (position.width / 2.f),
         position.y + (position.height / 2.f)
     );
 
-    const D2D1_ROUNDED_RECT kRounded = D2D1::RoundedRect(kRect, radius, radius);
+    const D2D1_ROUNDED_RECT rounded = D2D1::RoundedRect(rect, radius, radius);
 
-    const auto kRed = static_cast<float>(color.r) / 255.f;
-    const auto kGreen = static_cast<float>(color.g) / 255.f;
-    const auto kBlue = static_cast<float>(color.b) / 255.f;
-    const auto kAlpha = static_cast<float>(color.a) / 255.f;
+    const auto red = static_cast<float>(color.r) / 255.f;
+    const auto green = static_cast<float>(color.g) / 255.f;
+    const auto blue = static_cast<float>(color.b) / 255.f;
+    const auto alpha = static_cast<float>(color.a) / 255.f;
 
     ID2D1SolidColorBrush* brush;
     d2d_render_target_->CreateSolidColorBrush(
         D2D1::ColorF(
-            kRed,
-            kGreen,
-            kBlue,
-            kAlpha
+            red,
+            green,
+            blue,
+            alpha
         ),
         &brush
     );
 
-    const D2D1_POINT_2F kCenter = D2D1::Point2F(
+    D2D1_POINT_2F center = D2D1::Point2F(
         position.x,
         position.y
     );
 
-    d2d_render_target_->SetTransform(D2D1::Matrix3x2F::Rotation(z_rotation, kCenter));
+    d2d_render_target_->SetTransform(D2D1::Matrix3x2F::Rotation(z_rotation, center));
 
-    d2d_render_target_->DrawRoundedRectangle(&kRounded, brush, stroke);
+    d2d_render_target_->DrawRoundedRectangle(&rounded, brush, stroke);
 
     brush->Release();
 }
@@ -415,35 +415,35 @@ void Graphics::FillEllipse(Rect position, Color color, float z_rotation)
 {
     z_rotation = std::clamp(z_rotation, 0.f, 360.f);
 
-    const D2D1_ELLIPSE kEllipse = D2D1::Ellipse(
+    const D2D1_ELLIPSE ellipse = D2D1::Ellipse(
         D2D1::Point2F(position.x, position.y),
         position.width, position.height
     );
 
-    const auto kRed = static_cast<float>(color.r) / 255.f;
-    const auto kGreen = static_cast<float>(color.g) / 255.f;
-    const auto kBlue = static_cast<float>(color.b) / 255.f;
-    const auto kAlpha = static_cast<float>(color.a) / 255.f;
+    const auto red = static_cast<float>(color.r) / 255.f;
+    const auto green = static_cast<float>(color.g) / 255.f;
+    const auto blue = static_cast<float>(color.b) / 255.f;
+    const auto alpha = static_cast<float>(color.a) / 255.f;
 
     ID2D1SolidColorBrush* brush;
     d2d_render_target_->CreateSolidColorBrush(
         D2D1::ColorF(
-            kRed,
-            kGreen,
-            kBlue,
-            kAlpha
+            red,
+            green,
+            blue,
+            alpha
         ),
         &brush
     );
 
-    const D2D1_POINT_2F kCenter = D2D1::Point2F(
+    D2D1_POINT_2F center = D2D1::Point2F(
         position.x,
         position.y
     );
 
-    d2d_render_target_->SetTransform(D2D1::Matrix3x2F::Rotation(z_rotation, kCenter));
+    d2d_render_target_->SetTransform(D2D1::Matrix3x2F::Rotation(z_rotation, center));
 
-    d2d_render_target_->FillEllipse(&kEllipse, brush);
+    d2d_render_target_->FillEllipse(&ellipse, brush);
 
     brush->Release();
 }
@@ -452,53 +452,53 @@ void Graphics::DrawEllipse(Rect position, Color color, float stroke, float z_rot
 {
     z_rotation = std::clamp(z_rotation, 0.f, 360.f);
 
-    const D2D1_ELLIPSE kEllipse = D2D1::Ellipse(
+    const D2D1_ELLIPSE ellipse = D2D1::Ellipse(
         D2D1::Point2F(position.x, position.y),
         position.width, position.height
     );
 
-    const auto kRed = static_cast<float>(color.r) / 255.f;
-    const auto kGreen = static_cast<float>(color.g) / 255.f;
-    const auto kBlue = static_cast<float>(color.b) / 255.f;
-    const auto kAlpha = static_cast<float>(color.a) / 255.f;
+    const auto red = static_cast<float>(color.r) / 255.f;
+    const auto green = static_cast<float>(color.g) / 255.f;
+    const auto blue = static_cast<float>(color.b) / 255.f;
+    const auto alpha = static_cast<float>(color.a) / 255.f;
 
     ID2D1SolidColorBrush* brush;
     d2d_render_target_->CreateSolidColorBrush(
         D2D1::ColorF(
-            kRed,
-            kGreen,
-            kBlue,
-            kAlpha
+            red,
+            green,
+            blue,
+            alpha
         ),
         &brush
     );
 
-    const D2D1_POINT_2F kCenter = D2D1::Point2F(
+    D2D1_POINT_2F center = D2D1::Point2F(
         position.x,
         position.y
     );
 
-    d2d_render_target_->SetTransform(D2D1::Matrix3x2F::Rotation(z_rotation, kCenter));
+    d2d_render_target_->SetTransform(D2D1::Matrix3x2F::Rotation(z_rotation, center));
 
-    d2d_render_target_->DrawEllipse(&kEllipse, brush, stroke);
+    d2d_render_target_->DrawEllipse(&ellipse, brush, stroke);
 
     brush->Release();
 }
 
 void Graphics::DrawLine(Vector2 a, Vector2 b, Color color, float stroke)
 {
-    const auto kRed = static_cast<float>(color.r) / 255.f;
-    const auto kGreen = static_cast<float>(color.g) / 255.f;
-    const auto kBlue = static_cast<float>(color.b) / 255.f;
-    const auto kAlpha = static_cast<float>(color.a) / 255.f;
+    const auto red = static_cast<float>(color.r) / 255.f;
+    const auto green = static_cast<float>(color.g) / 255.f;
+    const auto blue = static_cast<float>(color.b) / 255.f;
+    const auto alpha = static_cast<float>(color.a) / 255.f;
 
     ID2D1SolidColorBrush* brush;
     d2d_render_target_->CreateSolidColorBrush(
         D2D1::ColorF(
-            kRed,
-            kGreen,
-            kBlue,
-            kAlpha
+            red,
+            green,
+            blue,
+            alpha
         ),
         &brush
     );
@@ -516,11 +516,11 @@ void Graphics::DrawLine(Vector2 a, Vector2 b, Color color, float stroke)
 }
 
 void Graphics::DrawTextW(Rect position, Color color, std::wstring text, float font_size, DWRITE_TEXT_ALIGNMENT h_align,
-                         DWRITE_PARAGRAPH_ALIGNMENT v_align, float z_rotation)
+    DWRITE_PARAGRAPH_ALIGNMENT v_align, float z_rotation)
 {
     z_rotation = std::clamp(z_rotation, 0.f, 360.f);
 
-    const D2D1_RECT_F kRect = D2D1::RectF(
+    const D2D1_RECT_F rect = D2D1::RectF(
         position.x - (position.width / 2.f),
         position.y - (position.height / 2.f),
         position.x + (position.width / 2.f),
@@ -559,34 +559,34 @@ void Graphics::DrawTextW(Rect position, Color color, std::wstring text, float fo
     write_text_format->SetTextAlignment(h_align);
     write_text_format->SetParagraphAlignment(v_align);
 
-    const auto kRed = static_cast<float>(color.r) / 255.f;
-    const auto kGreen = static_cast<float>(color.g) / 255.f;
-    const auto kBlue = static_cast<float>(color.b) / 255.f;
-    const auto kAlpha = static_cast<float>(color.a) / 255.f;
+    const auto red = static_cast<float>(color.r) / 255.f;
+    const auto green = static_cast<float>(color.g) / 255.f;
+    const auto blue = static_cast<float>(color.b) / 255.f;
+    const auto alpha = static_cast<float>(color.a) / 255.f;
 
     ID2D1SolidColorBrush* brush;
     d2d_render_target_->CreateSolidColorBrush(
         D2D1::ColorF(
-            kRed,
-            kGreen,
-            kBlue,
-            kAlpha
+            red,
+            green,
+            blue,
+            alpha
         ),
         &brush
     );
 
-    const D2D1_POINT_2F kCenter = D2D1::Point2F(
+    const D2D1_POINT_2F center = D2D1::Point2F(
         position.x,
         position.y
     );
 
-    d2d_render_target_->SetTransform(D2D1::Matrix3x2F::Rotation(z_rotation, kCenter));
+    d2d_render_target_->SetTransform(D2D1::Matrix3x2F::Rotation(z_rotation, center));
 
     d2d_render_target_->DrawTextW(
         text.c_str(),
         static_cast<UINT32>(text.size()),
         write_text_format,
-        kRect,
+        rect,
         brush
     );
 
@@ -599,23 +599,23 @@ void Graphics::DrawBitmap(ID2D1Bitmap* bitmap, Rect position, float opacity, flo
 {
     z_rotation = std::clamp(z_rotation, 0.f, 360.f);
 
-    const D2D1_RECT_F kRect = D2D1::RectF(
+    const D2D1_RECT_F rect = D2D1::RectF(
         position.x - (position.width / 2.f),
         position.y - (position.height / 2.f),
         position.x + (position.width / 2.f),
         position.y + (position.height / 2.f)
     );
 
-    const D2D1_POINT_2F kCenter = D2D1::Point2F(
+    const D2D1_POINT_2F center = D2D1::Point2F(
         position.x,
         position.y
     );
 
-    d2d_render_target_->SetTransform(D2D1::Matrix3x2F::Rotation(z_rotation, kCenter));
+    d2d_render_target_->SetTransform(D2D1::Matrix3x2F::Rotation(z_rotation, center));
 
     d2d_render_target_->DrawBitmap(
         bitmap,
-        kRect,
+        rect,
         opacity,
         D2D1_BITMAP_INTERPOLATION_MODE_LINEAR,
         D2D1::RectF(0, 0, bitmap->GetSize().width, bitmap->GetSize().height)

@@ -1,22 +1,29 @@
 #pragma once
 
+class Object;
+
 class Transform
 {
+	friend class Object;
+
+	Object* owner_;
+
 public:
-    Vector2 position;
-    Vector2 scale;
+	Vector2 position;
+	Vector2 scale;
 
-    float z_rotation;
-    
-    Transform();
-    Transform(const Transform& kOrigin);
+	float z_rotation;
 
-    Transform& operator=(const Transform& kOrigin) = delete;
-    
-    ~Transform() = default;
+	Transform();
+	Transform(const Transform& kOrigin);
 
-    Vector2 Right();
-    Vector2 Up();
+	Transform& operator=(const Transform&) = delete;
 
-    void Translate(Vector2 translation);
+	~Transform() = default;
+
+	Vector2 Right();
+	Vector2 Left();
+
+	void Translate(Vector2 translation);
 };
+

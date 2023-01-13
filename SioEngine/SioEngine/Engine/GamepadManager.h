@@ -67,90 +67,90 @@ public:
     ~GamepadManager() final;
 
     /**
-     * \brief ê²Œì„íŒ¨ë“œê°€ ì—°ê²°ì´ ë˜ì—ˆëŠ”ì§€ í™•ì¸í•©ë‹ˆë‹¤.
-     * \param user ìœ ì € ë²ˆí˜¸
+     * \brief °ÔÀÓÆĞµå°¡ ¿¬°áÀÌ µÇ¾ú´ÂÁö È®ÀÎÇÕ´Ï´Ù.
+     * \param user À¯Àú ¹øÈ£
      * \return bool
      */
     bool IsConnected(UserIndex user = UserIndex::kOne);
 
     /**
-     * \brief ê²Œì„íŒ¨ë“œì˜ ë²„íŠ¼ì´ ëˆŒë ¸ëŠ”ì§€ í™•ì¸í•©ë‹ˆë‹¤.
-     * \param user ìœ ì € ë²ˆí˜¸
-     * \param button_code ë²„íŠ¼ ì½”ë“œ
+     * \brief °ÔÀÓÆĞµåÀÇ ¹öÆ°ÀÌ ´­·È´ÂÁö È®ÀÎÇÕ´Ï´Ù.
+     * \param user À¯Àú ¹øÈ£
+     * \param button_code ¹öÆ° ÄÚµå
      * \return bool
      */
     bool GetButtonDown(UserIndex user, int button_code);
 
     /**
-     * \brief ê²Œì„íŒ¨ë“œì˜ ë²„íŠ¼ì´ ëˆŒë ¤ì ¸ ìˆëŠ”ì§€ í™•ì¸í•©ë‹ˆë‹¤.
-     * \param user ìœ ì € ë²ˆí˜¸
-     * \param button_code ë²„íŠ¼ ì½”ë“œ
+     * \brief °ÔÀÓÆĞµåÀÇ ¹öÆ°ÀÌ ´­·ÁÁ® ÀÖ´ÂÁö È®ÀÎÇÕ´Ï´Ù.
+     * \param user À¯Àú ¹øÈ£
+     * \param button_code ¹öÆ° ÄÚµå
      * \return bool
      */
     bool GetButton(UserIndex user, int button_code);
 
     /**
-     * \brief ê²Œì„íŒ¨ë“œì˜ ë²„íŠ¼ì´ ë–¼ì–´ì¡ŒëŠ”ì§€ í™•ì¸í•©ë‹ˆë‹¤.
-     * \param user 
-     * \param button_code ë²„íŠ¼ ì½”ë“œ
+     * \brief °ÔÀÓÆĞµåÀÇ ¹öÆ°ÀÌ ¶¼¾îÁ³´ÂÁö È®ÀÎÇÕ´Ï´Ù.
+     * \param user
+     * \param button_code ¹öÆ° ÄÚµå
      * \return bool
      */
     bool GetButtonUp(UserIndex user, int button_code);
 
     /**
-     * \brief ê²Œì„íŒ¨ë“œì˜ ë°°í„°ë¦¬ ì”ëŸ‰ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
-     * \param user ìœ ì € ë²ˆí˜¸
+     * \brief °ÔÀÓÆĞµåÀÇ ¹èÅÍ¸® ÀÜ·®À» ¹İÈ¯ÇÕ´Ï´Ù.
+     * \param user À¯Àú ¹øÈ£
      * \return float
      */
     float GetBatteryLevel(UserIndex user = UserIndex::kOne);
 
     /**
-     * \brief ê²Œì„íŒ¨ë“œ ì™¼ìª½ íŠ¸ë¦¬ê±°ì˜ ê°’ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
-     * \param user 
+     * \brief °ÔÀÓÆĞµå ¿ŞÂÊ Æ®¸®°ÅÀÇ °ªÀ» ¹İÈ¯ÇÕ´Ï´Ù.
+     * \param user
      * \return float
      */
     float GetLeftTrigger(UserIndex user = UserIndex::kOne);
 
     /**
-     * \brief ê²Œì„íŒ¨ë“œ ì˜¤ë¥¸ìª½ íŠ¸ë¦¬ê±°ì˜ ê°’ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
-     * \param user ìœ ì € ë²ˆí˜¸
+     * \brief °ÔÀÓÆĞµå ¿À¸¥ÂÊ Æ®¸®°ÅÀÇ °ªÀ» ¹İÈ¯ÇÕ´Ï´Ù.
+     * \param user À¯Àú ¹øÈ£
      * \return float
      */
     float GetRightTrigger(UserIndex user = UserIndex::kOne);
 
     /**
-     * \brief ê²Œì„íŒ¨ë“œ ì™¼ìª½ ìŠ¤í‹±ì˜ ê°’ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
-     * \param user ìœ ì € ë²ˆí˜¸
+     * \brief °ÔÀÓÆĞµå ¿ŞÂÊ ½ºÆ½ÀÇ °ªÀ» ¹İÈ¯ÇÕ´Ï´Ù.
+     * \param user À¯Àú ¹øÈ£
      * \return float
      */
     float GetLeftStickValue(UserIndex user = UserIndex::kOne);
 
     /**
-     * \brief ê²Œì„íŒ¨ë“œ ì˜¤ë¥¸ìª½ ìŠ¤í‹±ì˜ ê°’ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
-     * \param user ìœ ì € ë²ˆí˜¸
+     * \brief °ÔÀÓÆĞµå ¿À¸¥ÂÊ ½ºÆ½ÀÇ °ªÀ» ¹İÈ¯ÇÕ´Ï´Ù.
+     * \param user À¯Àú ¹øÈ£
      * \return flaot
      */
     float GetRightStickValue(UserIndex user = UserIndex::kOne);
 
     /**
-     * \brief ê²Œì„íŒ¨ë“œ ì™¼ìª½ ìŠ¤í‹±ì˜ ì¶•ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
-     * \param user ìœ ì € ë²ˆí˜¸
+     * \brief °ÔÀÓÆĞµå ¿ŞÂÊ ½ºÆ½ÀÇ ÃàÀ» ¹İÈ¯ÇÕ´Ï´Ù.
+     * \param user À¯Àú ¹øÈ£
      * \return Vector2
      */
     Vector2 GetLeftStickAxis(UserIndex user = UserIndex::kOne);
 
     /**
-     * \brief ê²Œì„íŒ¨ë“œ ì˜¤ë¥¸ìª½ ìŠ¤í‹±ì˜ ì¶•ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
-     * \param user ìœ ì € ë²ˆí˜¸
+     * \brief °ÔÀÓÆĞµå ¿À¸¥ÂÊ ½ºÆ½ÀÇ ÃàÀ» ¹İÈ¯ÇÕ´Ï´Ù.
+     * \param user À¯Àú ¹øÈ£
      * \return Vector2
      */
     Vector2 GetRightStickAxis(UserIndex user = UserIndex::kOne);
 
     /**
-     * \brief ê²Œì„íŒ¨ë“œì— ëª¨í„° ì†ë„ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
-     * \param user ìœ ì € ë²ˆí˜¸
-     * \param left_moter_speed ì™¼ìª½ ëª¨í„° ì†ë„
-     * \param right_moter_speed ì˜¤ë¥¸ìª½ ëª¨í„° ì†ë„
+     * \brief °ÔÀÓÆĞµå¿¡ ¸ğÅÍ ¼Óµµ¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+     * \param user À¯Àú ¹øÈ£
+     * \param left_moter_speed ¿ŞÂÊ ¸ğÅÍ ¼Óµµ
+     * \param right_moter_speed ¿À¸¥ÂÊ ¸ğÅÍ ¼Óµµ
      */
     void SetVibrate(UserIndex user = UserIndex::kOne, float left_moter_speed = 0.f, float right_moter_speed = 0.f);
 };

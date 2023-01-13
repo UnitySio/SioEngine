@@ -33,34 +33,34 @@ public:
     ~InputManager() final = default;
 
     /**
-     * \brief í‚¤ê°€ ëˆŒë ¸ëŠ”ì§€ í™•ì¸í•©ë‹ˆë‹¤.
-     * \param key_code í‚¤ ì½”ë“œ
+     * \brief Å°°¡ ´­·È´ÂÁö È®ÀÎÇÕ´Ï´Ù.
+     * \param key_code Å° ÄÚµå
      * \return bool
      */
     bool GetKeyDown(int key_code);
 
     /**
-     * \brief í‚¤ê°€ ëˆŒë ¤ìˆëŠ”ì§€ í™•ì¸í•©ë‹ˆë‹¤.
-     * \param key_code í‚¤ ì½”ë“œ
+     * \brief Å°°¡ ´­·ÁÀÖ´ÂÁö È®ÀÎÇÕ´Ï´Ù.
+     * \param key_code Å° ÄÚµå
      * \return bool
      */
     bool GetKey(int key_code);
 
     /**
-     * \brief í‚¤ê°€ ë–¼ì–´ì¡ŒëŠ”ì§€ í™•ì¸í•©ë‹ˆë‹¤.
-     * \param key_code í‚¤ ì½”ë“œ
+     * \brief Å°°¡ ¶¼¾îÁ³´ÂÁö È®ÀÎÇÕ´Ï´Ù.
+     * \param key_code Å° ÄÚµå
      * \return bool
      */
     bool GetKeyUp(int key_code);
 
     /**
-     * \brief ë§ˆìš°ìŠ¤ê°€ ì›€ì§ì´ëŠ”ì§€ í™•ì¸í•©ë‹ˆë‹¤.
+     * \brief ¸¶¿ì½º°¡ ¿òÁ÷ÀÌ´ÂÁö È®ÀÎÇÕ´Ï´Ù.
      * \return bool
      */
     bool GetMouseMove();
 
     /**
-     * \brief ë§ˆìš°ìŠ¤ì˜ ìœ„ì¹˜ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+     * \brief ¸¶¿ì½ºÀÇ À§Ä¡¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
      * \return Vector2
      */
     Vector2 GetMousePosition();

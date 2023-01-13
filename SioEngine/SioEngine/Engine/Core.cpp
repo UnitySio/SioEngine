@@ -4,8 +4,8 @@
 #include "TimeManager.h"
 #include "InputManager.h"
 #include "GamepadManager.h"
-#include "Scene/SceneManager.h"
 #include "AudioManager.h"
+#include "Scene/SceneManager.h"
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
@@ -56,8 +56,8 @@ LRESULT Core::WndProc(
         ImGui_ImplWin32_Shutdown();
         ImGui::DestroyContext();
 
-        AUDIO_MANAGER->Release();
         SCENE_MANAGER->Release();
+        AUDIO_MANAGER->Release();
         GAMEPAD_MANAGER->Release();
         INPUT_MANAGER->Release();
         TIME_MANAGER->Release();
@@ -96,19 +96,26 @@ DWORD WINAPI Core::LogicThread(LPVOID lpParam)
 
 void Core::FixedUpdate()
 {
+#ifdef NDEBUG
     SCENE_MANAGER->FixedUpdate();
+#endif
 }
 
 void Core::Update()
 {
     INPUT_MANAGER->Update();
     GAMEPAD_MANAGER->Update();
+
+#ifdef NDEBUG
     SCENE_MANAGER->Update();
+#endif
 }
 
 void Core::LateUpdate()
 {
+#ifdef NDEBUG
     SCENE_MANAGER->LateUpdate();
+#endif
 }
 
 void Core::Render()
@@ -118,8 +125,7 @@ void Core::Render()
 
 void Core::OnGUI()
 {
-    SCENE_MANAGER->OnGUI();
-
+#ifdef _DEBUG
     if (ImGui::BeginMainMenuBar())
     {
         if (ImGui::BeginMenu("File"))
@@ -127,6 +133,15 @@ void Core::OnGUI()
             if (ImGui::MenuItem("Exit"))
             {
                 PostMessage(hWnd, WM_DESTROY, 0, 0);
+            }
+
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Object"))
+        {
+            if (ImGui::MenuItem("Create Empty"))
+            {
             }
 
             ImGui::EndMenu();
@@ -181,10 +196,13 @@ void Core::OnGUI()
 
     ImGui::Text("FPS : %d", TIME_MANAGER->GetFPS());
     ImGui::Text("X: %.f, Y: %.f", mouse_position.x, mouse_position.y);
-    ImGui::Text("Delta Time: %f", DELTA_TIME);
     ImGui::InputFloat("Time Scale", &TIME_MANAGER->time_scale_);
 
     ImGui::End();
+#else
+    SCENE_MANAGER->OnGUI();
+
+#endif
 }
 
 Core::Core() :
@@ -226,8 +244,8 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
     const int screen_width = GetSystemMetrics(SM_CXSCREEN);
     const int screen_height = GetSystemMetrics(SM_CYSCREEN);
 
-    resolution_ = {1366, 768};
-    window_area_ = {0, 0, resolution_.x, resolution_.y};
+    resolution_ = { 1366, 768 };
+    window_area_ = { 0, 0, resolution_.x, resolution_.y };
     AdjustWindowRect(&window_area_, WS_OVERLAPPEDWINDOW, false);
 
     hWnd = CreateWindowExW(
@@ -252,7 +270,12 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
 
     ShowWindow(hWnd, nCmdShow);
 
-    CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+    HRESULT result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+
+    if (FAILED(result))
+    {
+        return false;
+    }
 
     if (!GRAPHICS->Initaite())
     {
@@ -261,9 +284,10 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); static_cast<void>(io);
+    ImGuiIO& io = ImGui::GetIO();
+    static_cast<void>(io);
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    io.Fonts->AddFontFromFileTTF(".\\Font\\NanumBarunGothic.ttf", 14.f, nullptr, io.Fonts->GetGlyphRangesKorean());
+    io.Fonts->AddFontFromFileTTF(".\\Engine/Fonts\\NanumBarunGothic.ttf", 14.f, nullptr, io.Fonts->GetGlyphRangesKorean());
     ImGui::StyleColorsDark();
     ImGui_ImplWin32_Init(hWnd);
     ImGui_ImplDX11_Init(GRAPHICS->d3d_device_, GRAPHICS->d3d_device_context_);
@@ -323,7 +347,7 @@ void Core::MainLogic()
 
     GRAPHICS->BeginRenderD3D();
     GRAPHICS->BeginRenderD2D();
-    
+
     Render();
 
     GRAPHICS->EndRenderD2D();

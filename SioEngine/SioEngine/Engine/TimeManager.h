@@ -26,31 +26,31 @@ public:
     ~TimeManager() final = default;
 
     /**
-     * \brief ê³ ì • í”„ë ˆì„ ì—…ë°ì´íŠ¸ê°€ ìˆ˜í–‰ë˜ëŠ” ê°„ê²©(ì´ˆ)ì„ ì„¤ì •í•©ë‹ˆë‹¤.
-     * \param fixed_time_step ê°„ê²©(ì´ˆ)
+     * \brief °íÁ¤ ÇÁ·¹ÀÓ ¾÷µ¥ÀÌÆ®°¡ ¼öÇàµÇ´Â °£°İ(ÃÊ)À» ¼³Á¤ÇÕ´Ï´Ù.
+     * \param fixed_time_step °£°İ(ÃÊ)
      */
     void SetFixedTimeStep(float fixed_time_step);
 
     /**
-     * \brief ì‹œê°„ì´ íë¥´ëŠ” í¬ê¸°ë¥¼ ì„¤ì •í•©ë‹ˆë‹¤.
-     * \param time_scale ì‹œê°„ì˜ í¬ê¸°
+     * \brief ½Ã°£ÀÌ Èå¸£´Â Å©±â¸¦ ¼³Á¤ÇÕ´Ï´Ù.
+     * \param time_scale ½Ã°£ÀÇ Å©±â
      */
     void SetTimeScale(float time_scale);
 
     /**
-     * \brief ë§ˆì§€ë§‰ í”„ë ˆì„ì—ì„œ í˜„ì¬ í”„ë ˆì„ê¹Œì§€ì˜ ê°„ê²©(ì´ˆ)ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
+     * \brief ¸¶Áö¸· ÇÁ·¹ÀÓ¿¡¼­ ÇöÀç ÇÁ·¹ÀÓ±îÁöÀÇ °£°İ(ÃÊ)À» ¹İÈ¯ÇÕ´Ï´Ù.
      * \return float
      */
     float GetDeltaTime();
 
     /**
-     * \brief ê³ ì • í”„ë ˆì„ ì—…ë°ì´íŠ¸ê°€ ìˆ˜í–‰ë˜ëŠ” ê°„ê²©(ì´ˆ)ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
+     * \brief °íÁ¤ ÇÁ·¹ÀÓ ¾÷µ¥ÀÌÆ®°¡ ¼öÇàµÇ´Â °£°İ(ÃÊ)À» ¹İÈ¯ÇÕ´Ï´Ù.
      * \return float
      */
     float GetFixedDeltaTime();
 
     /**
-     * \brief í˜„ì¬ FPSë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+     * \brief ÇöÀç FPS¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
      * \return UINT
      */
     UINT GetFPS();

@@ -55,72 +55,72 @@ Vector2& Vector2::operator=(const Vector2& kVector2)
 
 Vector2 Vector2::operator+(const Vector2& kVector2)
 {
-    return {x + kVector2.x, y + kVector2.y};
+    return { x + kVector2.x, y + kVector2.y };
 }
 
 Vector2 Vector2::operator-(const Vector2& kVector2)
 {
-    return {x - kVector2.x, y - kVector2.y};
+    return { x - kVector2.x, y - kVector2.y };
 }
 
 Vector2 Vector2::operator*(const Vector2& kVector2)
 {
-    return {x * kVector2.x, y * kVector2.y};
+    return { x * kVector2.x, y * kVector2.y };
 }
 
 Vector2 Vector2::operator/(const Vector2& kVector2)
 {
-    return {x / kVector2.x, y / kVector2.y};
+    return { x / kVector2.x, y / kVector2.y };
 }
 
 Vector2 Vector2::operator+(float val)
 {
-    return {x + val, y + val};
+    return { x + val, y + val };
 }
 
 Vector2 Vector2::operator-(float val)
 {
-    return {x - val, y - val};
+    return { x - val, y - val };
 }
 
 Vector2 Vector2::operator*(float val)
 {
-    return {x * val, y * val};
+    return { x * val, y * val };
 }
 
 Vector2 Vector2::operator/(float val)
 {
-    return {x / val, y / val};
+    return { x / val, y / val };
 }
 
 Vector2 Vector2::Zero()
 {
-    return {0.f, 0.f};
+    return { 0.f, 0.f };
 }
 
 Vector2 Vector2::One()
 {
-    return {1.f, 1.f};
+    return { 1.f, 1.f };
 }
 
 Vector2 Vector2::Left()
 {
-    return {-1.f, 0.f};
+    return { -1.f, 0.f };
 }
 
 Vector2 Vector2::Up()
 {
-    return {0.f, -1.f};
+    return { 0.f, -1.f };
 }
 
 Vector2 Vector2::Right()
 {
-    return {1.f, 0.f};
+    return { 1.f, 0.f };
 }
 
 Vector2 Vector2::Down()
 {
-    return {0.f, 1.f};
+    return { 0.f, 1.f };
 }
 
 Vector2 Vector2::Normalized()
@@ -129,7 +129,7 @@ Vector2 Vector2::Normalized()
 
     if (m > 0)
     {
-        return {x / m, y / m};
+        return { x / m, y / m };
     }
 
     return Vector2().Zero();
@@ -148,7 +148,7 @@ bool Vector2::operator==(const Vector2& kVector2) const
     {
         return true;
     }
-    
+
     return false;
 }
 
@@ -159,7 +159,7 @@ bool Vector2::operator!=(const Vector2& kVector2) const
     {
         return true;
     }
-    
+
     return false;
 }
 
@@ -170,7 +170,7 @@ bool Vector2::operator==(float val) const
     {
         return true;
     }
-    
+
     return false;
 }
 
@@ -181,16 +181,16 @@ bool Vector2::operator!=(float val) const
     {
         return true;
     }
-    
+
     return false;
 }
 
 float Vector2::Magnitude()
 {
-    const auto kTempX = static_cast<double>(x);
-    const auto kTempY = static_cast<double>(y);
-    
-    return static_cast<float>(sqrt(pow(kTempX, 2) + pow(kTempY, 2)));
+    const auto temp_x = static_cast<double>(x);
+    const auto temp_y = static_cast<double>(y);
+
+    return static_cast<float>(sqrt(pow(temp_x, 2) + pow(temp_y, 2)));
 }
 
 float Vector2::Distance(Vector2 a, Vector2 b)
@@ -201,8 +201,8 @@ float Vector2::Distance(Vector2 a, Vector2 b)
 
 float Vector2::Dot(Vector2 a, Vector2 b)
 {
-    const float kTheta = (a.x * b.x) + (a.y * b.y);
-    return kTheta;
+    const float theta = (a.x * b.x) + (a.y * b.y);
+    return theta;
 }
 
 void Vector2::Normalize()

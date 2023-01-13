@@ -61,16 +61,16 @@ public:
     Vector2 Down();
 
     /**
-     * \brief ë°±í„°ë¥¼ ì •ê·œí™”ëœ ê°’ìœ¼ë¡œ ë°˜í™˜í•©ë‹ˆë‹¤.
+     * \brief ¹éÅÍ¸¦ Á¤±ÔÈ­µÈ °ªÀ¸·Î ¹İÈ¯ÇÕ´Ï´Ù.
      * \return Vector2
      */
     Vector2 Normalized();
 
     /**
-     * \brief ë‘ ë°±í„°ë¥¼ ì„ í˜• ë³´ê°„í•©ë‹ˆë‹¤.
-     * \param a ì²«ë²ˆì§¸ ë°±í„°
-     * \param b ë‘ë²ˆì§¸ ë°±í„°
-     * \param t ë¹„ìœ¨
+     * \brief µÎ ¹éÅÍ¸¦ ¼±Çü º¸°£ÇÕ´Ï´Ù.
+     * \param a Ã¹¹øÂ° ¹éÅÍ
+     * \param b µÎ¹øÂ° ¹éÅÍ
+     * \param t ºñÀ²
      * \return Vector2
      */
     Vector2 Lerp(Vector2 a, Vector2 b, float t);
@@ -83,29 +83,29 @@ public:
     bool operator!=(float val) const;
 
     /**
-     * \brief ë°±í„°ì˜ ê¸¸ì´ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
+     * \brief ¹éÅÍÀÇ ±æÀÌ¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
      * \return float
      */
     float Magnitude();
 
     /**
-     * \brief ë‘ ë°±í„°ì˜ ê±°ë¦¬ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
-     * \param a ì²«ë²ˆì§¸ ë°±í„°
-     * \param b ë‘ë²ˆì§¸ ë°±í„°
+     * \brief µÎ ¹éÅÍÀÇ °Å¸®¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+     * \param a Ã¹¹øÂ° ¹éÅÍ
+     * \param b µÎ¹øÂ° ¹éÅÍ
      * \return float
      */
     float Distance(Vector2 a, Vector2 b);
 
     /**
-     * \brief ë‘ ë°±í„°ì˜ ë‚´ì ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
-     * \param a ì²«ë²ˆì§¸ ë°±í„°
-     * \param b ë‘ë²ˆì§¸ ë°±í„°
+     * \brief µÎ ¹éÅÍÀÇ ³»ÀûÀ» ¹İÈ¯ÇÕ´Ï´Ù.
+     * \param a Ã¹¹øÂ° ¹éÅÍ
+     * \param b µÎ¹øÂ° ¹éÅÍ
      * \return float
      */
     float Dot(Vector2 a, Vector2 b);
 
     /**
-     * \brief ë°±í„°ë¥¼ ì •ê·œí™”ë¥¼ í•©ë‹ˆë‹¤.
+     * \brief ¹éÅÍ¸¦ Á¤±ÔÈ­¸¦ ÇÕ´Ï´Ù.
      */
     void Normalize();
 };

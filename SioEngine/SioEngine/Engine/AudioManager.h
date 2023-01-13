@@ -12,7 +12,7 @@ class AudioManager :
     friend class Core;
 
     FMOD_SYSTEM* fmod_system_;
-    
+
     FMOD_CHANNEL* channels_[CHANNEL_COUNT];
 
     std::map<std::string, FMOD_SOUND*> sounds_;
@@ -28,37 +28,37 @@ public:
     ~AudioManager() final = default;
 
     /**
-     * \brief ì‚¬ìš´ë“œë¥¼ ì¶”ê°€í•©ë‹ˆë‹¤.
-     * \param name ì´ë¦„
-     * \param path ê²½ë¡œ
-     * \param is_loop ë°˜ë³µ ì—¬ë¶€
+     * \brief »ç¿îµå¸¦ Ãß°¡ÇÕ´Ï´Ù.
+     * \param name ÀÌ¸§
+     * \param path °æ·Î
+     * \param is_loop ¹İº¹ ¿©ºÎ
      */
     void AddSound(std::string name, std::string path, bool is_loop);
 
     /**
-     * \brief ì‚¬ìš´ë“œë¥¼ ì¬ìƒí•©ë‹ˆë‹¤.
-     * \param name ì´ë¦„
+     * \brief »ç¿îµå¸¦ Àç»ıÇÕ´Ï´Ù.
+     * \param name ÀÌ¸§
      */
     void Play(std::string name);
 
     /**
-     * \brief ì¬ìƒ ì¤‘ì¸ ì‚¬ìš´ë“œë¥¼ ì¼ì‹œ ì •ì§€í•©ë‹ˆë‹¤.
+     * \brief Àç»ı ÁßÀÎ »ç¿îµå¸¦ ÀÏ½Ã Á¤ÁöÇÕ´Ï´Ù.
      */
     void Pause();
 
     /**
-     * \brief ì¼ì‹œ ì •ì§€ëœ ì‚¬ìš´ë“œë¥¼ ì¬ê°œí•©ë‹ˆë‹¤.
+     * \brief ÀÏ½Ã Á¤ÁöµÈ »ç¿îµå¸¦ Àç°³ÇÕ´Ï´Ù.
      */
     void Resume();
 
     /**
-     * \brief ì¬ìƒ ì¤‘ì¸ ì‚¬ìš´ë“œë¥¼ ì •ì§€í•©ë‹ˆë‹¤.
+     * \brief Àç»ı ÁßÀÎ »ç¿îµå¸¦ Á¤ÁöÇÕ´Ï´Ù.
      */
     void Stop();
 
     /**
-     * \brief ì „ì²´ ì‚¬ìš´ë“œì˜ ë³¼ë¥¨ì„ ì„¤ì •í•©ë‹ˆë‹¤.
-     * \param volume ë³¼ë¥¨ í¬ê¸°
+     * \brief ÀüÃ¼ »ç¿îµåÀÇ º¼·ıÀ» ¼³Á¤ÇÕ´Ï´Ù.
+     * \param volume º¼·ı Å©±â
      */
     void SetVolume(int volume);
 };

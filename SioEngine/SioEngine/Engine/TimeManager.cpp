@@ -14,12 +14,12 @@ void TimeManager::Update()
     delta_time_ = static_cast<float>(current_count_.QuadPart - previous_count_.QuadPart) / static_cast<float>(frequency_.QuadPart);
     previous_count_ = current_count_;
 
-    // FPS ì œí•œ
+    // FPS Á¦ÇÑ
     /*if (delta_time_ < (1.f / 60.f))
     {
         delta_time_ = (1.f / 60.f);
     }*/
-    
+
     frame_counter_++;
     timer_ += delta_time_;
 

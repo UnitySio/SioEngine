@@ -1,35 +1,24 @@
 #pragma once
 
+class Object;
+
 class Scene :
-    public std::enable_shared_from_this<Scene>
+	public std::enable_shared_from_this<Scene>
 {
-    friend class SceneManager;
-
-    std::wstring name_;
-    
-    void FixedUpdate();
-    void Update();
-    void LateUpdate();
-    void Render();
-    void OnGUI();
-
-protected:
-    virtual void Enter() = 0;
-    virtual void Exit() = 0;
-
+	std::vector<std::shared_ptr<Object>> objects_[(size_t)Layer::kEnd];
 public:
-    Scene();
-    virtual ~Scene() = default;
+	std::wstring name;
 
-    /**
-     * \brief 씬의 이름을 설정합니다.
-     * \param name 이름
-     */
-    void SetName(std::wstring name);
+	Scene() = default;
+	virtual ~Scene() = default;
 
-    /**
-     * \brief 씬의 이름을 반환합니다.
-     * \return wstring
-     */
-    std::wstring GetName();
+	virtual void Enter() = 0;
+	virtual void Exit() = 0;
+
+	virtual void FixedUpdate();
+	virtual void Update();
+	virtual void LateUpdate();
+	virtual void Render();
+	virtual void OnGUI();
 };
+
