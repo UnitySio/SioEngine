@@ -72,7 +72,7 @@ bool Graphics::CreateRenderTargetD3D()
 
     back_buffer->Release();
 
-    // º¸·ù (È®ÀÎ ÈÄ ÇÔ¼ö·Î ºĞ¸®ÇÒ ¿¹Á¤)
+    // ë³´ë¥˜ (í™•ì¸ í›„ í•¨ìˆ˜ë¡œ ë¶„ë¦¬í•  ì˜ˆì •)
     d3d_viewport_.TopLeftX = 0.f;
     d3d_viewport_.TopLeftY = 0.f;
     d3d_viewport_.Width = static_cast<float>(CORE->GetResolution().x);
@@ -129,6 +129,54 @@ bool Graphics::CreateRenderTargetD2D()
     return SUCCEEDED(result);
 }
 
+void Graphics::ReleaseDeviceD3D()
+{
+    if (dxgi_swap_chain_)
+    {
+        dxgi_swap_chain_->Release();
+        dxgi_swap_chain_ = nullptr;
+    }
+    
+    if (d3d_device_context_)
+    {
+        d3d_device_context_->Release();
+        d3d_device_context_ = nullptr;
+    }
+
+    if (d3d_device_)
+    {
+        d3d_device_->Release();
+        d3d_device_ = nullptr;
+    }
+}
+
+void Graphics::ReleaseRenderTargetD3D()
+{
+    if (d3d_render_target_view_)
+    {
+        d3d_render_target_view_->Release();
+        d3d_render_target_view_ = nullptr;
+    }
+}
+
+void Graphics::ReleaseFactoryD2D()
+{
+    if (d2d_factory_)
+    {
+        d2d_factory_->Release();
+        d2d_factory_ = nullptr;
+    }
+}
+
+void Graphics::ReleaseRenderTargetD2D()
+{
+    if (d2d_render_target_)
+    {
+        d2d_render_target_->Release();
+        d2d_render_target_ = nullptr;
+    }
+}
+
 void Graphics::BeginRenderD3D()
 {
     const float clear_color[4] = {
@@ -165,11 +213,10 @@ void Graphics::EndRenderD2D()
 
 Graphics::~Graphics()
 {
-    d2d_render_target_->Release();
-    d2d_factory_->Release();
-    d3d_render_target_view_->Release();
-    d3d_device_context_->Release();
-    d3d_device_->Release();
+    ReleaseRenderTargetD2D();
+    ReleaseFactoryD2D();
+    ReleaseRenderTargetD3D();
+    ReleaseDeviceD3D();
 }
 
 ID2D1Bitmap* Graphics::LoadImageW(std::wstring file_name)

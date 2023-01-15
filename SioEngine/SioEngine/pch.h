@@ -8,6 +8,7 @@
 #define GAMEPAD_MANAGER GamepadManager::GetInstance()
 #define AUDIO_MANAGER AudioManager::GetInstance()
 #define SCENE_MANAGER SceneManager::GetInstance()
+#define EVENT_MANAGER EventManager::GetInstance()
 
 #define DELTA_TIME TimeManager::GetInstance()->GetDeltaTime()
 #define FIXED_DELTA_TIME TimeManager::GetInstance()->GetFixedDeltaTime()

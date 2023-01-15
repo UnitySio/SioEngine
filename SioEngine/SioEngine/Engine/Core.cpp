@@ -6,9 +6,13 @@
 #include "GamepadManager.h"
 #include "AudioManager.h"
 #include "Scene/SceneManager.h"
+#include "EventManager.h"
+#include "Scene/Scene.h"
+#include "Object/Object.h"
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_win32.h"
+#include "Object/Component/Transform.h"
 
 extern LRESULT ImGui_ImplWin32_WndProcHandler(
     HWND hWnd,
@@ -56,6 +60,7 @@ LRESULT Core::WndProc(
         ImGui_ImplWin32_Shutdown();
         ImGui::DestroyContext();
 
+        EVENT_MANAGER->Release();
         SCENE_MANAGER->Release();
         AUDIO_MANAGER->Release();
         GAMEPAD_MANAGER->Release();
@@ -121,6 +126,21 @@ void Core::LateUpdate()
 void Core::Render()
 {
     SCENE_MANAGER->Render();
+
+    auto* current_scene = SCENE_MANAGER->GetCurrentScene();
+
+    const auto& objects = current_scene->GetObjects(static_cast<Layer>(0));
+    
+    for (size_t j = 0; j < objects.size(); j++)
+    {
+        const auto transform = objects[j]->GetTransform();
+
+        GRAPHICS->FillRectangle(
+            {transform->position.x, transform->position.y, transform->scale.x, transform->scale.y},
+            {255, 255, 255},
+            transform->z_rotation
+        );
+    }
 }
 
 void Core::OnGUI()
@@ -138,10 +158,11 @@ void Core::OnGUI()
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu("Object"))
+        if (ImGui::BeginMenu("GameObject"))
         {
             if (ImGui::MenuItem("Create Empty"))
             {
+                SCENE_MANAGER->GetCurrentScene()->AddEmptyObject();
             }
 
             ImGui::EndMenu();
@@ -152,10 +173,68 @@ void Core::OnGUI()
 
     // Inspector
     ImGui::Begin("Inspector");
+
+    if (object_ != nullptr)
+    {
+        ImGui::InputText("Name", object_->name.data(), 2048);
+
+        if (ImGui::CollapsingHeader("Transform"))
+        {
+            const auto transform = object_->GetTransform();
+
+            float* position[2] = {
+                &transform->position.x,
+                &transform->position.y
+            };
+
+            float* scale[2] = {
+                &transform->scale.x,
+                &transform->scale.y
+            };
+            
+            ImGui::InputFloat2("Position", *position);
+            ImGui::InputFloat("Z Rotation", &transform->z_rotation);
+            ImGui::InputFloat2("Scale", *scale);
+        }
+    }
+
     ImGui::End();
 
     // Hierarchy
     ImGui::Begin("Hierarchy");
+
+    auto* current_scene = SCENE_MANAGER->GetCurrentScene();
+
+    const auto& objects = current_scene->GetObjects(static_cast<Layer>(0));
+    
+    ImGuiListClipper hierarchy_clipper;
+    hierarchy_clipper.Begin(objects.size());
+
+    while (hierarchy_clipper.Step())
+    {
+        for (size_t j = hierarchy_clipper.DisplayStart; j < hierarchy_clipper.DisplayEnd; j++)
+        {
+            ImGui::TreeNodeEx(
+                reinterpret_cast<void*>(static_cast<intptr_t>(j)),
+                ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_NoTreePushOnOpen,
+                "%s",
+                objects[j]->name.c_str()
+            );
+
+            if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen())
+            {
+                object_ = objects[j].get();
+            }
+        }
+    }
+
+    hierarchy_clipper.End();
+    
+    if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
+    {
+        ImGui::SetScrollHereY(1.f);
+    }
+
     ImGui::End();
 
     // Console
@@ -196,7 +275,6 @@ void Core::OnGUI()
 
     ImGui::Text("FPS : %d", TIME_MANAGER->GetFPS());
     ImGui::Text("X: %.f, Y: %.f", mouse_position.x, mouse_position.y);
-    ImGui::InputFloat("Time Scale", &TIME_MANAGER->time_scale_);
 
     ImGui::End();
 #else
@@ -244,8 +322,8 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
     const int screen_width = GetSystemMetrics(SM_CXSCREEN);
     const int screen_height = GetSystemMetrics(SM_CYSCREEN);
 
-    resolution_ = { 1366, 768 };
-    window_area_ = { 0, 0, resolution_.x, resolution_.y };
+    resolution_ = {1366, 768};
+    window_area_ = {0, 0, resolution_.x, resolution_.y};
     AdjustWindowRect(&window_area_, WS_OVERLAPPEDWINDOW, false);
 
     hWnd = CreateWindowExW(
@@ -287,7 +365,8 @@ BOOL Core::InitInstance(HINSTANCE hInstance, int nCmdShow)
     ImGuiIO& io = ImGui::GetIO();
     static_cast<void>(io);
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    io.Fonts->AddFontFromFileTTF(".\\Engine/Fonts\\NanumBarunGothic.ttf", 14.f, nullptr, io.Fonts->GetGlyphRangesKorean());
+    io.Fonts->AddFontFromFileTTF(".\\Engine/Fonts\\NanumBarunGothic.ttf", 14.f, nullptr,
+                                 io.Fonts->GetGlyphRangesKorean());
     ImGui::StyleColorsDark();
     ImGui_ImplWin32_Init(hWnd);
     ImGui_ImplDX11_Init(GRAPHICS->d3d_device_, GRAPHICS->d3d_device_context_);
@@ -363,6 +442,7 @@ void Core::MainLogic()
 
     GRAPHICS->EndRenderD3D();
 
+    EVENT_MANAGER->Update();
     AUDIO_MANAGER->Update();
 }
 

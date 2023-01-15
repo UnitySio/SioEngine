@@ -9,13 +9,15 @@ class SceneManager :
 	std::shared_ptr<Scene> current_scene_;
 
 public:
-	SceneManager() = default;
-	~SceneManager() = default;
+	SceneManager();
+	~SceneManager() final = default;
 
 	void FixedUpdate();
 	void Update();
 	void LateUpdate();
 	void Render();
 	void OnGUI();
+
+	Scene* GetCurrentScene();
 };
 

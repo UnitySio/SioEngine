@@ -8,7 +8,7 @@ class Object :
 	// Component
 	std::shared_ptr<Transform> transform_;
 public:
-	std::wstring name;
+	std::string name;
 
 	Object();
 	Object(const Object& kOrigin);

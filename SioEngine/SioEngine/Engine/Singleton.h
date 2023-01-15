@@ -16,7 +16,7 @@ public:
     Singleton& operator=(const Singleton&) = delete;
 
     /**
-     * \brief Singleton °´Ã¼¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+     * \brief Singleton ê°ì²´ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
      * \return instance
      */
     static std::shared_ptr<T> GetInstance()
@@ -30,7 +30,7 @@ public:
     }
 
     /**
-     * \brief Singleton °´Ã¼¸¦ ¸Ş¸ğ¸® ÇØÁ¦ÇÕ´Ï´Ù.
+     * \brief Singleton ê°ì²´ë¥¼ ë©”ëª¨ë¦¬ í•´ì œí•©ë‹ˆë‹¤.
      */
     virtual void Release()
     {

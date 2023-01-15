@@ -1,6 +1,14 @@
 #include "pch.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include "EmptyScene.h"
+
+SceneManager::SceneManager()
+{
+	std::shared_ptr<Scene> empty_scene = std::make_shared<EmptyScene>();
+	current_scene_ = empty_scene;
+	empty_scene->Enter();
+}
 
 void SceneManager::FixedUpdate()
 {
@@ -40,4 +48,9 @@ void SceneManager::OnGUI()
 	{
 		current_scene_->OnGUI();
 	}
+}
+
+Scene* SceneManager::GetCurrentScene()
+{
+	return current_scene_.get();
 }

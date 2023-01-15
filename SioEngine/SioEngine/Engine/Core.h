@@ -1,5 +1,6 @@
 #pragma once
 #include "Singleton.h"
+#include "Object/Object.h"
 
 class Core :
     public Singleton<Core>
@@ -21,6 +22,8 @@ class Core :
     float timer_;
 
     std::vector<std::string> logs_;
+
+    Object* object_;
 
     LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     static LRESULT CALLBACK StaticWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -50,9 +53,9 @@ public:
     void MainLogic();
 
     /**
-     * \brief µğ¹ö°Å ·Î±× ¸Ş½ÃÁö¸¦ Ãâ·ÂÇÕ´Ï´Ù.
-     * \param format ¹®ÀÚ¿­
-     * \param ... ÀÎ¼ö
+     * \brief ë””ë²„ê±° ë¡œê·¸ ë©”ì‹œì§€ë¥¼ ì¶œë ¥í•©ë‹ˆë‹¤.
+     * \param format ë¬¸ìì—´
+     * \param ... ì¸ìˆ˜
      */
     void Log(std::wstring format, ...);
 };

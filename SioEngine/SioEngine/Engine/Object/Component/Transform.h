@@ -1,13 +1,9 @@
 #pragma once
+#include "Component.h"
 
-class Object;
-
-class Transform
+class Transform :
+	public Component
 {
-	friend class Object;
-
-	Object* owner_;
-
 public:
 	Vector2 position;
 	Vector2 scale;
@@ -17,9 +13,7 @@ public:
 	Transform();
 	Transform(const Transform& kOrigin);
 
-	Transform& operator=(const Transform&) = delete;
-
-	~Transform() = default;
+	~Transform() final = default;
 
 	Vector2 Right();
 	Vector2 Left();
