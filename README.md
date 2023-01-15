@@ -21,5 +21,4 @@ WinAPI 기반의 자체엔진 프로젝트입니다.
 
 ### Developer Comment
 * 작성 예정
-![KakaoTalk_20230110_155712964](https://user-images.githubusercontent.com/38973547/211482961-476282c7-56f8-4e69-b761-4205403cb744.gif)
-
+![Animation](https://user-images.githubusercontent.com/38973547/212535948-67010205-6edd-4f72-bb85-eb2ed1f9a024.gif)
