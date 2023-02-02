@@ -13,7 +13,7 @@ WinAPI 기반의 자체엔진 프로젝트입니다.
 * [Google Naming Convention](https://google.github.io/styleguide/cppguide.html#General_Naming_Rules)
 
 ### Using Graphic Library
-* DirectX 11, Spine, ImGui
+* DirectX 11, Spine(보류), ImGui
 
 ### Using Sound Library
 * FMOD
