@@ -15,8 +15,8 @@ public:
 
 	~Transform() final = default;
 
+	Vector2 Up();
 	Vector2 Right();
-	Vector2 Left();
 
 	void Translate(Vector2 translation);
 };

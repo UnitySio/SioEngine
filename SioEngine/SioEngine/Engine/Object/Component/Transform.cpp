@@ -11,7 +11,7 @@ Transform::Transform(const Transform& kOrigin) :
 {
 }
 
-Vector2 Transform::Right()
+Vector2 Transform::Up()
 {
 	const float kTheta = z_rotation * (PI / 180.f);
 	const float kX = cos(kTheta);
@@ -20,9 +20,9 @@ Vector2 Transform::Right()
 	return { kX, kY };
 }
 
-Vector2 Transform::Left()
+Vector2 Transform::Right()
 {
-	const float kTheta = (z_rotation * 270.f) * (PI / 180.f);
+	const float kTheta = (z_rotation + 90) * (PI / 180.f);
 	const float kX = cos(kTheta);
 	const float kY = sin(kTheta);
 
